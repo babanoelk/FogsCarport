@@ -18,6 +18,10 @@ Github: @Lassekh<br>
 Mail: cph-yb48@cphbusiness.dk<br>
 Github: @Badranyoussef<br>
 
+**Solomon**<br>
+Mail: cph-sm492@cphbusiness.dk<br>
+Github: @Solo-king100<br>
+
 ## Projektbeskrivelse
 
 [Se projektbeskrivelsen på Moodle](https://cphbusiness.mrooms.net/mod/book/view.php?id=639642)

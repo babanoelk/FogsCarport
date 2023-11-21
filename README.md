@@ -24,7 +24,7 @@ Github: @Solo-king100<br>
 
 ## Projektbeskrivelse
 
-[Se rapporten på google-docs]([https://cphbusiness.mrooms.net/mod/book/view.php?id=639642](https://docs.google.com/document/d/1nJnWDTu2GeEfQiUzqrGFB_lpO_eYUiMABVNJ66xrqT8/edit?pli=1))
+[Se rapporten på google-docs](https://docs.google.com/document/d/1nJnWDTu2GeEfQiUzqrGFB_lpO_eYUiMABVNJ66xrqT8/edit?pli=1)
 
 ## Projektbeskrivelse
 

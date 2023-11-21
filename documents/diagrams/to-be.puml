@@ -1,0 +1,53 @@
+@startuml
+
+|Kunde|
+start
+:Vælg egne mål for carport;
+if (tilkøb af skur?) is (ja) then
+  :vælg mål/placering for skur;
+else (nej)
+endif
+
+
+|Shop|
+
+|System|
+
+:Beregn tilbud;
+|Kunde|
+:Modtager tilbud|
+if (Læg ordrer?) is (ja) then
+|System|
+:Opret ordrer;
+
+
+|Mailsystem|
+
+|Sælger|
+:Modtager ordrer|
+|Kunde|
+:Gennemgår ordrer;
+if (Rettelse af ordrer) is (ja) then
+
+|Sælger|
+:Ret ordrer;
+|System|
+:Opdater ordre;
+else (nej)
+
+endif
+:Send ordrebekræftigelse;
+|Kunde|
+:Betal;
+|System|
+:Registrer betaling;
+|Kunde|
+:Stykliste og kvittering|
+else (nej)
+
+endif
+
+
+stop
+|Tilbudsberegner|
+@enduml

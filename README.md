@@ -32,4 +32,4 @@ Github: @Solo-king100<br>
 
 ## Videopræsentation
 
-[Se videopræsentation af projektet]()
+[Se videopræsentation af projektet på YouTube]()

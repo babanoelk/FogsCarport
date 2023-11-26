@@ -22,6 +22,10 @@ Github: @Badranyoussef<br>
 Mail: cph-sm492@cphbusiness.dk<br>
 Github: @Solo-king100<br>
 
+## Hjemmesiden
+
+[Se hjemmesiden her]()
+
 ## Rapport
 
 [Se rapporten på google-docs](https://docs.google.com/document/d/1nJnWDTu2GeEfQiUzqrGFB_lpO_eYUiMABVNJ66xrqT8/edit?pli=1)

@@ -2,7 +2,7 @@
 
 ## Projektdeltagere
 
-**Ahmad**<br>
+**Ahmad (Projektleder)**<br>
 Mail: cph-aa540@cphbusiness.dk <br>
 Github: @Babanoelk<br>
 

@@ -1,0 +1,60 @@
+drop table if exists user cascade;
+create table user(
+	id              serial not null primary key,
+	name            text not null,
+	email           text not null,
+	password        text not null,
+	address         text not null,
+	zipcode         integer not null
+);
+
+drop table if exists employee cascade;
+create table employee(
+	id              serial not null primary key,
+	name            text not null,
+	email           text not null,
+	password        text not null,
+    role            text not null,
+    mobile          integer not null,
+    employee_id     integer not null,
+    constraint fk_employee_id foreign key (employee_id)
+    references employee(id)
+);
+
+drop table if exists status cascade;
+create table status(
+	id              serial not null primary key,
+	status          text not null
+);
+
+drop table if exists shed cascade;
+create table shed(
+	id              serial not null primary key,
+	width           integer not null,
+	length          integer not null
+);
+
+drop table if exists carport cascade;
+create table carport(
+	id              serial not null primary key,
+	width           integer not null,
+	length          integer not null,
+	price           integer not null,
+	shed_status     integer not null,
+	constraint fk_shed_status foreign key (shed_status)
+    references shed(id)
+);
+
+drop table if exists order cascade;
+create table order(
+	id              serial not null primary key,
+	date            date not null,
+	user_id         integer not null,
+	order_status    integer not null,
+	constraint fk_user_id foreign key (user_id)
+	references user(id),
+	constraint fk_order_status foreign key (order_status)
+    references status(id)
+);
+
+

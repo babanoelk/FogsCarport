@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+hide circle
+hide methods
+
+class Kunde {
+navn
+email
+password
+adresse
+mobil
+}
+
+class Ordre{
+ID
+dato
+linjebekrivelse
+pris
+status
+}
+
+class Chef{
+navn
+email
+password
+mobil
+}
+
+class Sælger{
+navn
+email
+password
+mobil
+}
+
+class Carport{
+pris
+bredde
+længde
+}
+
+class Skur{
+længde
+bredde
+}
+
+Carport "1 " -- "0..1 " Skur
+Chef "1 " -- " * " Ordre
+Sælger "1 " -- " * " Ordre
+Kunde "1 " -- "*" Ordre
+Carport "1 " -- "   1" Ordre
+
+
+
+
+@enduml

@@ -13,9 +13,9 @@ endif
 
 |System|
 
-:Beregn tilbud;
+:Beregn tilbud (1);
 |Kunde|
-:Modtager tilbud|
+:Modtager tilbud (2)]
 if (Læg ordrer?) is (ja) then
 |System|
 :Opret ordrer;
@@ -24,7 +24,7 @@ if (Læg ordrer?) is (ja) then
 |Mailsystem|
 
 |Sælger|
-:Modtager ordrer|
+:Modtager ordrer]
 |Kunde|
 :Gennemgår ordrer;
 if (Rettelse af ordrer) is (ja) then
@@ -42,7 +42,7 @@ endif
 |System|
 :Registrer betaling;
 |Kunde|
-:Stykliste og kvittering|
+:Stykliste og kvittering]
 else (nej)
 
 endif

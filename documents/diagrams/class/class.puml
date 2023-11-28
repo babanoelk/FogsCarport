@@ -1,0 +1,117 @@
+@startuml
+'https://plantuml.com/class-diagram
+package app {
+
+class Main {
+    - static final String USER = "postgres"
+    - static final String PASSWORD = "postgres"
+    - static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=public"
+    - static final String DB = "fogs_carport"
+
+    - static final ConnectionPool connectionpool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB)
+
+    + static void main(String[] args)
+}
+
+package config {
+class ThymeleafConfig{
+    + static TemplateEngine templateEngine()
+}
+}
+
+package controllers {
+}
+
+package dtos {
+}
+
+package entities {
+class User{
+- int id
+- String name
+- String email
+- String password
+- String address
+- int zipcode
+- int mobile
+- String role
+
++ int getId()
++ String getName()
++ String getEmail()
++ String getPassword()
++ String getAddress()
++ int getZipcode()
++ int getMobile()
++ String getRole()
+}
+
+interface Construction{}
+
+class Shed{}
+
+class Carport{}
+
+class Order{}
+
+'Connections
+Shed ----* Carport
+Carport ----* Order
+User ----* Order
+Shed ---|> Construction
+Carport ---|> Construction
+}
+
+package exceptions {
+}
+
+package persistence {
+
+class ZipcodeMapper{
+}
+
+class UserRoleMapper{
+}
+
+class UserMapper{
+}
+
+class StatusMapper{
+}
+
+class ShedMapper{
+}
+
+class CarportMapper{
+}
+
+class OrderMapper{
+}
+
+class ConnectionPool{
+    - static final String DEFAULT_USER = "postgres"
+    - static final String DEFAULT_PASSWORD = "postgres"
+    - static final String DEFAULT_URL =
+    - static final String DEFAULT_DB = "startcode"
+    + static ConnectionPool instance = null
+    + static HikariDataSource ds = null
+    - ConnectionPool()
+    + static ConnectionPool getInstance()
+    + static ConnectionPool getInstance(String user, String password, String url, String db)
+    + synchronized Connection getConnection() throws SQLException
+    + synchronized void close()
+    - static HikariDataSource createHikariConnectionPool(String user, String password, String url, String db)
+}
+
+}
+
+'Connections
+exceptions ----* persistence
+dtos ----* persistence
+entities ----* persistence
+persistence ----* controllers
+config ----* Main
+controllers ----* Main
+}
+!pragma layout smetana
+@enduml

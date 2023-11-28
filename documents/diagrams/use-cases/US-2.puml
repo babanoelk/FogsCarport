@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+
+' US-2 Beskrivelse
+
+' Som kunde hos Fog vil jeg have
+' mulighed for at tilføje et skur
+' til min carport, så jeg kan
+' tilpasse løsningen yderligere.
+
+:Kunde: as k
+
+package "Kunde funktioner" {
+    usecase "Tilføj et skur til carport" as UC1
+}
+
+'Customer use-cases
+k --->"Kunde funktioner"
+
+!pragma layout smetana
+@enduml

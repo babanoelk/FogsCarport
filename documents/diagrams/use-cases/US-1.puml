@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+
+' US-1 Beskrivelse
+
+' Som en kunde hos Fog vil jeg gerne kunne
+' bestille en carport med egne mål, så jeg kan
+' få en skræddersyet løsning.
+
+:Kunde: as k
+
+package "Kunde funktioner" {
+    usecase "Bestil en carport" as UC1
+    usecase "Vælg egne mål" as UC2
+}
+
+'Customer use-cases
+k --->"Kunde funktioner"
+
+!pragma layout smetana
+@enduml

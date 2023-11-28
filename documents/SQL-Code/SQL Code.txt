@@ -1,60 +1,74 @@
-drop table if exists user cascade;
-create table user(
-	id              serial not null primary key,
-	name            text not null,
-	email           text not null,
-	password        text not null,
-	address         text not null,
-	zipcode         integer not null
-);
-
-drop table if exists employee cascade;
-create table employee(
-	id              serial not null primary key,
-	name            text not null,
-	email           text not null,
-	password        text not null,
-    role            text not null,
-    mobile          integer not null,
-    employee_id     integer not null,
-    constraint fk_employee_id foreign key (employee_id)
-    references employee(id)
-);
-
 drop table if exists status cascade;
 create table status(
-	id              serial not null primary key,
-	status          text not null
-);
-
-drop table if exists shed cascade;
-create table shed(
-	id              serial not null primary key,
-	width           integer not null,
-	length          integer not null
+    status          text not null primary key unique
 );
 
 drop table if exists carport cascade;
 create table carport(
-	id              serial not null primary key,
-	width           integer not null,
-	length          integer not null,
-	price           integer not null,
-	shed_status     integer not null,
-	constraint fk_shed_status foreign key (shed_status)
-    references shed(id)
+    id              serial not null primary key,
+    width           integer not null,
+    length          integer not null,
+    has_shed        boolean not null
 );
 
-drop table if exists order cascade;
-create table order(
-	id              serial not null primary key,
-	date            date not null,
-	user_id         integer not null,
-	order_status    integer not null,
-	constraint fk_user_id foreign key (user_id)
-	references user(id),
-	constraint fk_order_status foreign key (order_status)
-    references status(id)
+drop table if exists shed cascade;
+create table shed(
+    id              serial not null primary key,
+    width           integer not null,
+    length          integer not null,
+    carport_id      integer not null,
+    constraint fk_carport_shed foreign key (carport_id)
+    references carport(id)
+);
+
+drop table if exists user_role cascade;
+create table user_role(
+    role            text not null primary key unique
+);
+
+drop table if exists zipcode cascade;
+create table zipcode(
+    postal_code     integer not null primary key unique,
+    city_name       text not null
+);
+
+drop table if exists "user" cascade;
+create table "user"(
+    id              serial not null primary key,
+    name            text not null,
+    email           text not null,
+    password        text not null,
+    address         text not null,
+    mobile          integer not null,
+    role            text not null,
+    zipcode         integer not null,
+    constraint fk_user_zipcode foreign key (zipcode)
+    references zipcode(postal_code),
+    constraint fk_user_role foreign key (role)
+    references user_role(role)
+);
+
+drop table if exists "order" cascade;
+create table "order"(
+    id              serial not null primary key,
+    date            date not null,
+    customer_note   text not null default '...',
+    consent         boolean not null default false,
+    user_id         integer not null,
+    order_status    text not null,
+    carport_id      integer not null,
+    constraint fk_user_id foreign key (user_id)
+    references "user"(id),
+    constraint fk_order_status foreign key (order_status)
+    references status(status),
+    constraint fk_order_carport foreign key (carport_id)
+    references carport(id)
 );
 
 
+--KOPIER IKKE IND I DIN DATABASE--
+Navn på databasen: fogs_carport
+Vi bruger navnet orders, således at vi undgår
+
+Noter:
+Vi mangler at lave stykliste tabellen

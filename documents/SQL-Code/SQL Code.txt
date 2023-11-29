@@ -1,6 +1,25 @@
 drop table if exists status cascade;
 create table status(
-    status          text not null primary key unique
+    id              serial not null primary key,
+    status          text not null unique
+);
+
+drop table if exists width cascade;
+create table width(
+    id              serial not null primary key,
+    width           integer not null unique
+);
+
+drop table if exists length cascade;
+create table length(
+    id              serial not null primary key,
+    length          integer not null unique
+);
+
+drop table if exists high cascade;
+create table high(
+    id              serial not null primary key,
+    high            integer not null unique
 );
 
 drop table if exists carport cascade;
@@ -8,22 +27,37 @@ create table carport(
     id              serial not null primary key,
     width           integer not null,
     length          integer not null,
-    has_shed        boolean not null
+    high            integer not null,
+    has_shed        boolean not null,
+    constraint fk_carport_width foreign key (width)
+    references width(id),
+    constraint fk_carport_length foreign key (length)
+    references length(id),
+    constraint fk_carport_high foreign key (high)
+    references high(id)
 );
 
 drop table if exists shed cascade;
 create table shed(
     id              serial not null primary key,
+    carport_id      integer not null,
     width           integer not null,
     length          integer not null,
-    carport_id      integer not null,
+    high            integer not null,
     constraint fk_carport_shed foreign key (carport_id)
-    references carport(id)
+    references carport(id),
+    constraint fk_shed_width foreign key (width)
+    references width(id),
+    constraint fk_shed_length foreign key (length)
+    references length(id),
+    constraint fk_shed_high foreign key (high)
+    references high(id)
 );
 
 drop table if exists user_role cascade;
 create table user_role(
-    role            text not null primary key unique
+    id              serial not null primary key,
+    role            text not null unique
 );
 
 drop table if exists zipcode cascade;
@@ -40,12 +74,12 @@ create table "user"(
     password        text not null,
     address         text not null,
     mobile          integer not null,
-    role            text not null,
+    role            integer not null,
     zipcode         integer not null,
     constraint fk_user_zipcode foreign key (zipcode)
     references zipcode(postal_code),
     constraint fk_user_role foreign key (role)
-    references user_role(role)
+    references user_role(id)
 );
 
 drop table if exists "order" cascade;
@@ -55,12 +89,12 @@ create table "order"(
     customer_note   text not null default '...',
     consent         boolean not null default false,
     user_id         integer not null,
-    order_status    text not null,
+    order_status    integer not null,
     carport_id      integer not null,
     constraint fk_user_id foreign key (user_id)
     references "user"(id),
     constraint fk_order_status foreign key (order_status)
-    references status(status),
+    references status(id),
     constraint fk_order_carport foreign key (carport_id)
     references carport(id)
 );

@@ -4,11 +4,15 @@ create table status(
     status          text not null unique
 );
 
+INSERT INTO status(status) VALUES ('Behandles'), ('Afventer betaling'), ('Betalt'), ('Ude for levering'), ('Leveret'), ('Annulleret');
+
 drop table if exists width cascade;
 create table width(
     id              serial not null primary key,
     width           integer not null unique
 );
+
+INSERT INTO width(width) VALUES (240),(270),(300),(330),(360),(390),(420),(450),(480),(510),(540),(570),(600);
 
 drop table if exists length cascade;
 create table length(
@@ -16,11 +20,15 @@ create table length(
     length          integer not null unique
 );
 
+INSERT INTO length(length) VALUES (240),(270),(300),(330),(360),(390),(420),(450),(480),(510),(540),(570),(600);
+
+
 drop table if exists high cascade;
 create table high(
     id              serial not null primary key,
     high            integer not null unique
 );
+INSERT INTO high(high) VALUES (230);
 
 drop table if exists carport cascade;
 create table carport(
@@ -60,11 +68,15 @@ create table user_role(
     role            text not null unique
 );
 
+INSERT INTO user_role(role) VALUES ('Standard'),('Sælger'),('Admin');
+
 drop table if exists zipcode cascade;
 create table zipcode(
     postal_code     integer not null primary key unique,
     city_name       text not null
 );
+
+INSERT INTO zipcode(postal_code, city_name) VALUES (1000, 'København'), (8000, 'Aarhus'), (8200, 'Aarhus N'), (5000, 'Odense'), (9000, 'Aalborg'), (7100, 'Vejle'), (6000, 'Kolding'), (4000, 'Roskilde'), (8700, 'Horsens'), (2730, 'Herlev');
 
 drop table if exists "user" cascade;
 create table "user"(
@@ -81,6 +93,18 @@ create table "user"(
     constraint fk_user_role foreign key (role)
     references user_role(id)
 );
+
+INSERT INTO "user" (name, email, password, address, mobile, role, zipcode) VALUES
+    ('Anna Jensen', 'anna.jensen@email.com', 'password1', 'Hovedgaden 1', 12345678, 1, 1000),
+    ('Morten Pedersen', 'morten.pedersen@email.com', 'password2', 'Bakkevej 2', 23456789, 2, 8000),
+    ('Lise Hansen', 'lise.hansen@email.com', 'password3', 'Skovvej 3', 34567890, 3, 8200),
+    ('Anders Nielsen', 'anders.nielsen@email.com', 'password4', 'Søgade 4', 45678901, 1, 5000),
+    ('Maria Olsen', 'maria.olsen@email.com', 'password5', 'Havnegade 5', 56789012, 2, 9000),
+    ('Søren Madsen', 'soren.madsen@email.com', 'password6', 'Banevej 6', 67890123, 3, 7100),
+    ('Helle Christensen', 'helle.christensen@email.com', 'password7', 'Parkvej 7', 78901234, 1, 6000),
+    ('Peter Larsen', 'peter.larsen@email.com', 'password8', 'Gadekær 8', 89012345, 2, 4000),
+    ('Thomas Rasmussen', 'thomas.rasmussen@email.com', 'password9', 'Torvet 9', 90123456, 3, 8700),
+    ('Karen Andersen', 'karen.andersen@email.com', 'password10', 'Strandvej 10', 12345678, 1, 2730);
 
 drop table if exists "order" cascade;
 create table "order"(

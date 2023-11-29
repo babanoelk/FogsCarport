@@ -3,7 +3,7 @@
 left to right direction
 
 :Kunde: as k
-:Sælger: as s
+:Sælger:  as s
 
 package "Kunde specifikke funktioner" {
     usecase "Bestil en carport med egne mål" as UC1

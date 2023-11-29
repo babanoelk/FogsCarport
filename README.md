@@ -14,13 +14,13 @@ Github: @HanniSalman<br>
 Mail: cph-lh225@cphbusiness.dk<br>
 Github: @Lassekh<br>
 
-**Youssef**<br>
-Mail: cph-yb48@cphbusiness.dk<br>
-Github: @Badranyoussef<br>
-
 **Solomon**<br>
 Mail: cph-sm492@cphbusiness.dk<br>
 Github: @Solo-king100<br>
+
+**Youssef**<br>
+Mail: cph-yb48@cphbusiness.dk<br>
+Github: @Badranyoussef<br>
 
 ## Hjemmesiden
 

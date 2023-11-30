@@ -1,5 +1,11 @@
 @startuml
 'https://plantuml.com/class-diagram
+
+' Compositon er den sorte
+' Nedarvning er den hvide
+
+' Muligvis bedre uden et interface
+
 package app {
 
 class Main {

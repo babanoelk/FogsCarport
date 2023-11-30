@@ -1,8 +1,9 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-' Compositon er den sorte
-' Nedarvning er den hvide
+' Noter
+' Sort pil: composition aggregation
+' Hvid pil: Inheritance
 
 ' Muligvis bedre uden et interface
 

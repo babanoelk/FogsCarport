@@ -1,10 +1,18 @@
 package app.controllers;
 
+import app.entities.Order;
+import app.entities.User;
+import app.persistence.ConnectionPool;
 import io.javalin.http.Context;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 
 public class FormularController {
 
-    public static void formularInput(Context ctx) {
+    public static void formularInput(Context ctx, ConnectionPool connectionPool) {
 
         //Carport width & length
         int carportWidth = Integer.parseInt(ctx.formParam("carport_bredde"));
@@ -25,6 +33,15 @@ public class FormularController {
         String password = (ctx.formParams("email")).toString();
         boolean permission = Boolean.parseBoolean((ctx.formParams("permission")).toString());
 
+        User user = new User(name, address, password, address, mobile, postalCode);
+
+        // Get the current LocalDateTime
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Convert LocalDateTime to Date
+        Date currentDate = Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+        Order order = new Order((java.sql.Date) currentDate, permission );
     }
 
 }

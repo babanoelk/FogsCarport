@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+
+:Kunde: as k
+:Sælger: as s
+
+package "Kunde specifikke funktioner" {
+    usecase "Bestil en carport med egne mål" as UC1
+    usecase "Tilføj et skur" as UC2
+    usecase "Login" as UC3
+    usecase "Se min ordre" as UC4
+    usecase "Slet min ordre" as UC5
+    usecase "Se alle indsendte forespørgsler" as UC6
+    usecase "Se detaljer vedr. den enkelte forespørgsel" as UC7
+    usecase "Godkende ordre og sende faktura" as UC8
+    usecase "Give rabat ved en specifik ordre" as UC9
+    usecase "Tilpasse ordren efter gennemgang med kunde" as UC10
+    usecase "Modtage og betale faktura" as UC11
+
+}
+
+'Customer use-cases
+k --->"UC1"
+k --->"UC2"
+k --->"UC3"
+s --->"UC3"
+k --->"UC4"
+k --->"UC5"
+s --->"UC6"
+s --->"UC7"
+s --->"UC8"
+s --->"UC9"
+s --->"UC10"
+
+
+!pragma layout smetana
+@enduml

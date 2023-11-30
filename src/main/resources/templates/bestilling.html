@@ -17,7 +17,7 @@
         </div>
         <ul class="main-menu">
             <li class="button"><a href="/">Hjem</a></li>
-            <li class="button"><a href="/">Bestil unik carport</a></li>
+            <li class="button"><a href="/order-carport">Bestil unik carport</a></li>
             <li class="button"><a href="/">Login</a></li>
         </ul>
     </div>
@@ -28,28 +28,36 @@
 
     <div class="Order-box">
         <form id="form" action="/action_page.php">
-            <!--Drop down Carport bredde-->
-            <label for="carport_bredde">Carport bredde*</label>
 
-            <select id="carport_bredde" name="Carport bredde*" th:required="true">
+            <!--Drop down Carport bredde-->
+            <label for="carport_width">Carport bredde*</label>
+            <select id="carport_width" name="Carport width*" th:required="true">
                 <option
                         th:each="width : ${widthList}"
-                        th:value="${width.id}"
-                        th:name="${width_id}"
-                        th:text="${width.name + 'cm'}">
-                >4</option>
+                        th:value="${width}"
+                        th:text="${width + 'cm'}">
+                bredde</option>
             </select><br>
+
             <!--Drop down Carport længde-->
-            <label for="carport_længde">Carport længde*</label>
-
-
-            <select id="carport_længde" name="Carport_længde*" th:required="true">
+            <label for="carport_length">Carport længde*</label>
+            <select id="carport_length" name="Carport_length*" th:required="true">
                 <option
                     th:each="length : ${lengthList}"
-                    th:value="${length.id}"
-                    th:name="${length_id}"
-                    th:text="${lenght.name + 'cm'}">
-                længde...</option>
+                    th:value="${length}"
+                    th:text="${length + 'cm'}">
+                længde</option>
+            </select><br>
+
+
+            <!--Drop down Carport længde-->
+            <label for="carport_height">Carport højde*</label>
+            <select id="carport_height" name="Carport_height*" th:required="true">
+                <option
+                        th:each="height : ${heightList}"
+                        th:value="${height}"
+                        th:text="${height + 'cm - Kan kun bestilles med denne højde'}">
+                    højde</option>
             </select><br>
 
 
@@ -81,27 +89,27 @@
             <!--kontakt oplysniger, -->
             <h4>Kontakt Oplysninger</h4>
             <label for="fullname">Navn*</label>
-            <input type="text" id="fullname" name="Navn*"th:required="true"><br>
+            <input type="text" id="fullname" name="name"th:required="true"><br>
 
 
             <label for="address">Adresse*</label>
-            <input type="text" id="address" name="Navn" th:required="true"><br>
+            <input type="text" id="address" name="address" th:required="true"><br>
 
 
-            <label for="postnumber">Postnummer*</label>
-            <input type="text" id="postnumber" name="Postnummer"th:required="true"><br>
+            <label for="zip">Postnummer*</label>
+            <input type="text" id="zip" name="zip"th:required="true"><br>
 
 
-            <label for="tlfnumber">Telefon nr*</label>
-            <input type="text" id="tlfnumber" name="Telefon nr*" th:required="true"><br>
+            <label for="phone">Telefon nr*</label>
+            <input type="text" id="phone" name="Telefon nr" th:required="true"><br>
 
 
             <label for="email">Email*</label>
-            <input type="text" id="email" name="Email*" th:required="true"><br>
+            <input type="text" id="email" name="Email" th:required="true"><br>
 
 
-            <label for="password">Password*</label>
-            <input type="text" id="password" name="Password*" th:required="true"><br>
+            <label for="pass">Password*</label>
+            <input type="text" id="pass" name="Password" th:required="true"><br>
 
 
             <!--kontakt samtykke checkbox-->

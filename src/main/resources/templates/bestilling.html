@@ -10,122 +10,121 @@
 </head>
 <body>
 <div id="nav-fullwidth">
-  <!-- REPLACE ME WITH A FRAGMENT -->
-  <div id="navbar">
-    <div id="logo">
-      <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <div id="navbar">
+        <div id="logo">
+            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
+        </div>
+        <ul class="main-menu">
+            <li class="button"><a href="/">Hjem</a></li>
+            <li class="button"><a href="/order-carport">Bestil unik carport</a></li>
+            <li class="button"><a href="/">Login</a></li>
+        </ul>
     </div>
-    <ul class="main-menu">
-      <li class="button"><a href="/">Hjem</a></li>
-      <li class="button"><a href="/">Bestil unik carport</a></li>
-      <li class="button"><a href="/">Login</a></li>
-    </ul>
-  </div>
 </div>
 
 <div id="main-content">
-  <h2>Bestil Quick-Byg tilbud- carport med fladt tag</h2>
+    <h2>Bestil Quick-Byg tilbud- carport med fladt tag</h2>
 
-  <div class="Order-box">
-    <form id="form" action="/action_page.php">
-      <!--Drop down Carport bredde-->
-      <label for="carport_bredde">Carport bredde*</label>
+    <div class="Order-box">
+        <form id="form" action="/action_page.php">
 
+            <!--Drop down Carport bredde-->
+            <label for="carport_width">Carport bredde*</label>
+            <select id="carport_width" name="Carport width*" th:required="true">
+                <option
+                        th:each="width : ${widthList}"
+                        th:value="${width}"
+                        th:text="${width + 'cm'}">
+                bredde</option>
+            </select><br>
 
-      <select id="carport_bredde" name="Carport bredde*">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select><br>
-      <!--Drop down Carport længde-->
-      <label for="carport_længde">Carport længde*</label>
+            <!--Drop down Carport længde-->
+            <label for="carport_length">Carport længde*</label>
+            <select id="carport_length" name="Carport_length*" th:required="true">
+                <option
+                    th:each="length : ${lengthList}"
+                    th:value="${length}"
+                    th:text="${length + 'cm'}">
+                længde</option>
+            </select><br>
 
-
-      <select id="carport_længde" name="Carport_længde*">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select><br>
-
-
-      <!--Drop down trapetztag-->
-      <label for="trapetztag">Carport trapetztag*</label>
-
-
-      <select id="trapetztag" name="Carport trapetztag*">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
+            <!--Drop down Carport højde-->
+            <label for="carport_height">Carport højde*</label>
+            <select id="carport_height" name="Carport_height*" th:required="true">
+                <option
+                        th:each="height : ${heightList}"
+                        th:value="${height}"
+                        th:text="${height + 'cm - Kan kun bestilles med denne højde'}">
+                    højde</option>
+            </select><br>
 
 
-      <!--Redskabsrum-->
-      <h4> RedskabsrumNB!</h4>
-      <p>Der skal beregnes 15cm tagudhæng på hver side a redskabsrummet</p><br>
-      <!--Drop down Redskabsrum bredde-->
-      <label for="Redskabsrum_bredde">Redskabsrum bredde*</label>
-      <select id="Redskabsrum_bredde" name="Redskabsrum bredde*">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select><br>
-
-      <!--Drop down Redskabsrum længde-->
-      <label for="Redskabsrum_længde">Redskabsrum længde*</label>
-      <select id="Redskabsrum_længde" name="Redskabsrum længde*">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select><br>
-
-      <!--kontakt oplysniger, -->
-      <h4>Kontakt Oplysninger</h4>
-      <label for="fullname">Navn*</label>
-      <input type="text" id="fullname" name="Navn*"><br>
+            <!--Drop down trapetztag-->
+            <label for="trapetztag">Carport trapetztag*</label>
 
 
-      <label for="address">Adresse*</label>
-      <input type="text" id="address" name="Navn"><br>
+            <select id="trapetztag" name="Carport trapetztag*">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
 
 
-      <label for="postnumber">Postnummer*</label>
-      <input type="text" id="postnumber" name="Postnummer"><br>
+            <!--Redskabsrum-->
+            <h4> RedskabsrumNB!</h4>
+            <p>Der skal beregnes 15cm tagudhæng på hver side a redskabsrummet</p><br>
+
+            <!--Drop down Redskabsrum bredde-->
+            <div>
+                <p>Ønsker du et redskabsrum:</p>
+                <input type="radio" id="ja" name="redskabsrum" value="ja">
+                <label for="ja">ja</label><br>
+                <input type="radio" id="nej" name="redskabsrum" value="nej">
+                <label for="nej">nej</label><br>
+            </div>
+
+            <!--kontakt oplysniger, -->
+            <h4>Kontakt Oplysninger</h4>
+            <label for="fullname">Navn*</label>
+            <input type="text" id="fullname" name="name"th:required="true"><br>
 
 
-      <label for="city">By*</label>
-      <input type="text" id="city" name="By*"><br>
+            <label for="address">Adresse*</label>
+            <input type="text" id="address" name="address" th:required="true"><br>
 
 
-      <label for="tlfnumber">Telefon nr*</label>
-      <input type="text" id="tlfnumber" name="Telefon nr*"><br>
+            <label for="zip">Postnummer*</label>
+            <input type="text" id="zip" name="zip"th:required="true"><br>
 
 
-      <label for="email">Email*</label>
-      <input type="text" id="email" name="Email*"><br>
+            <label for="phone">Telefon nr*</label>
+            <input type="text" id="phone" name="Telefon nr" th:required="true"><br>
 
 
-      <label for="password">Password*</label>
-      <input type="text" id="password" name="Password*"><br>
+            <label for="email">Email*</label>
+            <input type="text" id="email" name="Email" th:required="true"><br>
 
 
-      <!--kontakt samtykke checkbox-->
-      <h4>Kontakt samtykke</h4>
-      <input type="checkbox" id="permission" name="Kontakt samtykke" value="samtykke">
-      <label for="permission">Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport*</label><br></br>
+            <label for="pass">Password*</label>
+            <input type="text" id="pass" name="Password" th:required="true"><br>
 
-      <button type="button">Bestil tilbud</button>
-    </form>
-  </div>
+
+            <!--kontakt samtykke checkbox-->
+            <h4>Kontakt samtykke</h4>
+            <input type="checkbox" id="permission" name="Kontakt samtykke" value="samtykke">
+            <label for="permission">Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud
+                på QuickByg carport*</label><br></br>
+
+            <button type="button">Bestil tilbud</button>
+        </form>
+    </div>
 </div>
 
 <footer>
-  <!-- REPLACE ME WITH A FRAGMENT -->
-  <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
 </footer>
 </body>
 </html>

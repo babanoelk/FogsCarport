@@ -10,30 +10,30 @@ import java.time.ZoneId;
 import java.util.Date;
 
 
-public class FormularController {
+public class FormController {
 
-    public static void formularInput(Context ctx, ConnectionPool connectionPool) {
+    public static void formInput(Context ctx, ConnectionPool connectionPool) {
 
         //Carport width & length
-        int carportWidth = Integer.parseInt(ctx.formParam("carport_bredde"));
-        int carportLength = Integer.parseInt(ctx.formParam("carport_længde"));
+        int carportWidth = Integer.parseInt(ctx.formParam("carport_width"));
+        int carportLength = Integer.parseInt(ctx.formParam("carport_length"));
 
 
         //Shed width & length
-        int shedWidth = Integer.parseInt(ctx.formParam("Redskabsrum_bredde"));
-        int shedLength = Integer.parseInt(ctx.formParam("Redskabsrum_længde"));
+        //int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
+        //int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
 
 
         //User information
         String name = (ctx.formParams("fullname")).toString();
         String address = (ctx.formParams("address")).toString();
-        int postalCode = Integer.parseInt(ctx.formParam("postnumber"));
-        int mobile = Integer.parseInt(ctx.formParam("tlfnumber"));
-        String eMail = (ctx.formParams("email")).toString();
-        String password = (ctx.formParams("email")).toString();
+        int zip = Integer.parseInt(ctx.formParam("zip"));
+        int mobile = Integer.parseInt(ctx.formParam("phone"));
+        String email = (ctx.formParams("email")).toString();
+        String password = (ctx.formParams("pass")).toString();
         boolean permission = Boolean.parseBoolean((ctx.formParams("permission")).toString());
 
-        User user = new User(name, address, password, address, mobile, postalCode);
+        User user = new User(name, email, password, address, mobile, zip);
 
         // Get the current LocalDateTime
         LocalDateTime currentDateTime = LocalDateTime.now();

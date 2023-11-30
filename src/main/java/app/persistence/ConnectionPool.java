@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /***
  * Singleton pattern applied to handling a Hikari ConnectionPool
  */
-public class ConnectionPool {
+public class    ConnectionPool {
     // TODO: Change default access credentials for MySql server as needed below:
     private static final String DEFAULT_USER = "postgres";
     private static final String DEFAULT_PASSWORD = "postgres";

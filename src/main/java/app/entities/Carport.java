@@ -2,26 +2,26 @@ package app.entities;
 
 public class Carport {
 
-    private int primaryKey;
+    private int id;
     private int width;
     private int length;
-    private int high;
+    private int height;
     private boolean hasShed;
 
-    public Carport(int primaryKey, int width, int length, int high, boolean hasShed) {
-        this.primaryKey = primaryKey;
+    public Carport(int id, int width, int length, int height, boolean hasShed) {
+        this.id = id;
         this.width = width;
         this.length = length;
-        this.high = high;
+        this.height = height;
         this.hasShed = hasShed;
     }
 
-    public int getPrimaryKey() {
-        return primaryKey;
+    public int getId() {
+        return id;
     }
 
-    public void setPrimaryKey(int primaryKey) {
-        this.primaryKey = primaryKey;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getWidth() {
@@ -40,12 +40,12 @@ public class Carport {
         this.length = length;
     }
 
-    public int getHigh() {
-        return high;
+    public int getHeight() {
+        return height;
     }
 
-    public void setHigh(int high) {
-        this.high = high;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public boolean isHasShed() {

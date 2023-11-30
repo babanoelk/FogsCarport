@@ -2,26 +2,26 @@ package app.entities;
 
 public class Shed {
 
-    private int primaryKey;
+    private int id;
     private int carportID;
     private int width;
     private int length;
-    private int high;
+    private int height;
 
-    public Shed(int primaryKey, int carportID, int width, int length, int high) {
-        this.primaryKey = primaryKey;
+    public Shed(int id, int carportID, int width, int length, int height) {
+        this.id = id;
         this.carportID = carportID;
         this.width = width;
         this.length = length;
-        this.high = high;
+        this.height = height;
     }
 
-    public int getPrimaryKey() {
-        return primaryKey;
+    public int getId() {
+        return id;
     }
 
-    public void setPrimaryKey(int primaryKey) {
-        this.primaryKey = primaryKey;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCarportID() {
@@ -48,11 +48,11 @@ public class Shed {
         this.length = length;
     }
 
-    public int getHigh() {
-        return high;
+    public int getHeight() {
+        return height;
     }
 
-    public void setHigh(int high) {
-        this.high = high;
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

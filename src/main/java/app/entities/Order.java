@@ -3,7 +3,7 @@ package app.entities;
 import java.sql.Date;
 
 public class Order {
-    private int primaryKey;
+    private int id;
     private Date date;
     private String customerNote;
     private boolean consent;
@@ -16,8 +16,8 @@ public class Order {
         this.consent = consent;
     }
 
-    public Order(int primaryKey, Date date, String customerNote, boolean consent, int userId, String orderStatus, int carportId) {
-        this.primaryKey = primaryKey;
+    public Order(int id, Date date, String customerNote, boolean consent, int userId, String orderStatus, int carportId) {
+        this.id = id;
         this.date = date;
         this.customerNote = customerNote;
         this.consent = consent;
@@ -26,12 +26,12 @@ public class Order {
         this.carportId = carportId;
     }
 
-    public int getPrimaryKey() {
-        return primaryKey;
+    public int getId() {
+        return id;
     }
 
-    public void setPrimaryKey(int primaryKey) {
-        this.primaryKey = primaryKey;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getDate() {
@@ -50,7 +50,7 @@ public class Order {
         this.customerNote = customerNote;
     }
 
-    public boolean isConsent() {
+    public boolean getConsent() {
         return consent;
     }
 

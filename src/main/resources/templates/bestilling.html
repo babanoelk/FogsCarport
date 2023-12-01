@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Frontpage</title>
+<title>Bestillings side</title>
 <!-- REPLACE ME WITH A FRAGMENT -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,6 +25,8 @@
 
 <div id="main-content">
     <h2>Bestil Quick-Byg tilbud- carport med fladt tag</h2>
+
+    <p class="error_message" th:text="${#ctx.message}"></p>
 
     <div class="Order-box">
         <form id="form" method="post">
@@ -83,7 +85,10 @@
                 <label for="ja">ja</label><br>
                 <input type="radio" id="nej" name="redskabsrum" value="nej">
                 <label for="nej">nej</label><br>
-            </div>
+            </div><br>
+
+            <label for="note">Evt. bemærkninger</label>
+            <textarea id="note" name="note" rows="4" cols="50"></textarea>
 
             <!--kontakt oplysniger, -->
             <h4>Kontakt Oplysninger</h4>

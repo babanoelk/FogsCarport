@@ -59,7 +59,7 @@ public class FormController {
             ctx.render("tilbud-indsendt.html");
         } catch (Exception e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("fejlside.html");
+            ctx.render("bestilling.html");
         }
 
 

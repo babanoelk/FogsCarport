@@ -57,6 +57,10 @@ public class FormController {
 
             OrderMapper.addOrder(order, user1, carport1, connectionPool);
 
+            ctx.attribute("name", name);
+            ctx.attribute("length", carportLength);
+            ctx.attribute("width", carportWidth);
+
             ctx.render("tilbud-indsendt.html");
         } catch (Exception e) {
             ctx.attribute("message", e.getMessage());

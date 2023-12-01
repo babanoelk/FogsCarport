@@ -8,6 +8,12 @@ public class Carport {
     private int height;
     private boolean hasShed;
 
+    public Carport(int width, int length, int height) {
+        this.width = width;
+        this.length = length;
+        this.height = height;
+    }
+
     public Carport(int id, int width, int length, int height, boolean hasShed) {
         this.id = id;
         this.width = width;
@@ -48,7 +54,7 @@ public class Carport {
         this.height = height;
     }
 
-    public boolean isHasShed() {
+    public boolean hasShed() {
         return hasShed;
     }
 

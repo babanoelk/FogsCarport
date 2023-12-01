@@ -64,7 +64,7 @@ public class MeasurementMapper {
     {
         List<Integer> heights = new ArrayList<>();
 
-        String sql = "select * from hight order by id";
+        String sql = "select * from height order by id";
 
         try (Connection connection = connectionPool.getConnection())
         {

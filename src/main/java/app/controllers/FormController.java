@@ -63,6 +63,7 @@ public class FormController {
 
             ctx.render("tilbud-indsendt.html");
         } catch (Exception e) {
+            loadMeasurements(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());
             ctx.render("bestilling.html");
         }

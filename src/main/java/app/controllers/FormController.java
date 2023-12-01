@@ -22,6 +22,7 @@ public class FormController {
             int carportWidth = Integer.parseInt(ctx.formParam("carport_width"));
             int carportLength = Integer.parseInt(ctx.formParam("carport_length"));
             int carportHeight = Integer.parseInt(ctx.formParam("carport_height"));
+            String note = ctx.formParam("note");
 
 
             //Shed width & length
@@ -48,7 +49,7 @@ public class FormController {
 
   */
             User user = new User(name, email, password, address, mobile, zip);
-            Order order = new Order();
+            Order order = new Order(note);
             Carport carport = new Carport(carportWidth,carportLength,carportHeight);
 
             User user1 = UserMapper.addUser(user,connectionPool);

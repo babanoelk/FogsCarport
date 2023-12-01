@@ -8,27 +8,25 @@ INSERT INTO status(status) VALUES ('Behandles'), ('Afventer betaling'), ('Betalt
 
 drop table if exists width cascade;
 create table width(
-    id              serial not null primary key,
-    width           integer not null unique
+    width          integer not null primary key unique
 );
 
 INSERT INTO width(width) VALUES (240),(270),(300),(330),(360),(390),(420),(450),(480),(510),(540),(570),(600);
 
 drop table if exists length cascade;
 create table length(
-    id              serial not null primary key,
-    length          integer not null unique
+    length          integer not null primary key unique
 );
 
 INSERT INTO length(length) VALUES (240),(270),(300),(330),(360),(390),(420),(450),(480),(510),(540),(570),(600);
 
 
-drop table if exists high cascade;
-create table high(
-    id              serial not null primary key,
-    high            integer not null unique
+drop table if exists height cascade;
+create table height(
+    height          integer not null primary key unique
 );
-INSERT INTO high(high) VALUES (230);
+
+INSERT INTO height(height) VALUES (230);
 
 drop table if exists carport cascade;
 create table carport(
@@ -38,11 +36,11 @@ create table carport(
     high            integer not null,
     has_shed        boolean not null,
     constraint fk_carport_width foreign key (width)
-    references width(id),
+    references width(width),
     constraint fk_carport_length foreign key (length)
-    references length(id),
+    references length(length),
     constraint fk_carport_high foreign key (high)
-    references high(id)
+    references height(height)
 );
 
 drop table if exists shed cascade;
@@ -52,14 +50,14 @@ create table shed(
     width           integer not null,
     length          integer not null,
     high            integer not null,
-    constraint fk_carport_shed foreign key (carport_id)
+    constraint fk_shed_carport foreign key (carport_id)
     references carport(id),
     constraint fk_shed_width foreign key (width)
-    references width(id),
+    references width(width),
     constraint fk_shed_length foreign key (length)
-    references length(id),
+    references length(length),
     constraint fk_shed_high foreign key (high)
-    references high(id)
+    references height(height)
 );
 
 drop table if exists user_role cascade;

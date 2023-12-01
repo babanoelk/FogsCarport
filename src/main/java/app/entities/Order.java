@@ -11,9 +11,12 @@ public class Order {
     private String orderStatus;
     private int carportId;
 
-    public Order(Date date, boolean consent) {
+    public Order() {
+
+    }
+
+    public Order(Date date) {
         this.date = date;
-        this.consent = consent;
     }
 
     public Order(int id, Date date, String customerNote, boolean consent, int userId, String orderStatus, int carportId) {

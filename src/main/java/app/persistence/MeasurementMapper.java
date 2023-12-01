@@ -14,7 +14,7 @@ public class MeasurementMapper {
     {
         List<Integer> lengths = new ArrayList<>();
 
-        String sql = "select * from length order by id";
+        String sql = "select * from length order by length";
 
         try (Connection connection = connectionPool.getConnection())
         {
@@ -30,7 +30,7 @@ public class MeasurementMapper {
         }
         catch (SQLException e)
         {
-            throw new DatabaseException("Fejl");
+            throw new DatabaseException(e.getMessage());
         }
         return lengths;
     }
@@ -39,7 +39,7 @@ public class MeasurementMapper {
     {
         List<Integer> widths = new ArrayList<>();
 
-        String sql = "select * from width order by id";
+        String sql = "select * from width order by width";
 
         try (Connection connection = connectionPool.getConnection())
         {
@@ -55,7 +55,7 @@ public class MeasurementMapper {
         }
         catch (SQLException e)
         {
-            throw new DatabaseException("Fejl");
+            throw new DatabaseException(e.getMessage());
         }
         return widths;
     }
@@ -64,7 +64,7 @@ public class MeasurementMapper {
     {
         List<Integer> heights = new ArrayList<>();
 
-        String sql = "select * from height order by id";
+        String sql = "select * from height order by height";
 
         try (Connection connection = connectionPool.getConnection())
         {
@@ -73,14 +73,14 @@ public class MeasurementMapper {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next())
                 {
-                    int height = rs.getInt("high");
+                    int height = rs.getInt("height");
                     heights.add(height);
                 }
             }
         }
         catch (SQLException e)
         {
-            throw new DatabaseException("Fejl");
+            throw new DatabaseException(e.getMessage());
         }
         return heights;
     }

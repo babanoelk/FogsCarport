@@ -12,23 +12,23 @@ import java.sql.SQLException;
 public class OrderMapper {
     public static void addOrder(Order order, User user, Carport carport, ConnectionPool connectionPool) throws DatabaseException {
 
-        String sql = "INSERT INTO ORDER (date, customer_note, consent, user_id, carport_id) values (?,?,?,?,?)";
+        String sql = "INSERT INTO public.ORDER (customer_note, consent, user_id, carport_id) values (?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 //Number 0 is serialized int id
-                ps.setDate(1, order.getDate());
-                ps.setString(2,order.getCustomerNote());
-                ps.setBoolean(3, order.getConsent());
-                ps.setInt(4, user.getId());
+                //ps.setDate(1, order.getDate());
+                ps.setString(1,order.getCustomerNote());
+                ps.setBoolean(2, order.getConsent());
+                ps.setInt(3, user.getId());
                 //Number 5 is status, which is set default in DB
-                ps.setInt(6, carport.getId());
+                ps.setInt(4, carport.getId());
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Ordre ikke oprettet. Fejl i data sendt til databasen.");
                 }
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Ordren blev ikke oprettet.");
+            throw new DatabaseException("Ordren blev ikke oprettet." + e.getMessage());
         }
     }
 }

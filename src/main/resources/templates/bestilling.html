@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
+<head>
 <title>Frontpage</title>
 <!-- REPLACE ME WITH A FRAGMENT -->
 <meta charset="UTF-8">
@@ -17,7 +17,7 @@
         </div>
         <ul class="main-menu">
             <li class="button"><a href="/">Hjem</a></li>
-            <li class="button"><a href="/order-carport">Bestil unik carport</a></li>
+            <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
             <li class="button"><a href="/">Login</a></li>
         </ul>
     </div>
@@ -27,11 +27,11 @@
     <h2>Bestil Quick-Byg tilbud- carport med fladt tag</h2>
 
     <div class="Order-box">
-        <form id="form" action="/action_page.php">
+        <form id="form" method="post">
 
             <!--Drop down Carport bredde-->
             <label for="carport_width">Carport bredde*</label>
-            <select id="carport_width" name="Carport width*" th:required="true">
+            <select id="carport_width" name="carport_width" th:required="true">
                 <option
                         th:each="width : ${widthList}"
                         th:value="${width}"
@@ -41,7 +41,7 @@
 
             <!--Drop down Carport længde-->
             <label for="carport_length">Carport længde*</label>
-            <select id="carport_length" name="Carport_length*" th:required="true">
+            <select id="carport_length" name="carport_length" th:required="true">
                 <option
                     th:each="length : ${lengthList}"
                     th:value="${length}"
@@ -51,7 +51,7 @@
 
             <!--Drop down Carport højde-->
             <label for="carport_height">Carport højde*</label>
-            <select id="carport_height" name="Carport_height*" th:required="true">
+            <select id="carport_height" name="carport_height" th:required="true">
                 <option
                         th:each="height : ${heightList}"
                         th:value="${height}"
@@ -64,7 +64,7 @@
             <label for="trapetztag">Carport trapetztag*</label>
 
 
-            <select id="trapetztag" name="Carport trapetztag*">
+            <select id="trapetztag" name="carport_trapetztag">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -87,8 +87,8 @@
 
             <!--kontakt oplysniger, -->
             <h4>Kontakt Oplysninger</h4>
-            <label for="fullname">Navn*</label>
-            <input type="text" id="fullname" name="name"th:required="true"><br>
+            <label for="name">Navn*</label>
+            <input type="text" id="name" name="name" th:required="true"><br>
 
 
             <label for="address">Adresse*</label>
@@ -96,28 +96,29 @@
 
 
             <label for="zip">Postnummer*</label>
-            <input type="text" id="zip" name="zip"th:required="true"><br>
+            <input type="text" id="zip" name="zip" th:required="true"><br>
 
 
             <label for="phone">Telefon nr*</label>
-            <input type="text" id="phone" name="Telefon nr" th:required="true"><br>
+            <input type="text" id="phone" name="phone" th:required="true"><br>
 
 
             <label for="email">Email*</label>
-            <input type="text" id="email" name="Email" th:required="true"><br>
+            <input type="text" id="email" name="email" th:required="true"><br>
 
 
             <label for="pass">Password*</label>
-            <input type="text" id="pass" name="Password" th:required="true"><br>
+            <input type="text" id="pass" name="pass" th:required="true"><br>
+
+            <!--
 
 
-            <!--kontakt samtykke checkbox-->
             <h4>Kontakt samtykke</h4>
             <input type="checkbox" id="permission" name="Kontakt samtykke" value="samtykke">
             <label for="permission">Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud
                 på QuickByg carport*</label><br></br>
-
-            <button type="button">Bestil tilbud</button>
+            -->
+            <button type="submit" formaction="/ordre-indsendt">Bestil tilbud</button>
         </form>
     </div>
 </div>

@@ -28,7 +28,8 @@ public class Main {
         // Routing
 
         app.get("/", ctx ->  ctx.render("index.html"));
-        app.get("/order-carport", ctx -> FormController.loadMeasurements(ctx, connectionPool));
+        app.get("/bestil-carport", ctx -> FormController.loadMeasurements(ctx, connectionPool));
+        app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));
     }
 
 }

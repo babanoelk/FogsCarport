@@ -48,7 +48,7 @@ public class Carport {
         this.height = height;
     }
 
-    public boolean isHasShed() {
+    public boolean hasShed() {
         return hasShed;
     }
 

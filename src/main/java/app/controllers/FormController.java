@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.entities.Carport;
 import app.entities.Order;
+import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.*;
@@ -26,8 +27,8 @@ public class FormController {
 
 
             //Shed width & length
-            //int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
-            //int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
+            int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
+            int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
 
 
             //User information
@@ -40,22 +41,24 @@ public class FormController {
 
             //boolean permission = Boolean.parseBoolean(ctx.formParam("permission"));
 
-            /*
-            // Get the current LocalDateTime
-            LocalDateTime currentDateTime = LocalDateTime.now();
-
-            // Convert LocalDateTime to Date
-            Date currentDate = Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-  */
             User user = new User(name, email, password, address, mobile, zip);
             Order order = new Order(note);
             Carport carport = new Carport(carportWidth,carportLength,carportHeight);
 
-            User user1 = UserMapper.addUser(user,connectionPool);
-            Carport carport1 = CarportMapper.addCarport(carport, connectionPool);
+            String shedChoice = ctx.formParam("redskabsrum");
 
-            OrderMapper.addOrder(order, user1, carport1, connectionPool);
+            User user1 = UserMapper.addUser(user,connectionPool);
+            Carport carport1 = null;
+
+            if(shedChoice.equals("nej")){
+                carport1. CarportMapper.addCarport(carport, connectionPool);
+                OrderMapper.addOrder(order, user1, carport1, connectionPool);
+            }else{
+                Shed shed = new Shed(shedWidth, shedLength);
+                Shed shed1 = CarportMapper.addShed(shed, connectionPool);
+                carport1.setShed(shed1);
+                OrderMapper.addOrder(order, user1, carport1, connectionPool);
+            }
 
             ctx.attribute("name", name);
             ctx.attribute("length", carportLength);

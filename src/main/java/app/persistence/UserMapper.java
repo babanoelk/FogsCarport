@@ -30,10 +30,12 @@ public class UserMapper {
 
             }
         } catch (SQLException e) {
-            if(e.getMessage().contains("violates foreign key constraint \"fk_user_zipcode\"")){
+            if (e.getMessage().contains("violates foreign key constraint \"fk_user_zipcode\"")) {
                 throw new DatabaseException("Det indtastede postnummer eksisterer ikke. Prøv igen");
-            }else{
-                throw new DatabaseException("Fejl ved oprettelse af bruger: "+e.getMessage());
+            } else if (e.getMessage().contains("\"unique_mail\"")) {
+                throw new DatabaseException("Den indtastede e-mail eksisterer allerede. Prøv igen");
+            } else {
+                throw new DatabaseException("Følgende fejl opstod: " + e.getMessage());
             }
         }
         return newUser;

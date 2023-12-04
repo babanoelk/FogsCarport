@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Bestillings side</title>
-<!-- REPLACE ME WITH A FRAGMENT -->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <title>Bestillings side</title>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 
 </head>
 <body>
@@ -38,17 +38,19 @@
                         th:each="width : ${widthList}"
                         th:value="${width}"
                         th:text="${width + 'cm'}">
-                bredde</option>
+                    bredde
+                </option>
             </select><br>
 
             <!--Drop down Carport længde-->
             <label for="carport_length">Carport længde*</label>
             <select id="carport_length" name="carport_length" th:required="true">
                 <option
-                    th:each="length : ${lengthList}"
-                    th:value="${length}"
-                    th:text="${length + 'cm'}">
-                længde</option>
+                        th:each="length : ${lengthList}"
+                        th:value="${length}"
+                        th:text="${length + 'cm'}">
+                    længde
+                </option>
             </select><br>
 
             <!--Drop down Carport højde-->
@@ -58,7 +60,8 @@
                         th:each="height : ${heightList}"
                         th:value="${height}"
                         th:text="${height + 'cm - Kan kun bestilles med denne højde'}">
-                    højde</option>
+                    højde
+                </option>
             </select><br>
 
 
@@ -81,11 +84,39 @@
             <!--Drop down Redskabsrum bredde-->
             <div>
                 <p>Ønsker du et redskabsrum:</p>
-                <input type="radio" id="ja" name="redskabsrum" value="ja">
+                <input type="radio" onclick="show()" id="ja" name="redskabsrum" value="ja" th:required>
                 <label for="ja">ja</label><br>
-                <input type="radio" id="nej" name="redskabsrum" value="nej">
+                <input type="radio" id="nej" onclick="hide()" name="redskabsrum" value="nej" th:required>
                 <label for="nej">nej</label><br>
-            </div><br>
+
+                <!-- Additional shed dimensions -->
+                <div id="hidden_menu" hidden="true">
+                    <div id="shed-dimensions">
+                        <label for="shed_width">Redskabsrum bredde*</label><br>
+                        <select id="shed_width" name="shed_width" th:required>
+                            <option
+                                    th:each="width : ${widthList}"
+                                    th:value="${width}"
+                                    th:text="${width + 'cm'}">
+                                bredde
+                            </option>
+                        </select><br>
+
+                        <label for="shed_length">Redskabsrum længde*</label><br>
+                        <select id="shed_length" name="shed_length" th:required>
+                            <option
+                                    th:each="length : ${lengthList}"
+                                    th:value="${length}"
+                                    th:text="${length + 'cm'}">
+                                længde
+                            </option>
+                        </select><br>
+                    </div>
+                    <!-- End of additional shed dimensions -->
+                </div>
+
+            </div>
+            <br>
 
             <label for="note">Evt. bemærkninger</label>
             <textarea id="note" name="note" rows="4" cols="50"></textarea>
@@ -132,5 +163,16 @@
     <!-- REPLACE ME WITH A FRAGMENT -->
     <p id="footer-text">Created by Team LAHY - All rights reserved</p>
 </footer>
+
+<script>
+    function hide() {
+        document.getElementById('hidden_menu').hidden = true
+    }
+
+    function show() {
+        document.getElementById('hidden_menu').hidden = false
+    }
+</script>
+
 </body>
 </html>

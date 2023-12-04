@@ -6,7 +6,7 @@ public class Carport {
     private int width;
     private int length;
     private int height;
-    private boolean hasShed;
+    private Shed shed;
 
     public Carport(int width, int length, int height) {
         this.width = width;
@@ -14,12 +14,19 @@ public class Carport {
         this.height = height;
     }
 
-    public Carport(int id, int width, int length, int height, boolean hasShed) {
+    public Carport(int id, int width, int length, int height) {
         this.id = id;
         this.width = width;
         this.length = length;
         this.height = height;
-        this.hasShed = hasShed;
+    }
+
+    public Carport(int id, int width, int length, int height, Shed shed) {
+        this.id = id;
+        this.width = width;
+        this.length = length;
+        this.height = height;
+        this.shed = shed;
     }
 
     public int getId() {
@@ -54,11 +61,7 @@ public class Carport {
         this.height = height;
     }
 
-    public boolean hasShed() {
-        return hasShed;
-    }
-
-    public void setHasShed(boolean hasShed) {
-        this.hasShed = hasShed;
+    public void setShed(Shed shed) {
+        this.shed = shed;
     }
 }

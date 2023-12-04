@@ -25,9 +25,7 @@ public class FormController {
             String note = ctx.formParam("note");
 
 
-            //Shed width & length
-            //int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
-            //int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
+
 
 
             //User information
@@ -38,16 +36,7 @@ public class FormController {
             String email = ctx.formParam("email");
             String password = (ctx.formParam("pass"));
 
-            //boolean permission = Boolean.parseBoolean(ctx.formParam("permission"));
 
-            /*
-            // Get the current LocalDateTime
-            LocalDateTime currentDateTime = LocalDateTime.now();
-
-            // Convert LocalDateTime to Date
-            Date currentDate = Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-  */
             User user = new User(name, email, password, address, mobile, zip);
             Order order = new Order(note);
             Carport carport = new Carport(carportWidth,carportLength,carportHeight);

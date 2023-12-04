@@ -1,9 +1,23 @@
 /* Stylesheet for the application */
+.error_message{
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
+}
 
+hr {
+    height:5px;
+    border-width:0;
+    background-color:#134d8a;
+}
 
 body{
-    background-color: lightgray;
-        margin: 0;
+    background-color: #f1f1f1;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Mindst 100% af viewportens højde */
+    margin: 0;
 
 }
 
@@ -129,10 +143,9 @@ a:link, a:visited{
 
 
 footer {
-    margin-top: 20px;
-    background-color: #3A3B3C;
+    margin-top: auto; /* Placerer footer nederst på siden */
+    background-color: #757575;
     color: #fff;
-    padding: 10px;
     text-align: center;
 }
 

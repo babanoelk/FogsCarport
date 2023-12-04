@@ -11,8 +11,8 @@ public class Order {
     private String orderStatus;
     private int carportId;
 
-    public Order() {
-
+    public Order(String customerNote) {
+        this.customerNote = customerNote;
     }
 
     public Order(Date date) {

@@ -30,7 +30,11 @@ public class UserMapper {
 
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Fejl ved oprettelse af bruger: "+e.getMessage());
+            if(e.getMessage().contains("violates foreign key constraint \"fk_user_zipcode\"")){
+                throw new DatabaseException("Det indtastede postnummer eksisterer ikke. Prøv igen");
+            }else{
+                throw new DatabaseException("Fejl ved oprettelse af bruger: "+e.getMessage());
+            }
         }
         return newUser;
     }

@@ -10,31 +10,34 @@
 </head>
 <body>
 <div id="nav-fullwidth">
-  <!-- REPLACE ME WITH A FRAGMENT -->
-  <div id="navbar">
-    <div id="logo">
-      <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <div id="navbar">
+        <div id="logo">
+            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
+        </div>
+        <ul class="main-menu">
+            <li class="button"><a href="/">Hjem</a></li>
+            <li class="button"><a href="/">Bestil unik carport</a></li>
+            <li class="button"><a href="/">Login</a></li>
+        </ul>
     </div>
-    <ul class="main-menu">
-      <li class="button"><a href="/">Hjem</a></li>
-      <li class="button"><a href="/">Bestil unik carport</a></li>
-      <li class="button"><a href="/">Login</a></li>
-    </ul>
-  </div>
 </div>
 
 <div id="main-content">
-  <p>Tak for din bestilling!</p>
-  <p>Den er nu sendt til vores salgsafdeling, som vil tage kontakt til dig.</p>
+    <h2>Tak for din bestilling, <span th:text="${name}"/>!</h2>
+    <p>Ordre detaljer:</p>
+    <p>Carport med følgende mål: <span th:text="${'længde: ' + length +'cm x ' + 'bredde: ' + width + 'cm'}"/></p>
+    <p>Ordren er nu sendt til vores salgsafdeling, som vil tage kontakt til dig indenfor 48 timer.</p> <br>
 
-  <form method="get">
-    <button type="submit" formaction="index.html">Tilbage til forsiden</button>
-  </form>
+
+    <form method="get">
+        <button class="button" type="submit" formaction="/">Tilbage til forsiden</button>
+    </form>
 </div>
 
 <footer>
-  <!-- REPLACE ME WITH A FRAGMENT -->
-  <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
 </footer>
 </body>
 </html>

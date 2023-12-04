@@ -33,13 +33,13 @@ create table carport(
     id              serial not null primary key,
     width           integer not null,
     length          integer not null,
-    high            integer not null,
+    height          integer not null,
     has_shed        boolean not null,
     constraint fk_carport_width foreign key (width)
     references width(width),
     constraint fk_carport_length foreign key (length)
     references length(length),
-    constraint fk_carport_high foreign key (high)
+    constraint fk_carport_height foreign key (height)
     references height(height)
 );
 
@@ -49,14 +49,14 @@ create table shed(
     carport_id      integer not null,
     width           integer not null,
     length          integer not null,
-    high            integer not null,
+    height          integer not null,
     constraint fk_shed_carport foreign key (carport_id)
     references carport(id),
     constraint fk_shed_width foreign key (width)
     references width(width),
     constraint fk_shed_length foreign key (length)
     references length(length),
-    constraint fk_shed_high foreign key (high)
+    constraint fk_shed_height foreign key (height)
     references height(height)
 );
 
@@ -80,11 +80,11 @@ drop table if exists "user" cascade;
 create table "user"(
     id              serial not null primary key,
     name            text not null,
-    email           text not null,
+    email           text not null unique,
     password        text not null,
     address         text not null,
     mobile          integer not null,
-    role            integer not null,
+    role            integer not null default 1,
     zipcode         integer not null,
     constraint fk_user_zipcode foreign key (zipcode)
     references zipcode(postal_code),
@@ -108,7 +108,7 @@ drop table if exists "order" cascade;
 create table "order"(
     id              serial not null primary key,
     date            date not null,
-    customer_note   text not null default '...',
+    customer_note   text,
     consent         boolean not null default false,
     user_id         integer not null,
     order_status    integer not null,

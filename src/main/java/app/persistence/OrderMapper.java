@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class OrderMapper {
     public static void addOrder(Order order, User user, Carport carport, ConnectionPool connectionPool) throws DatabaseException {
 
-        String sql = "INSERT INTO public.ORDER (customer_note, consent, user_id, carport_id) values (?,?,?,?)";
+        String sql = "insert into public.ORDER (customer_note, consent, user_id, carport_id) values (?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 //Number 0 is serialized int id

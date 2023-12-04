@@ -20,6 +20,18 @@ class ThymeleafConfig{
 }
 
 package controllers {
+class FormController{
+    + static void formInput(Context ctx, ConnectionPool connectionPool) throws DatabaseException
+    + static void loadMeasurements(Context ctx, ConnectionPool connectionPool)
+}
+
+class SystemController{
+    + static void load(Context ctx)
+}
+
+class UserController{
+    + static void login(Context ctx, ConnectionPool connectionPool)
+}
 }
 
 package dtos {
@@ -63,29 +75,15 @@ Carport ---|> Construction
 }
 
 package exceptions {
+class DatabaseException extends Exception{
+    + DatabaseException(String message)
+}
 }
 
 package persistence {
 
-class ZipcodeMapper{
-}
-
-class UserRoleMapper{
-}
-
-class UserMapper{
-}
-
-class StatusMapper{
-}
-
-class ShedMapper{
-}
-
 class CarportMapper{
-}
-
-class OrderMapper{
+    + static Carport addCarport(Carport carport, ConnectionPool connectionPool) throws DatabaseException
 }
 
 class ConnectionPool{
@@ -101,6 +99,22 @@ class ConnectionPool{
     + synchronized Connection getConnection() throws SQLException
     + synchronized void close()
     - static HikariDataSource createHikariConnectionPool(String user, String password, String url, String db)
+}
+
+class MeasurementMapper{
+    + static List<Integer> getAllLengths(ConnectionPool connectionPool) throws DatabaseException
+    + static List<Integer> getAllWidths(ConnectionPool ConnectionPool) throws DatabaseException
+    + static List<Integer> getAllHeights(ConnectionPool ConnectionPool) throws DatabaseException
+}
+
+class OrderMapper{
+    + static void addOrder(Order order, User user, Carport carport, ConnectionPool connectionPool) throws DatabaseException
+}
+
+class UserMapper{
+    + static User addUser(User newUser, ConnectionPool ConnectionPool) throws DatabaseException
+    + static User getUserByEmail(String email, ConnectionPool connectionPool) throws DatabaseException
+    + static boolean loginValidator(String email, String password, ConnectionPool connectionPool) throws DatabaseException
 }
 
 }

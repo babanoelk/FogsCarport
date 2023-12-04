@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class CarportMapper {
     public static Carport addCarport(Carport carport, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO carport (width, length, height) values (?,?,?)";
+        String sql = "insert into carport (width, length, height) values (?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1, carport.getWidth());

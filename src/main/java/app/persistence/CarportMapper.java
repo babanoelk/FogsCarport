@@ -42,6 +42,29 @@ public class CarportMapper {
         return carport;
     }
 
+<<<<<<< HEAD
+    public static void deleteCarportByCarportID(int carportId, ConnectionPool connectionPool) throws DatabaseException
+    {
+
+        String sql = "DELETE from public.carport where id = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                ps.setInt(1, carportId);
+
+                int rowsAffected = ps.executeUpdate();
+
+                if (rowsAffected != 1) {
+                    throw new DatabaseException("Ingen ordre slettet. Fejl i databasen.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Ingen ordre slettet. " + e.getMessage());
+        }
+    }
+}
+=======
     public static Shed addShed(Shed shed, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO shed (width, length) values (?,?)";
         try (Connection connection = connectionPool.getConnection()) {
@@ -66,3 +89,4 @@ public class CarportMapper {
     }
 
 }
+>>>>>>> f3a643d3c340e779192fb4938212843a5e684e8b

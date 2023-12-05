@@ -6,15 +6,23 @@ import app.exceptions.DatabaseException;
 
 import java.sql.*;
 
+import static java.sql.Types.NULL;
+
 public class CarportMapper {
     public static Carport addCarport(Carport carport, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO carport (width, length, height) values (?,?,?)";
+        String sql = "INSERT INTO carport (width, length, height, shed_id) values (?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1, carport.getWidth());
                 ps.setInt(2, carport.getLength());
                 ps.setInt(3, carport.getHeight());
-                //ps.setBoolean(4, carport.hasShed());
+                ps.setNull(4, NULL);
+                if (carport.getShed() != null) {
+                    Shed shedAdded = addShed(carport.getShed(), connectionPool);
+                    carport.setShed(shedAdded);
+                    ps.setInt(4, carport.getShed().getId());
+                }
+
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Carport was not added to database");

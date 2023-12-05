@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.dtos.UserCarportOrderDTO;
 import app.entities.Carport;
 import app.entities.Order;
 import app.entities.Shed;
@@ -39,11 +40,11 @@ public class FormController {
 
             //Create User instance from input data
             User user = new User(name, email, password, address, mobile, zip);
-            User user1 = UserMapper.addUser(user,connectionPool);
+            //User user1 = UserMapper.addUser(user,connectionPool);
 
             //Create Carport instance from carport input data
             Carport carport = new Carport(carportWidth, carportLength, carportHeight);
-            Carport carport1 = CarportMapper.addCarport(carport, connectionPool);
+            //Carport carport1 = CarportMapper.addCarport(carport, connectionPool);
 
             //Create Order instance from note
             Order order = new Order(note);
@@ -52,11 +53,14 @@ public class FormController {
                 int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
                 int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
                 Shed shed = new Shed(shedWidth, shedLength);
-                Shed shed1 = CarportMapper.addShed(shed, connectionPool);
-                carport1.setShed(shed1);
+                //Shed shed1 = CarportMapper.addShed(shed, connectionPool);
+                carport.setShed(shed);
             }
 
-            OrderMapper.addOrder(order, user1, carport1, connectionPool);
+            UserCarportOrderDTO dto = new UserCarportOrderDTO(user, carport, order);
+            OrderMapper.addOrder(dto, connectionPool);
+
+
 
             ctx.attribute("name", name);
             ctx.attribute("length", carportLength);

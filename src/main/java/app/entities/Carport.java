@@ -61,6 +61,10 @@ public class Carport {
         this.height = height;
     }
 
+    public Shed getShed() {
+        return shed;
+    }
+
     public void setShed(Shed shed) {
         this.shed = shed;
     }

@@ -15,7 +15,8 @@ public class UserController {
             if (isLoggedIn) {
                 User user = UserMapper.getUserByEmail(email, connectionPool);
                 ctx.sessionAttribute("currentUser", user);
-                ctx.render("min-side.html");
+                OrderController.getAllOrders(ctx,connectionPool);
+                //ctx.render("min-side.html");
             } else {
                 ctx.attribute("message", "Forkert email eller password");
                 ctx.render("login.html");

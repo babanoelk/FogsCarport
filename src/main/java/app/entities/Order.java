@@ -8,8 +8,7 @@ public class Order {
     private String customerNote;
     private boolean consent;
     private int userId;
-    private String orderStatus;
-    private int orderStatuss;
+    private String orderStatus; //this is an int in DB
     private int carportId;
 
     public Order(String customerNote) {
@@ -30,12 +29,12 @@ public class Order {
         this.carportId = carportId;
     }
 
-    public Order(int id, Date date, String customerNote, boolean consent,  int orderStatus) {
+    public Order(int id, Date date, String customerNote, String orderStatus) {
         this.id = id;
         this.date = date;
         this.customerNote = customerNote;
         this.consent = consent;
-        this.orderStatuss = orderStatus;
+        this.orderStatus = orderStatus;
     }
 
     public int getId() {

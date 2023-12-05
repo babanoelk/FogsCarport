@@ -31,7 +31,29 @@ public class OrderMapper {
         }
     }
 
-    public static List<GetOrderWithIdDateCustomerNoteConsentStatus> getAllOrders(User user, ConnectionPool connectionPool) throws DatabaseException {
+    public static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
+        List<Order> allOrders = new ArrayList<>();
+        String sql = "select id, date, customer_note, order_status from public.ORDER";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    Date date = rs.getDate("date");
+                    String customerNote = rs.getString("customer_note");
+                    int statusId = rs.getInt("order_status");
+                    String orderStatus = getStatusByID(statusId, connectionPool);
+                    allOrders.add(new Order(id, date, customerNote, orderStatus));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl ved indlæsning af kundeordre " + e.getMessage());
+        }
+        return allOrders;
+    }
+
+    public static List<GetOrderWithIdDateCustomerNoteConsentStatus> getAllOrdersByUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         List<GetOrderWithIdDateCustomerNoteConsentStatus> orderList = new ArrayList<>();
 
         String sql = "select id, date, customer_note, order_status from public.ORDER where user_id = ?";

@@ -13,7 +13,6 @@ public class ShedMapper {
                 ps.setInt(1, shed.getCarportID());
                 ps.setInt(2, shed.getWidth());
                 ps.setInt(3, shed.getLength());
-                ps.setInt(4, shed.getHeight());
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {

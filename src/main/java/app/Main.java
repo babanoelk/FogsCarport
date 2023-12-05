@@ -2,6 +2,7 @@ package app;
 
 import app.config.ThymeleafConfig;
 import app.controllers.FormController;
+import app.controllers.OrderController;
 import app.controllers.SystemController;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
@@ -35,6 +36,8 @@ public class Main {
         app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));
         app.get("/login", ctx ->  ctx.render("login.html"));
         app.post("/min-side", ctx -> UserController.login(ctx,connectionPool));
+        app.get("/min-side", ctx -> OrderController.getAllOrders(ctx,connectionPool));
+        app.post("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
     }
 
 }

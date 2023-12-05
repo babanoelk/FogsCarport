@@ -1,10 +1,12 @@
 package app;
 
 import app.config.ThymeleafConfig;
-import app.controllers.CarportController;
 import app.controllers.FormController;
+import app.controllers.SystemController;
+import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
 public class Main {
@@ -27,9 +29,12 @@ public class Main {
 
         // Routing
 
-        app.get("/", ctx ->  ctx.render("index.html"));
+        //app.get("/", ctx ->  ctx.render("index.html"));
+        app.get("/", ctx -> SystemController.load(ctx));
         app.get("/bestil-carport", ctx -> FormController.loadMeasurements(ctx, connectionPool));
         app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));
+        app.get("/login", ctx ->  ctx.render("login.html"));
+        app.post("/min-side", ctx -> UserController.login(ctx,connectionPool));
     }
 
 }

@@ -12,7 +12,6 @@ import java.sql.SQLException;
 
 public class OrderMapper {
     public static void addOrder(UserCarportOrderDTO dto, ConnectionPool connectionPool) throws DatabaseException {
-
         User userAdded = UserMapper.addUser(dto.getUser(), connectionPool);
         Carport carportAdded = CarportMapper.addCarport(dto.getCarport(), connectionPool);
         String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id) values (?,?,?)";

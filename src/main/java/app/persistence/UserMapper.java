@@ -7,7 +7,6 @@ import java.sql.*;
 
 public class UserMapper {
     public static User addUser(User newUser, ConnectionPool connectionPool) throws DatabaseException {
-
         String sql = "INSERT INTO public.USER (name, email, password, address, mobile, zipcode, consent) values (?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -43,31 +42,56 @@ public class UserMapper {
         return newUser;
     }
 
-    /*
-    public static User getUserIdByEmail(int userId, ConnectionPool connectionPool) throws DatabaseException{
+
+    public static User getUserByEmail(String email, ConnectionPool connectionPool) throws DatabaseException {
+
         User user = null;
 
-               String sql = "select * from USER where id = ?";
+        String sql = "select * from public.USER where email = ?";
 
-               try(Connection connection = connectionPool.getConnection()){
-                   try(PreparedStatement ps = connection.prepareStatement(sql)){
-                       ResultSet rs = ps.executeQuery();
-                       int id = rs.getInt(1);
-                       String name = rs.getString(2);
-                       String email = rs.getString(3);
-                       String email = rs.getString(3);
-                       String email = rs.getString(3);
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
+                ps.setString(1,email);
+                ResultSet rs = ps.executeQuery();
+                rs.next();
 
-                   }
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String userEmail = rs.getString(3);
+                String password = rs.getString(4);
+                String address = rs.getString(5);
+                int mobile = rs.getInt(6);
+                int role = rs.getInt(7);
+                int zipcode = rs.getInt(8);
 
-               }
-
-
+                user = new User(id, name, userEmail, password, address, mobile, role, zipcode);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
         return user;
-
     }
 
-     */
 
+    public static boolean loginValidator(String email, String password, ConnectionPool connectionPool) throws DatabaseException {
+        boolean isLoggedIn = false;
+        String sql = "select * from public.User where email = ? and password = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, email);
+                ps.setString(2, password);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next())
+                {
+                    isLoggedIn = true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Login fejl, email eller password er forkert " + e);
+        }
+        return isLoggedIn;
+    }
 }

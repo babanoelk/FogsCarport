@@ -7,8 +7,7 @@ import java.sql.*;
 
 public class UserMapper {
     public static User addUser(User newUser, ConnectionPool connectionPool) throws DatabaseException {
-
-        String sql = "insert into public.USER (name, email, password, address, mobile, zipcode) values (?,?,?,?,?,?)";
+        String sql = "INSERT INTO public.USER (name, email, password, address, mobile, zipcode, consent) values (?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 //Number 0 is serialized ID
@@ -16,8 +15,10 @@ public class UserMapper {
                 ps.setString(2, newUser.getEmail());
                 ps.setString(3, newUser.getPassword());
                 ps.setString(4, newUser.getAddress());
-                ps.setInt(6, newUser.getZipcode());
                 ps.setInt(5, newUser.getMobile());
+                ps.setInt(6, newUser.getZipcode());
+                ps.setBoolean(7, newUser.getConsent());
+
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Fejl i data leveret ved oprettelse af bruger i databasen");
@@ -32,8 +33,10 @@ public class UserMapper {
         } catch (SQLException e) {
             if (e.getMessage().contains("violates foreign key constraint \"fk_user_zipcode\"")) {
                 throw new DatabaseException("Det indtastede postnummer eksisterer ikke. Prøv igen");
+            } else if (e.getMessage().contains("\"unique_mail\"")) {
+                throw new DatabaseException("Den indtastede e-mail eksisterer allerede. Prøv igen");
             } else {
-                throw new DatabaseException("Fejl ved oprettelse af bruger: " + e.getMessage());
+                throw new DatabaseException("Følgende fejl opstod: " + e.getMessage());
             }
         }
         return newUser;

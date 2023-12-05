@@ -28,4 +28,25 @@ public class CarportMapper {
         }
         return carport;
     }
+
+    public static void deleteCarportByCarportID(int carportId, ConnectionPool connectionPool) throws DatabaseException
+    {
+
+        String sql = "DELETE from public.carport where id = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                ps.setInt(1, carportId);
+
+                int rowsAffected = ps.executeUpdate();
+
+                if (rowsAffected != 1) {
+                    throw new DatabaseException("Ingen ordre slettet. Fejl i databasen.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Ingen ordre slettet. " + e.getMessage());
+        }
+    }
 }

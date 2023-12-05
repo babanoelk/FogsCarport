@@ -18,8 +18,10 @@ public class OrderController {
 
         try {
             User user = ctx.sessionAttribute("currentUser");
-            Order order = ctx.sessionAttribute("orderlist");
-            OrderMapper.deleteOrder(order, user, connectionPool);
+            int result = Integer.parseInt(ctx.formParam("order_id"));
+            OrderMapper.deleteOrderByOrderID(result,connectionPool);
+
+            ctx.render("ordre-slettet.html");
             return true;
         } catch (DatabaseException e) {
             throw new DatabaseException("Fejl sletning af ordre " + e.getMessage());

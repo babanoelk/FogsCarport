@@ -47,7 +47,7 @@ public class OrderMapper {
                     Date date = rs.getDate("date");
                     String customerNote = rs.getString("customer_note");
                     int orderID = rs.getInt("order_status");
-                    String orderStatus = getStatusByID(orderID,connectionPool);
+                    String orderStatus = getStatusByID(orderID, connectionPool);
                     orderList.add(new GetOrderWithIdDateCustomerNoteConsentStatus(id, date, customerNote, orderStatus));
                 }
             }
@@ -74,26 +74,47 @@ public class OrderMapper {
         }
     }
 
-    public static void deleteOrder(Order order, User user, ConnectionPool connectionPool) throws DatabaseException {
 
-        String sql = "DELETE FROM public.order WHERE user_id = ? AND id = ?";
+    public static void deleteOrderByOrderID(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+        String selectOrderSQL = "SELECT carport_id FROM public.order WHERE id = ?";
+        String deleteOrderSQL = "DELETE FROM public.order WHERE id = ?";
 
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement selectOrderPs = connection.prepareStatement(selectOrderSQL);
+             PreparedStatement deleteOrderPs = connection.prepareStatement(deleteOrderSQL)) {
 
-                // Set the user ID and order ID parameters in the prepared statement
-                ps.setInt(1, user.getId());
-                ps.setInt(2, order.getId());
+            // Set parameters for the SELECT statement
+            selectOrderPs.setInt(1, orderId);
 
-                int rowsAffected = ps.executeUpdate();
-
-                if (rowsAffected != 1) {
-                    throw new DatabaseException("Ingen ordre slettet. Fejl i databasen.");
+            // Execute SELECT statement to get the carport_id
+            int carportId;
+            try (ResultSet rs = selectOrderPs.executeQuery()) {
+                if (rs.next()) {
+                    carportId = rs.getInt("carport_id");
+                } else {
+                    throw new DatabaseException("Ordre med ID " + orderId + " blev ikke fundet.");
                 }
             }
+
+            // Set parameters for the DELETE statement
+            deleteOrderPs.setInt(1, orderId);
+
+            // Execute DELETE statement for public.order
+            int orderRowsAffected = deleteOrderPs.executeUpdate();
+
+            // Check if at least one record was deleted from public.order
+            if (orderRowsAffected > 0) {
+                // Get the carport ID to delete the carport
+                CarportMapper.deleteCarportByCarportID(carportId, connectionPool);
+            } else {
+                throw new DatabaseException("Ingen ordre slettet. Fejl i databasen.");
+            }
+
         } catch (SQLException e) {
-            throw new DatabaseException("Ingen ordre slettet. " + e.getMessage());
+            throw new DatabaseException("Fejl ved sletning af ordre. " + e.getMessage());
         }
     }
+
+
 }
 

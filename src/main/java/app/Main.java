@@ -38,6 +38,8 @@ public class Main {
         app.post("/min-side", ctx -> UserController.login(ctx,connectionPool));
         app.get("/min-side", ctx -> OrderController.getAllOrders(ctx,connectionPool));
         app.post("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
+        //app.get("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
+
     }
 
 }

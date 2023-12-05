@@ -1,7 +1,9 @@
 package app.controllers;
 
+import app.dtos.UserCarportOrderDTO;
 import app.entities.Carport;
 import app.entities.Order;
+import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.*;
@@ -18,33 +20,44 @@ public class FormController {
 
 
         try {
-            //Carport width & length
+            //Carport data
             int carportWidth = Integer.parseInt(ctx.formParam("carport_width"));
             int carportLength = Integer.parseInt(ctx.formParam("carport_length"));
             int carportHeight = Integer.parseInt(ctx.formParam("carport_height"));
             String note = ctx.formParam("note");
 
+            //Shed data
+            String shedChoice = ctx.formParam("redskabsrum");
 
-
-
-
-            //User information
+            //User data
             String name = ctx.formParam("name");
             String address = ctx.formParam("address");
             int zip = Integer.parseInt(ctx.formParam("zip"));
             int mobile = Integer.parseInt(ctx.formParam("phone"));
             String email = ctx.formParam("email");
             String password = (ctx.formParam("pass"));
+            boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
 
+            //Create User instance from input data
+            User user = new User(name, email, password, address, mobile, zip, consent);
 
-            User user = new User(name, email, password, address, mobile, zip);
+            //Create Carport instance from carport input data
+            Carport carport = new Carport(carportWidth, carportLength, carportHeight);
+
+            //Create Order instance from note
             Order order = new Order(note);
-            Carport carport = new Carport(carportWidth,carportLength,carportHeight);
 
-            User user1 = UserMapper.addUser(user,connectionPool);
-            Carport carport1 = CarportMapper.addCarport(carport, connectionPool);
+            if(shedChoice.equalsIgnoreCase("ja")){
+                int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
+                int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
+                Shed shed = new Shed(shedWidth, shedLength);
+                carport.setShed(shed);
+            }
 
-            OrderMapper.addOrder(order, user1, carport1, connectionPool);
+            UserCarportOrderDTO dto = new UserCarportOrderDTO(user, carport, order);
+            OrderMapper.addOrder(dto, connectionPool);
+
+
 
             ctx.attribute("name", name);
             ctx.attribute("length", carportLength);

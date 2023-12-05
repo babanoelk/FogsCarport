@@ -146,14 +146,11 @@
             <label for="pass">Password*</label>
             <input type="text" id="pass" name="pass" th:required="true"><br>
 
-            <!--
 
+            <input type="checkbox" id="consent" name="consent" value="true" checked th:required="true">
+            <label for="consent">Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud
+                på QuickByg carport*</label><br>
 
-            <h4>Kontakt samtykke</h4>
-            <input type="checkbox" id="permission" name="Kontakt samtykke" value="samtykke">
-            <label for="permission">Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud
-                på QuickByg carport*</label><br></br>
-            -->
             <button type="submit" formaction="/ordre-indsendt">Bestil tilbud</button>
         </form>
     </div>

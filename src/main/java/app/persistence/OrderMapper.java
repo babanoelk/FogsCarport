@@ -15,13 +15,12 @@ public class OrderMapper {
 
         User userAdded = UserMapper.addUser(dto.getUser(), connectionPool);
         Carport carportAdded = CarportMapper.addCarport(dto.getCarport(), connectionPool);
-        String sql = "INSERT INTO public.ORDER (date, customer_note, consent, user_id, carport_id) values (current_date, ?,?,?,?)";
+        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id) values (?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1,dto.getOrder().getCustomerNote());
-                ps.setBoolean(2, dto.getOrder().getConsent());
-                ps.setInt(3, userAdded.getId());
-                ps.setInt(4, carportAdded.getId());
+                ps.setInt(2, userAdded.getId());
+                ps.setInt(3, carportAdded.getId());
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Ordre ikke oprettet. Fejl i data sendt til databasen.");

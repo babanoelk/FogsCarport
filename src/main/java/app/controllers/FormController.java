@@ -36,15 +36,13 @@ public class FormController {
             int mobile = Integer.parseInt(ctx.formParam("phone"));
             String email = ctx.formParam("email");
             String password = (ctx.formParam("pass"));
-            //todo: boolean permission = Boolean.parseBoolean(ctx.formParam("permission"));
+            boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
 
             //Create User instance from input data
-            User user = new User(name, email, password, address, mobile, zip);
-            //User user1 = UserMapper.addUser(user,connectionPool);
+            User user = new User(name, email, password, address, mobile, zip, consent);
 
             //Create Carport instance from carport input data
             Carport carport = new Carport(carportWidth, carportLength, carportHeight);
-            //Carport carport1 = CarportMapper.addCarport(carport, connectionPool);
 
             //Create Order instance from note
             Order order = new Order(note);
@@ -53,7 +51,6 @@ public class FormController {
                 int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
                 int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
                 Shed shed = new Shed(shedWidth, shedLength);
-                //Shed shed1 = CarportMapper.addShed(shed, connectionPool);
                 carport.setShed(shed);
             }
 

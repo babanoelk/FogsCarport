@@ -33,7 +33,7 @@ public class Order {
         this.id = id;
         this.date = date;
         this.customerNote = customerNote;
-        this.consent = consent;
+        this.consent = consent; //consent er med i constructor, men ikke med som parameter
         this.orderStatus = orderStatus;
     }
 

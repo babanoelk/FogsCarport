@@ -25,6 +25,11 @@ class FormController{
     + static void loadMeasurements(Context ctx, ConnectionPool connectionPool)
 }
 
+class OrderController{
+    + static boolean deleteOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException
+    + static void getAllOrders(Context ctx, (ConnectionPool ConnectionPool) throws DatabaseException
+}
+
 class SystemController{
     + static void load(Context ctx)
 }
@@ -35,36 +40,135 @@ class UserController{
 }
 
 package dtos {
+class GetOrderWithIdDateCustomerNoteConsentStatus{
+    - int orderId
+    - Date date
+    - String customerNote
+    - String orderStatus
+
+    + GetOrderWithIdDateCustomerNoteConsentStatus(int orderId, Date date, String customerNote, String orderStatus)
+    + int getOrderId()
+    + Date getDate()
+    + String getCustomerNote()
+    + getOrderStatus()
+}
+
+class UserCarportOrderDTO{
+    - User user
+    - Carport carport
+    - Order order
+
+    + UserCarportOrderDTO(User user, Carport carport, Order order)
+    + User getUser()
+    + Carport getCarport()
+    + Order getOrder()
+}
 }
 
 package entities {
 class User{
-- int id
-- String name
-- String email
-- String password
-- String address
-- int zipcode
-- int mobile
-- String role
+    - int id
+    - String name
+    - String email
+    - String password
+    - String address
+    - int zipcode
+    - int mobile
+    - String role
+    - boolean consent
 
-+ int getId()
-+ String getName()
-+ String getEmail()
-+ String getPassword()
-+ String getAddress()
-+ int getZipcode()
-+ int getMobile()
-+ String getRole()
+    + User(int id, String name, String email, String password, String address, int mobile, int role, int zipcode)
+    + void setId(int id)
+    + void setName(String name)
+    + void setEmail(String email)
+    + void setPassword(String password)
+    + void setAddress(String address)
+    + void setMobile(int mobile)
+    + void setRole(int role)
+    + void setZipcode(int zipcode)
+    + int getId()
+    + String getName()
+    + String getEmail()
+    + String getPassword()
+    + String getAddress()
+    + int getZipcode()
+    + int getMobile()
+    + String getRole()
+    + boolean getConsent()
 }
 
 interface Construction{}
 
-class Shed{}
+class Shed{
+    - int id
+    - int carportID
+    - int width
+    - int length
 
-class Carport{}
+    + Shed(int id, int carportID, int width, int length)
+    + Shed(int width), int length)
+    + int getId()
+    + void setId(int id)
+    + int getCarportID()
+    + void setCarportID(int carportID)
+    + int width()
+    + void setWidth(int width))
+    + int length()
+    + void setLength(int length)
+}
 
-class Order{}
+class Carport{
+    - int id
+    - int width
+    - int length
+    - int height
+    - Shed shed
+
+    + Carport(int width, int length, int height)
+    + Carport(int id, int width, int length, int height)
+    + Carport(int id, int width, int length, int height, Shed shed)
+    + int getId()
+    + void setId(int id)
+    + int getWidth()
+    + void setWidth(int width)
+    + int getLength()
+    + void setLength(int length)
+    + int getHeight()
+    + void setHeight(int height)
+    + Shed getShed()
+    + void setShed(Shed shed)
+}
+
+class Order{
+    - int id
+    - Date date
+    - String CustomerNote
+    - boolean consent
+    - int userId
+    - String orderStatus
+    - int carportId
+
+    + Order(String customerNote)
+    + Order(Date date)
+    + Order(int id, Date date, String customerNote, boolean consent, int userId, String orderStatus, int carportId)
+    + Order(int id, Date date, String customerNote, String orderStatus)
+    + int getId()
+    + void setId(int id)
+    + Date getDate()
+    + void setDate(Date date)
+    + String getCustomerNote()
+    + void setCustomerNote()
+    + boolean getConsent()
+    + void setConsent(boolean consent)
+    + int getUserId()
+    + void setUserId(int userId)
+    + String getOrderStatus()
+    + void setOrderStatus(String orderStatus)
+    + int getCarportId()
+    + void setCarportId(int carportId)
+
+
+}
 
 'Connections
 Shed ----* Carport
@@ -84,6 +188,8 @@ package persistence {
 
 class CarportMapper{
     + static Carport addCarport(Carport carport, ConnectionPool connectionPool) throws DatabaseException
+    + static deleteCarportByCarportID(int carportId, ConnectionPool connectionPool) throws DatabaseException
+    + static Shed addShed(Shed shed, ConnectionPool connectionPool) throws DatabaseException
 }
 
 class ConnectionPool{
@@ -108,15 +214,17 @@ class MeasurementMapper{
 }
 
 class OrderMapper{
-    + static void addOrder(Order order, User user, Carport carport, ConnectionPool connectionPool) throws DatabaseException
+    + static void addOrder(UserCarportOrderDTO dto, ConnectionPool connectionPool) throws DatabaseException
+    + static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException
+    + static List<GetOrderWithIdDateCustomerNoteConsentStatus> getAllOrdersByUser(User user, (ConnectionPool connectionPool) throws DatabaseException
+    + static String getStatusByID(int statusID, (ConnectionPool connectionPool) throws DatabaseException
 }
 
 class UserMapper{
     + static User addUser(User newUser, ConnectionPool ConnectionPool) throws DatabaseException
     + static User getUserByEmail(String email, ConnectionPool connectionPool) throws DatabaseException
-    + static boolean loginValidator(String email, String password, ConnectionPool connectionPool) throws DatabaseException
+    + static boolean loginValidator(String email, String password, ConnectionPool connectionPool) throws DatabaseException, SQLException
 }
-
 }
 
 'Connections

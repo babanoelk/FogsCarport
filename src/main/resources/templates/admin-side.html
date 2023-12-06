@@ -61,7 +61,15 @@
             <td th:text="${order.getId()}">Ordre ID</td>
             <td th:text="${order.getDate()}">Dato</td>
             <td th:text="${order.getCustomerNote}">Kommentar</td>
-            <td th:text="${order.getOrderStatus}">Status</td>
+            <td>
+                <form method="post">
+                <select name="status_id">
+                    <option th:text="${order.getOrderStatus}" value="current_status" selected></option>
+                    <option th:each="status : ${statusList}" th:unless="${status.getText()==order.getOrderStatus}" th:text="${status.getText()}" th:value="${status.getId()}"></option>
+                </select>
+                    <button type="submit" name="order_id" formaction="/opdater-ordre" th:value="${order.getId()}">Gem</button>
+                </form>
+            </td>
             <td>
                 <form class="taskform" method="post">
                     <button type="submit" name="order_id" formaction="/delete">Delete</button>
@@ -72,30 +80,24 @@
 </div>
 <script>
     function updateTable() {
-        // Declare variables
         var statusSelect = document.getElementById("status_column");
         var selectedStatus = statusSelect.value.toLowerCase();
         var orderTable = document.getElementById("order_table");
         var tableRows = orderTable.getElementsByTagName("tr");
 
-        // Loop through all table rows, except the header row
         for (var i = 1; i < tableRows.length; i++) {
             var orderRow = tableRows[i];
             var orderStatusCell = orderRow.getElementsByTagName("td")[3];
-            var orderStatus = orderStatusCell.textContent || orderStatusCell.innerText;
-            var orderStatusLowercase = orderStatus.toLowerCase();
+            var orderStatusSelect = orderStatusCell.getElementsByTagName("select")[0];
+            var orderStatus = orderStatusSelect ? orderStatusSelect.options[orderStatusSelect.selectedIndex].text.toLowerCase() : "";
 
-            if (selectedStatus === "alle") {
-                orderRow.style.display = ""; // Show all rows if "alle" is selected
-            } else if (!orderStatusLowercase.includes(selectedStatus)) {
-                orderRow.style.display = "none"; // Hide rows that don't contain the selected status
+            if (selectedStatus === "alle" || orderStatus === selectedStatus) {
+                orderRow.style.display = "";
             } else {
-                orderRow.style.display = ""; // Show rows that match the selected status
+                orderRow.style.display = "none";
             }
         }
     }
-
-
 
 </script>
 

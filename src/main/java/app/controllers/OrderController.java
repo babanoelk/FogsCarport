@@ -40,7 +40,7 @@ public class OrderController {
             } else {
                 List<Status> statusList = StatusMapper.getAllStatuses(connectionPool);
                 List<Order> allOrders = OrderMapper.getAllOrders(connectionPool);
-                ctx.sessionAttribute("currentSession", "all");
+                //ctx.sessionAttribute("currentSession", "all");
 
                 ctx.attribute("statusList", statusList);
                 ctx.attribute("allOrders", allOrders);
@@ -53,4 +53,14 @@ public class OrderController {
         }
     }
 
+    public static void updateOrderStatus(Context ctx, ConnectionPool connectionPool) {
+        try {
+            int orderId = Integer.parseInt(ctx.formParam("order_id"));
+            int statusId = Integer.parseInt(ctx.formParam("status_id"));
+            OrderMapper.updateOrderStatus(orderId, statusId, connectionPool);
+            getAllOrders(ctx, connectionPool);
+        } catch (DatabaseException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

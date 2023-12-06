@@ -38,6 +38,7 @@ public class Main {
         app.get("/min-side", ctx -> OrderController.getAllOrders(ctx,connectionPool));
         app.post("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
         //app.get("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
+        app.post("/opdater-ordre", ctx -> OrderController.updateOrderStatus(ctx, connectionPool));
 
     }
 

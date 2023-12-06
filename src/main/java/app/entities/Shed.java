@@ -6,17 +6,14 @@ public class Shed {
     private int carportID;
     private int width;
     private int length;
+    private int height;
 
-    public Shed(int id, int carportID, int width, int length) {
+    public Shed(int id, int carportID, int width, int length, int height) {
         this.id = id;
         this.carportID = carportID;
         this.width = width;
         this.length = length;
-    }
-
-    public Shed(int width, int length) {
-        this.width = width;
-        this.length = length;
+        this.height = height;
     }
 
     public int getId() {
@@ -51,4 +48,11 @@ public class Shed {
         this.length = length;
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 }

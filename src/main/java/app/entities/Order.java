@@ -8,11 +8,11 @@ public class Order {
     private String customerNote;
     private boolean consent;
     private int userId;
-    private String orderStatus; //this is an int in DB
+    private String orderStatus;
     private int carportId;
 
-    public Order(String customerNote) {
-        this.customerNote = customerNote;
+    public Order() {
+
     }
 
     public Order(Date date) {
@@ -27,14 +27,6 @@ public class Order {
         this.userId = userId;
         this.orderStatus = orderStatus;
         this.carportId = carportId;
-    }
-
-    public Order(int id, Date date, String customerNote, String orderStatus) {
-        this.id = id;
-        this.date = date;
-        this.customerNote = customerNote;
-        this.consent = consent; //consent er med i constructor, men ikke med som parameter
-        this.orderStatus = orderStatus;
     }
 
     public int getId() {

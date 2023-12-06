@@ -15,17 +15,7 @@
         <ul class="main-menu">
             <li class="button"><a href="/">Hjem</a></li>
             <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
-            <li class="button"><a href="/login">Login</a></li>
-            <li class="button"><a href="/log-ud">Log ud</a></li>
-            <!-- <li class="button" th:if="${session.currentUser == null}" th:remove="tag"><a href="/min-side" th:text="${session.currentUser.email}"></a></li>-->
-
-            <div th:if="${session.currentUser != null}">
-                <li class="button"><a href="/min-side" th:text="${session.currentUser.email}"></a></li>
-            </div>
-
-            <div th:if="${session.currentUser == null}">
-                <li class="button"><a href="/min-side" th:text="test"></a></li>
-            </div>
+            <li class="button"><a href="/">Login</a></li>
         </ul>
     </div>
 </div>

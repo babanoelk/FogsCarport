@@ -49,6 +49,7 @@
             <th>Kommentar</th>
             <th>
                 <select name="status_column" id="status_column" onchange="updateTable()">
+                    <option value="alle">Alle</option>
                     <option th:each="status : ${statusList}" th:text="${status.getText()}" th:value="${status.getText()}"></option>
                 </select>
             </th>
@@ -84,14 +85,16 @@
             var orderStatus = orderStatusCell.textContent || orderStatusCell.innerText;
             var orderStatusLowercase = orderStatus.toLowerCase();
 
-            // Hide rows that don't contain the selected status
-            if (!orderStatusLowercase.includes(selectedStatus)) {
-                orderRow.style.display = "none";
+            if (selectedStatus === "alle") {
+                orderRow.style.display = ""; // Show all rows if "alle" is selected
+            } else if (!orderStatusLowercase.includes(selectedStatus)) {
+                orderRow.style.display = "none"; // Hide rows that don't contain the selected status
             } else {
-                orderRow.style.display = "";
+                orderRow.style.display = ""; // Show rows that match the selected status
             }
         }
     }
+
 
 
 </script>

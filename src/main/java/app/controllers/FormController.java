@@ -1,7 +1,9 @@
 package app.controllers;
 
+import app.dtos.UserCarportOrderDTO;
 import app.entities.Carport;
 import app.entities.Order;
+import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.*;
@@ -18,48 +20,54 @@ public class FormController {
 
 
         try {
-            //Carport width & length
+            //Carport data
             int carportWidth = Integer.parseInt(ctx.formParam("carport_width"));
             int carportLength = Integer.parseInt(ctx.formParam("carport_length"));
             int carportHeight = Integer.parseInt(ctx.formParam("carport_height"));
+            String note = ctx.formParam("note");
 
+            //Shed data
+            String shedChoice = ctx.formParam("redskabsrum");
 
-            //Shed width & length
-            //int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
-            //int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
-
-
-            //User information
+            //User data
             String name = ctx.formParam("name");
             String address = ctx.formParam("address");
             int zip = Integer.parseInt(ctx.formParam("zip"));
             int mobile = Integer.parseInt(ctx.formParam("phone"));
             String email = ctx.formParam("email");
             String password = (ctx.formParam("pass"));
+            boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
 
-            //boolean permission = Boolean.parseBoolean(ctx.formParam("permission"));
+            //Create User instance from input data
+            User user = new User(name, email, password, address, mobile, zip, consent);
 
-            /*
-            // Get the current LocalDateTime
-            LocalDateTime currentDateTime = LocalDateTime.now();
+            //Create Carport instance from carport input data
+            Carport carport = new Carport(carportWidth, carportLength, carportHeight);
 
-            // Convert LocalDateTime to Date
-            Date currentDate = Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            //Create Order instance from note
+            Order order = new Order(note);
 
-  */
-            User user = new User(name, email, password, address, mobile, zip);
-            Order order = new Order();
-            Carport carport = new Carport(carportWidth,carportLength,carportHeight);
+            if(shedChoice.equalsIgnoreCase("ja")){
+                int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
+                int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
+                Shed shed = new Shed(shedWidth, shedLength);
+                carport.setShed(shed);
+            }
 
-            User user1 = UserMapper.addUser(user,connectionPool);
-            Carport carport1 = CarportMapper.addCarport(carport, connectionPool);
+            UserCarportOrderDTO dto = new UserCarportOrderDTO(user, carport, order);
+            OrderMapper.addOrder(dto, connectionPool);
 
-            OrderMapper.addOrder(order, user1, carport1, connectionPool);
+
+
+            ctx.attribute("name", name);
+            ctx.attribute("length", carportLength);
+            ctx.attribute("width", carportWidth);
 
             ctx.render("tilbud-indsendt.html");
         } catch (Exception e) {
+            loadMeasurements(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());
-            ctx.render("fejlside.html");
+            ctx.render("bestilling.html");
         }
 
 
@@ -68,6 +76,7 @@ public class FormController {
     public static void loadMeasurements(Context ctx, ConnectionPool connectionPool){
 
         try {
+            //Carport data
             List<Integer> lengthList = MeasurementMapper.getAllLengths(connectionPool);
             List<Integer> widthList = MeasurementMapper.getAllWidths(connectionPool);
             List<Integer> heightList = MeasurementMapper.getAllHeights(connectionPool);
@@ -75,6 +84,8 @@ public class FormController {
             ctx.attribute("lengthList", lengthList);
             ctx.attribute("widthList", widthList);
             ctx.attribute("heightList", heightList);
+
+            //Shed data:
 
             ctx.render("bestilling.html");
 

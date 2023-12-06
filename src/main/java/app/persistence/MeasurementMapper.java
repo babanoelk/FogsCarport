@@ -14,7 +14,7 @@ public class MeasurementMapper {
     {
         List<Integer> lengths = new ArrayList<>();
 
-        String sql = "select * from length where length >= 150";
+        String sql = "select * from length order by length";
 
         try (Connection connection = connectionPool.getConnection())
         {
@@ -39,7 +39,7 @@ public class MeasurementMapper {
     {
         List<Integer> widths = new ArrayList<>();
 
-        String sql = "select * from width where width >= 150";
+        String sql = "select * from width order by width";
 
         try (Connection connection = connectionPool.getConnection())
         {
@@ -59,7 +59,6 @@ public class MeasurementMapper {
         }
         return widths;
     }
-
 
     public static List<Integer> getAllHeights(ConnectionPool connectionPool) throws DatabaseException
     {

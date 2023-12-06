@@ -40,7 +40,7 @@
 </div>
 
 <div id="ordre_liste">
-    <h2>Hej <span th:text="${session.currentUser.getName()}"/> Din ordre</h2>
+    <h2>Hej <span th:text="${session.currentUser.getName()}"/>Alle ordre</h2>
     <table>
         <tr>
             <th>Ordre ID</th>
@@ -49,14 +49,14 @@
             <th>Samtykkeerklæring</th>
             <th>Status</th>
         </tr>
-        <tr th:each="order : ${orderlist}">
-            <td th:text="${order.getOrderId()}">Ordre ID</td>
+        <tr th:each="order : ${allOrders}">
+            <td th:text="${order.getId()}">Ordre ID</td>
             <td th:text="${order.getDate()}">Dato</td>
             <td th:text="${order.getCustomerNote}">Kommentar</td>
             <td th:text="${order.getOrderStatus}">Status</td>
             <td>
                 <form class="taskform" method="post">
-                    <button type="submit" name="order_id" th:value="${order.getOrderId()}" formaction="/delete">Delete</button>
+                    <button type="submit" name="order_id" formaction="/delete">Delete</button>
                 </form>
             </td>
         </tr>

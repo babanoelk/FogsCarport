@@ -6,10 +6,8 @@ import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
-import app.persistence.UserMapper;
 import io.javalin.http.Context;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderController {
@@ -18,8 +16,10 @@ public class OrderController {
 
         try {
             User user = ctx.sessionAttribute("currentUser");
-            Order order = ctx.sessionAttribute("orderlist");
-            OrderMapper.deleteOrder(order, user, connectionPool);
+            int result = Integer.parseInt(ctx.formParam("order_id"));
+            OrderMapper.deleteOrderByOrderID(result,connectionPool);
+
+            ctx.render("ordre-slettet.html");
             return true;
         } catch (DatabaseException e) {
             throw new DatabaseException("Fejl sletning af ordre " + e.getMessage());
@@ -31,9 +31,15 @@ public class OrderController {
         try
         {
             User user = ctx.sessionAttribute("currentUser");
-            List<GetOrderWithIdDateCustomerNoteConsentStatus> orders = OrderMapper.getAllOrders(user, connectionPool);
-            ctx.attribute("orderlist", orders);
-            ctx.render("min-side.html");
+            if (user.getRole() == 1) {
+                List<GetOrderWithIdDateCustomerNoteConsentStatus> orders = OrderMapper.getAllOrdersByUser(user, connectionPool);
+                ctx.attribute("orderlist", orders);
+                ctx.render("min-side.html");
+            } else {
+                List<Order> allOrders = OrderMapper.getAllOrders(connectionPool);
+                ctx.attribute("allOrders", allOrders);
+                ctx.render("admin-side.html");
+            }
         }
         catch (DatabaseException e)
         {

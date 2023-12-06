@@ -7,7 +7,6 @@ import app.controllers.SystemController;
 import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
 public class Main {
@@ -38,6 +37,8 @@ public class Main {
         app.post("/min-side", ctx -> UserController.login(ctx,connectionPool));
         app.get("/min-side", ctx -> OrderController.getAllOrders(ctx,connectionPool));
         app.post("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
+        //app.get("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
+
     }
 
 }

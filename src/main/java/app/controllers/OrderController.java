@@ -2,10 +2,12 @@ package app.controllers;
 
 import app.dtos.GetOrderWithIdDateCustomerNoteConsentStatus;
 import app.entities.Order;
+import app.entities.Status;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
+import app.persistence.StatusMapper;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -36,7 +38,11 @@ public class OrderController {
                 ctx.attribute("orderlist", orders);
                 ctx.render("min-side.html");
             } else {
+                List<Status> statusList = StatusMapper.getAllStatuses(connectionPool);
                 List<Order> allOrders = OrderMapper.getAllOrders(connectionPool);
+                ctx.sessionAttribute("currentSession", "all");
+
+                ctx.attribute("statusList", statusList);
                 ctx.attribute("allOrders", allOrders);
                 ctx.render("admin-side.html");
             }

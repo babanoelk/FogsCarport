@@ -41,13 +41,19 @@
 
 <div id="ordre_liste">
     <h2>Hej <span th:text="${session.currentUser.getName()}"/>Alle ordre</h2>
-    <table>
+    <table id="order_table">
         <tr>
             <th>Ordre ID</th>
             <th>Dato</th>
             <th>Kommentar</th>
-            <th>Samtykkeerklæring</th>
-            <th>Status</th>
+            <th>
+                <select name="status_column" id="status_column" onchange="updateTable()">
+                    <option th:each="status : ${statusList}" th:text="${status.getText()}" th:value="${status.getText()}"></option>
+                </select>
+            </th>
+            <th>
+                Handlinger
+            </th>
         </tr>
         <tr th:each="order : ${allOrders}">
             <td th:text="${order.getId()}">Ordre ID</td>
@@ -62,11 +68,37 @@
         </tr>
     </table>
 </div>
+<script>
+    function updateTable() {
+        // Declare variables
+        var statusSelect = document.getElementById("status_column");
+        var selectedStatus = statusSelect.value.toLowerCase();
+        var orderTable = document.getElementById("order_table");
+        var tableRows = orderTable.getElementsByTagName("tr");
 
+        // Loop through all table rows, except the header row
+        for (var i = 1; i < tableRows.length; i++) {
+            var orderRow = tableRows[i];
+            var orderStatusCell = orderRow.getElementsByTagName("td")[3];
+            var orderStatus = orderStatusCell.textContent || orderStatusCell.innerText;
+            var orderStatusLowercase = orderStatus.toLowerCase();
+
+            // Hide rows that don't contain the selected status
+            if (!orderStatusLowercase.includes(selectedStatus)) {
+                orderRow.style.display = "none";
+            } else {
+                orderRow.style.display = "";
+            }
+        }
+    }
+
+
+</script>
 
 <footer>
     <!-- REPLACE ME WITH A FRAGMENT -->
     <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+
 </footer>
 </body>
 </html>

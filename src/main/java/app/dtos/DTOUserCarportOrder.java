@@ -1,14 +1,13 @@
 package app.dtos;
 
 import app.entities.*;
-import app.persistence.ConnectionPool;
 
-public class UserCarportOrderDTO {
+public class DTOUserCarportOrder {
     private User user;
     private Carport carport;
     private Order order;
 
-    public UserCarportOrderDTO(User user, Carport carport, Order order) {
+    public DTOUserCarportOrder(User user, Carport carport, Order order) {
         this.user = user;
         this.carport = carport;
         this.order = order;

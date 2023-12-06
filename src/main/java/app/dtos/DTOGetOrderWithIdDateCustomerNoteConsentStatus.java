@@ -2,13 +2,13 @@ package app.dtos;
 
 import java.sql.Date;
 
-public class GetOrderWithIdDateCustomerNoteConsentStatus {
+public class DTOGetOrderWithIdDateCustomerNoteConsentStatus {
     private int orderId;
     private Date date;
     private String customerNote;
     private String orderStatus;
 
-    public GetOrderWithIdDateCustomerNoteConsentStatus(int orderId, Date date, String customerNote, String orderStatus) {
+    public DTOGetOrderWithIdDateCustomerNoteConsentStatus(int orderId, Date date, String customerNote, String orderStatus) {
         this.orderId = orderId;
         this.date = date;
         this.customerNote = customerNote;

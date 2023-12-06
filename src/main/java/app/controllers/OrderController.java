@@ -1,6 +1,7 @@
 package app.controllers;
 
-import app.dtos.GetOrderWithIdDateCustomerNoteConsentStatus;
+import app.dtos.DTOGetOrderWithIdDateCustomerNoteConsentStatus;
+import app.dtos.DTOSpecificOrderByOrderIdWithUserAndCarportAndShed;
 import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
@@ -11,6 +12,21 @@ import io.javalin.http.Context;
 import java.util.List;
 
 public class OrderController {
+
+
+    public static void getSpecificOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+
+        try {
+            User user = ctx.sessionAttribute("currentUser");
+            int result = Integer.parseInt(ctx.formParam("order_id"));
+            DTOSpecificOrderByOrderIdWithUserAndCarportAndShed specificOrderByOrderIdWithUserAndCarportAndShed = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(result,connectionPool);
+            ctx.attribute("order",specificOrderByOrderIdWithUserAndCarportAndShed);
+            //specificOrderByOrderIdWithUserAndCarportAndShed.getUserI
+            ctx.render("se-nærmere-på-ordre.html");
+        } catch (DatabaseException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 
     public static boolean deleteOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 
@@ -32,7 +48,7 @@ public class OrderController {
         {
             User user = ctx.sessionAttribute("currentUser");
             if (user.getRole() == 1) {
-                List<GetOrderWithIdDateCustomerNoteConsentStatus> orders = OrderMapper.getAllOrdersByUser(user, connectionPool);
+                List<DTOGetOrderWithIdDateCustomerNoteConsentStatus> orders = OrderMapper.getAllOrdersByUser(user, connectionPool);
                 ctx.attribute("orderlist", orders);
                 ctx.render("min-side.html");
             } else {

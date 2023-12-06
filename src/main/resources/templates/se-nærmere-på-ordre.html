@@ -37,55 +37,14 @@
     <!-- Information som vises til sælgeren -->
 
     <div id="main-content">
-        <h2>Du er nu ved at rette i ordrenummeret: <span th:text="${}"/></h2> <!-- Det kunne være fedt, hvis der ordrenummeret står her-->
+       <!-- <h2>Du er nu ved at rette i ordrenummeret: <span th:text="${}"/></h2>  Det kunne være fedt, hvis der ordrenummeret står her-->
 
         <!--kontakt oplysniger, -->
         <h4>Kontakt Oplysninger</h4>
 
         <!--Bruger ID-->
-        <h4>Bruger ID: <span th:text="${}"/></h4>
-
-        <!--Viser navnet-->
-        <h4>Navn: <span th:text="${}"/></h4>
-
-        <!--Viser adressen -->
-        <h4>Adresse: <span th:text="${}"/></h4>
-
-        <!--Viser postnummeret oplysniger, -->
-        <h4>Postnummer: <span th:text="${}"/></h4>
-
-        <!--Viser mobilnummeret -->
-        <h4>Telefon nr: <span th:text="${}"/></h4>
-
-        <!--Viser mailadressen-->
-        <h4>Email: <span th:text="${}"/></h4>
-
-        <!--Carport oplysninger -->
-        <h4>Carport Oplysninger</h4>
-
-        <!--Bredde oplysninger -->
-        <h4>Bredde: <span th:text="${}"/></h4>
-
-        <!--Længde oplysninger -->
-        <h4>Længde: <span th:text="${}"/></h4>
-
-        <!--Højde oplysninger -->
-        <h4>Højde: <span th:text="${}"/></h4>
-
-        <!--Trapetztag oplysninger -->
-        <h4>Trapetztag: <span th:text="${}"/></h4>
-
-        <!--Skur oplysninger -->
-        <h4>Skur Oplysninger</h4>
-
-        <!--Bredde oplysninger -->
-        <h4>Bredde: <span th:text="${}"/></h4>
-
-        <!--Længde oplysninger -->
-        <h4>Længde: <span th:text="${}"/></h4>
-
-        <!--Bemærkninger -->
-        <h4>Bemærkninger: <span th:text="${}"/></h4>
+        <h4>Bruger ID: <span th:text="${order.getUserId()}"/></h4>
+       
 
         <!--Opdatere oplysningerne forneden -->
         <h1>Opdatere forneden</h1>

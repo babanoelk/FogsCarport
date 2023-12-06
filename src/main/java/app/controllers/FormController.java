@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.dtos.UserCarportOrderDTO;
+import app.dtos.DTOUserCarportOrder;
 import app.entities.Carport;
 import app.entities.Order;
 import app.entities.Shed;
@@ -8,9 +8,7 @@ import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.*;
 import io.javalin.http.Context;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+
 import java.util.List;
 
 
@@ -54,7 +52,7 @@ public class FormController {
                 carport.setShed(shed);
             }
 
-            UserCarportOrderDTO dto = new UserCarportOrderDTO(user, carport, order);
+            DTOUserCarportOrder dto = new DTOUserCarportOrder(user, carport, order);
             OrderMapper.addOrder(dto, connectionPool);
 
 

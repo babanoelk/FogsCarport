@@ -72,7 +72,7 @@
             </td>
             <td>
                 <form class="taskform" method="post">
-                    <button type="submit" name="order_id" formaction="/delete">Delete</button>
+                    <button type="submit" name="order_id" th:value="${order.getId()}" formaction="/se-order">Se ordre</button>
                 </form>
             </td>
         </tr>

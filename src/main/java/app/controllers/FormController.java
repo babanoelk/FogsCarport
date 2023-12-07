@@ -74,6 +74,7 @@ public class FormController {
     public static void loadMeasurements(Context ctx, ConnectionPool connectionPool){
 
         try {
+            //Carport data
             List<Integer> lengthList = MeasurementMapper.getAllLengths(connectionPool);
             List<Integer> widthList = MeasurementMapper.getAllWidths(connectionPool);
             List<Integer> heightList = MeasurementMapper.getAllHeights(connectionPool);
@@ -81,6 +82,8 @@ public class FormController {
             ctx.attribute("lengthList", lengthList);
             ctx.attribute("widthList", widthList);
             ctx.attribute("heightList", heightList);
+
+            //Shed data:
 
             ctx.render("bestilling.html");
 

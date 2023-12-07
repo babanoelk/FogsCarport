@@ -3,10 +3,12 @@ package app.controllers;
 import app.dtos.DTOGetOrderWithIdDateCustomerNoteConsentStatus;
 import app.dtos.DTOSpecificOrderByOrderIdWithUserAndCarportAndShed;
 import app.entities.Order;
+import app.entities.Status;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
+import app.persistence.StatusMapper;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -52,7 +54,11 @@ public class OrderController {
                 ctx.attribute("orderlist", orders);
                 ctx.render("min-side.html");
             } else {
+                List<Status> statusList = StatusMapper.getAllStatuses(connectionPool);
                 List<Order> allOrders = OrderMapper.getAllOrders(connectionPool);
+                //ctx.sessionAttribute("currentSession", "all");
+
+                ctx.attribute("statusList", statusList);
                 ctx.attribute("allOrders", allOrders);
                 ctx.render("admin-side.html");
             }
@@ -63,4 +69,14 @@ public class OrderController {
         }
     }
 
+    public static void updateOrderStatus(Context ctx, ConnectionPool connectionPool) {
+        try {
+            int orderId = Integer.parseInt(ctx.formParam("order_id"));
+            int statusId = Integer.parseInt(ctx.formParam("status_id"));
+            OrderMapper.updateOrderStatus(orderId, statusId, connectionPool);
+            getAllOrders(ctx, connectionPool);
+        } catch (DatabaseException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

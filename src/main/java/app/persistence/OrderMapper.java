@@ -252,4 +252,19 @@ public class OrderMapper {
     }
 
 
+    public static void updateOrderStatus(int orderId, int statusId, ConnectionPool connectionPool) throws DatabaseException{
+        String sql = "update public.order set order_status = ? where id = ?";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, statusId);
+                ps.setInt(2, orderId);
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected != 1) {
+                    throw new DatabaseException("Ordre ikke opdateret");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 }

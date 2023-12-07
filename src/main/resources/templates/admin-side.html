@@ -41,32 +41,70 @@
 
 <div id="ordre_liste">
     <h2>Hej <span th:text="${session.currentUser.getName()}"/></h2>
-    <h3>Alle ordrer:</h3>
-    <table>
+    <p>Alle ordre</p>
+    <table id="order_table">
         <tr>
             <th>Ordre ID</th>
             <th>Dato</th>
             <th>Kommentar</th>
-            <th>Status</th>
+            <th>
+                <select name="status_column" id="status_column" onchange="updateTable()">
+                    <option value="alle">Alle</option>
+                    <option th:each="status : ${statusList}" th:text="${status.getText()}" th:value="${status.getText()}"></option>
+                </select>
+            </th>
+            <th>
+                Handlinger
+            </th>
         </tr>
         <tr th:each="order : ${allOrders}">
             <td th:text="${order.getId()}">Ordre ID</td>
             <td th:text="${order.getDate()}">Dato</td>
             <td th:text="${order.getCustomerNote}">Kommentar</td>
-            <td th:text="${order.getOrderStatus}">Status</td>
+            <td>
+                <form method="post">
+                <select name="status_id">
+                    <option th:text="${order.getOrderStatus}" value="current_status" selected></option>
+                    <option th:each="status : ${statusList}" th:unless="${status.getText()==order.getOrderStatus}" th:text="${status.getText()}" th:value="${status.getId()}"></option>
+                </select>
+                    <button type="submit" name="order_id" formaction="/opdater-ordre" th:value="${order.getId()}">Gem</button>
+                </form>
+            </td>
             <td>
                 <form class="taskform" method="post">
-                    <button type="submit" name="order_id" th:value="${order.getId()}" formaction="/se-order">Se nærmere</button>
+                    <button type="submit" name="order_id" formaction="/delete">Delete</button>
                 </form>
             </td>
         </tr>
     </table>
 </div>
+<script>
+    function updateTable() {
+        var statusSelect = document.getElementById("status_column");
+        var selectedStatus = statusSelect.value.toLowerCase();
+        var orderTable = document.getElementById("order_table");
+        var tableRows = orderTable.getElementsByTagName("tr");
 
+        for (var i = 1; i < tableRows.length; i++) {
+            var orderRow = tableRows[i];
+            var orderStatusCell = orderRow.getElementsByTagName("td")[3];
+            var orderStatusSelect = orderStatusCell.getElementsByTagName("select")[0];
+            var orderStatus = orderStatusSelect ? orderStatusSelect.options[orderStatusSelect.selectedIndex].text.toLowerCase() : "";
+
+            if (selectedStatus === "alle" || orderStatus === selectedStatus) {
+                orderRow.style.display = "";
+            } else {
+                orderRow.style.display = "none";
+            }
+        }
+    }
+
+</script>
 
 <footer>
     <!-- REPLACE ME WITH A FRAGMENT -->
     <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+
 </footer>
 </body>
 </html>

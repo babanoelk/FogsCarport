@@ -39,6 +39,7 @@ public class Main {
         app.post("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
         app.post("/se-order", ctx -> OrderController.getSpecificOrder(ctx,connectionPool));
         //app.get("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
+        app.post("/opdater-ordre", ctx -> OrderController.updateOrderStatus(ctx, connectionPool));
 
     }
 

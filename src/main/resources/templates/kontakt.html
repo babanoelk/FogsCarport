@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<title>Frontpage</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div id="nav-fullwidth">
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <div id="navbar">
+        <div id="logo">
+            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
+        </div>
+        <ul class="main-menu">
+            <li class="button"><a href="/">Hjem</a></li>
+            <li class="button"><a href="/">Bestil unik carport</a></li>
+            <li class="button"><a href="/">Login</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="main-content">
+    <div class="Order-box">
+        <form id="form" action="/besked-indsendt">
+            <p>Navn: <span th:name="name" th:text="${session.currentUser.getName()}"/></p>
+            <p>Ordre nr: <span th:text="${order_id}"/></p>
+
+            <label for="subject">Besked</label>
+            <textarea id="subject" name="subject" placeholder="Hvad har du på hjertet?" style="height:200px"></textarea>
+
+            <input type="submit" value="Send">
+        </form>
+    </div>
+</div>
+
+<footer>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+</footer>
+</body>
+</html>

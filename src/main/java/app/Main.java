@@ -5,6 +5,7 @@ import app.controllers.FormController;
 import app.controllers.OrderController;
 import app.controllers.SystemController;
 import app.controllers.UserController;
+import app.entities.Order;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -36,10 +37,10 @@ public class Main {
         app.get("/login", ctx ->  ctx.render("login.html"));
         app.post("/min-side", ctx -> UserController.login(ctx,connectionPool));
         app.get("/min-side", ctx -> OrderController.getAllOrders(ctx,connectionPool));
-        app.post("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
+        app.post("/slet", ctx -> OrderController.deleteOrder(ctx,connectionPool));
         app.post("/se-order", ctx -> OrderController.getSpecificOrder(ctx,connectionPool));
-        //app.get("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
         app.post("/opdater-ordre", ctx -> OrderController.updateOrderStatus(ctx, connectionPool));
+        app.post("/kontakt", ctx -> OrderController.orderContact(ctx));
 
     }
 

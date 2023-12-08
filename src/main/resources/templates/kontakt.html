@@ -27,6 +27,9 @@
 
     <h1>Kontak os her</h1>
 
+    <p class="error_message" th:text="${#ctx.message}"></p>
+    <p th:text="${#ctx.confirmation}"></p>
+
     <div id="contact">
         <div class="contact">
             <div>
@@ -43,15 +46,30 @@
             </div>
         </div>
         <div>
-            <form class="contact" action="/besked-indsendt">
-                <p>Navn: <span th:name="name" th:text="${session.currentUser.getName()}"/></p>
+            <div id="hidden_menu">
+                <p th:text="${#ctx.confirmation}"></p>
+            </div>
+            <div >
+            <form class="contact" method="post" action="/besked-indsendt">
+                <!--
+                <p>Navn: <span th:name="name" th:value="${session.currentUser.getName()}" th:text="${session.currentUser.getName()}"/></p>
+                <p>Email: <span th:name="email" th:value="${session.currentUser.getEmail()}" th:text="${session.currentUser.getEmail()}"/></p>
+                <p>Ordre nr: <span th:text="${order_id}"/></p> -->
+
+                <input type="hidden" th:name="name" th:value="${session.currentUser.getName()}" />
+                <input type="hidden" th:name="email" th:value="${session.currentUser.getEmail()}" />
+                <input type="hidden" th:name="order_id" th:value="${order_id}" />
+                <p>Navn: <span th:text="${session.currentUser.getName()}"/></p>
+                <p>Email: <span th:text="${session.currentUser.getEmail()}"/></p>
                 <p>Ordre nr: <span th:text="${order_id}"/></p>
 
-                <label for="subject">Besked</label>
-                <textarea id="subject" name="subject" placeholder="Hvad har du på hjertet?"
+
+                <label for="message">Besked</label>
+                <textarea id="message" th:name="message" th:value="message" placeholder="Hvad har du på hjertet?"
                           style="height:200px"></textarea>
                 <input type="submit" value="Send">
             </form>
+            </div>
         </div>
     </div>
 </div>

@@ -11,9 +11,14 @@ hr {
     background-color:#134d8a;
 }
 
-input, textarea{
+input, textarea, select{
     padding: 10px
 }
+
+p{
+    margin: 5px;
+}
+
 
 table {
     font-family: arial, sans-serif;
@@ -63,7 +68,7 @@ body{
     align-items: center;
 }
 
-#main-content {
+#main-content{
     margin: 0 auto;
     margin-top: 10px;
     max-width: 1280px;
@@ -147,7 +152,7 @@ a:link, a:visited{
 }
 
 
-#form {
+.form, .contact {
     background-color: white;
     margin-top: 20px;
     padding: 20px;
@@ -156,7 +161,19 @@ a:link, a:visited{
     gap: 10px;
 }
 
+#hidden_menu select {
+    width: 100%;
+    box-sizing: border-box;
+}
 
+.contact{
+    min-height: 420px;
+}
+
+#contact{
+    display: flex;
+    gap: 20px;
+}
 
 footer {
     margin-top: auto; /* Placerer footer nederst på siden */

@@ -1,14 +1,12 @@
 package app.controllers;
 
-import app.dtos.DTOGetOrderWithIdDateCustomerNoteConsentStatus;
-import app.dtos.DTOUserWithUserIdNameAddressZipcodeMobileEmail;
+import app.dtos.*;
 import app.entities.Order;
+import app.entities.Shed;
 import app.entities.Status;
 import app.entities.User;
 import app.exceptions.DatabaseException;
-import app.persistence.ConnectionPool;
-import app.persistence.OrderMapper;
-import app.persistence.StatusMapper;
+import app.persistence.*;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -19,17 +17,24 @@ public class OrderController {
     public static void getSpecificOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 
         try {
-            //User user = ctx.sessionAttribute("currentUser");
+            //Order ID
             int result = Integer.parseInt(ctx.formParam("order_id"));
             ctx.attribute("orderID", result);
-            //ctx.req().getSession().setAttribute("user", user);
 
+            //Brugeren
             DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(result, connectionPool);
             ctx.sessionAttribute("user", oldUser);
 
+            //Carporten
+            DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(result, connectionPool);
+            ctx.sessionAttribute("old_carport", oldCarport);
 
-            //user.
+            //Shed
+            DTOShedIdLengthWidth oldShed = OrderMapper.getSpecificShedByOrderId(result, connectionPool);
+            ctx.sessionAttribute("old_shed", oldShed);
 
+
+            //Load data
             FormController.loadMeasurements(ctx, connectionPool);
 
             ctx.render("se-nærmere-på-ordre.html");
@@ -84,50 +89,322 @@ public class OrderController {
         }
     }
 
-    public static void updateOrderUser(Context ctx, ConnectionPool connectionPool) {
+    public static void updateOrderUser(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+
+        String updateName;
+        String updateAddress;
+        int updateZipcode;
+        int updateMobile;
+        String updateEmail;
 
         DTOUserWithUserIdNameAddressZipcodeMobileEmail dto = ctx.sessionAttribute("user");
-        System.out.println(dto.getEmail());
-
 
         //Old information
-        dto.getName();
-        dto.getAddress();
-        dto.getZipcode();
-        dto.getMobile();
-        dto.getEmail();
+        String oldUserName = dto.getName();
+        String oldUserAddress = dto.getAddress();
+        int oldUserZipcode = dto.getZipcode();
+        int oldUserMobile = dto.getMobile();
+        String oldUserEmail = dto.getEmail();
 
         //New information
-        String newName = ctx.formParam("newName");
-        String newAddress = ctx.formParam("newAddress");
-        int newZipcode = Integer.parseInt(ctx.formParam("newZipcode"));
-        int newMobile = Integer.parseInt(ctx.formParam("newMobile"));
-        String newEmail = ctx.formParam("newEmail");
-
-            /*
-            //User ID
-            int userId = Integer.parseInt(ctx.formParam("user_id"));
-
-            DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = (DTOUserWithUserIdNameAddressZipcodeMobileEmail) ctx.req().getSession().getAttribute("user");
-
-            System.out.println(oldUser.getUserId());
-            //Old information
-            //String oldOrder = ctx.formParam("old");
+        String newInputName = ctx.formParam("newName");
+        String newInputAddress = ctx.formParam("newAddress");
+        String newInputZipcodeStr = ctx.formParam("newZipcode");
+        String newInputMobileStr = ctx.formParam("newMobile");
+        String newInputEmail = ctx.formParam("newEmail");
 
 
-            //New information
-            String newName = ctx.formParam("newName");
-            String newAddress = ctx.formParam("newAddress");
-            int newZipcode = Integer.parseInt(ctx.formParam("newZipcode"));
-            int newMobile = Integer.parseInt(ctx.formParam("newMobile"));
-            String newEmail = ctx.formParam("newEmail");
+        // Checking if name is null or empty
+        if (newInputName != null && !newInputName.isEmpty()) {
+            // The newInputName is not null and not empty
+            updateName = newInputName;
+        } else {
+            // The newInputName is either null or empty
+            updateName = oldUserName;
+        }
+
+        // Checking if address is null or empty
+        if (newInputAddress != null && !newInputAddress.isEmpty()) {
+            // The newInputAddress is not null and not empty
+            updateAddress = newInputAddress;
+        } else {
+            // The newInputAddress is either null or empty
+            updateAddress = oldUserAddress;
+        }
+
+        // Checking if zipcode is null or empty
+        if (newInputZipcodeStr != null && !newInputZipcodeStr.isEmpty()) {
+            // Attempt to parse the newInputZipcodeStr to an integer
+            try {
+                updateZipcode = Integer.parseInt(newInputZipcodeStr);
+            } catch (NumberFormatException e) {
+                // Handle the case where the string is not a valid integer
+                // You might want to log an error or set a default value
+                updateZipcode = oldUserZipcode; // Set a default value or use oldUserZipcode
+            }
+        } else {
+            // The newInputZipcodeStr is either null or empty
+            // Set a default value or use the oldUserZipcode
+            updateZipcode = oldUserZipcode; // Set a default value or use oldUserZipcode
+        }
+
+// Checking if mobile is null or empty
+        if (newInputMobileStr != null && !newInputMobileStr.isEmpty()) {
+            // Attempt to parse the newInputMobileStr to an integer
+            try {
+                updateMobile = Integer.parseInt(newInputMobileStr);
+            } catch (NumberFormatException e) {
+                // Handle the case where the string is not a valid integer
+                // You might want to log an error or set a default value
+                updateMobile = oldUserMobile; // Set a default value or use oldUserMobile
+            }
+        } else {
+            // The newInputMobileStr is either null or empty
+            // Set a default value or use the oldUserMobile
+            updateMobile = oldUserMobile; // Set a default value or use oldUserMobile
+        }
+
+// Checking if email is null or empty
+        if (newInputEmail != null && !newInputEmail.isEmpty()) {
+            // The newInputEmail is not null and not empty
+            updateEmail = newInputEmail;
+        } else {
+            // The newInputEmail is either null or empty
+            updateEmail = oldUserEmail;
+        }
+
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = new DTOUserWithUserIdNameAddressZipcodeMobileEmail
+                (dto.getUserId(), updateName, updateAddress, updateZipcode, updateMobile, updateEmail);
+
+        //Opdater brugere oplysningerne
+        UserMapper.updateUser(dtoUserWithUserIdNameAddressZipcodeMobileEmail, connectionPool);
 
 
-            //OrderMapper.updateOrderStatus(orderId, statusId, connectionPool);
-            getAllOrders(ctx, connectionPool);*/
+        //int result = Integer.parseInt(ctx.formParam("orderID"));
+        int orderID = Integer.parseInt(ctx.formParam("orderID"));
 
-        //ctx.req().setAttribute("user", dto);
-        //ctx.sessionAttribute("user",null);
+
+        ctx.attribute("orderID", orderID);
+
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderID, connectionPool);
+        ctx.sessionAttribute("user", oldUser);
+        FormController.loadMeasurements(ctx, connectionPool);
+
+
+        //Load the page
+        ctx.render("se-nærmere-på-ordre.html");
+    }
+
+    public static void updateCarport(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+
+        int updateLength;
+        int updateWidth;
+        int updateHeight;
+
+        DTOCarportWithIdLengthWidthHeight dto = ctx.sessionAttribute("old_carport");
+
+        //Old information
+        int oldCarportLength = dto.getLength();
+        int oldCarportWidth = dto.getWidth();
+        int oldCarportHeight = dto.getHeight();
+
+
+        //New information
+        String newInputLengthStr = ctx.formParam("newLength");
+        String newInputWidthStr = ctx.formParam("newWidth");
+        String newInputHeightStr = ctx.formParam("newHeight");
+
+        if (newInputLengthStr != null && !newInputLengthStr.isEmpty()) {
+            try {
+                updateLength = Integer.parseInt(newInputLengthStr);
+            } catch (NumberFormatException e) {
+                updateLength = oldCarportLength;
+            }
+        } else {
+            updateLength = oldCarportLength;
+        }
+
+        //Width
+        if (newInputWidthStr != null && !newInputWidthStr.isEmpty()) {
+            try {
+                updateWidth = Integer.parseInt(newInputWidthStr);
+            } catch (NumberFormatException e) {
+                updateWidth = oldCarportWidth;
+            }
+        } else {
+            updateWidth = oldCarportWidth;
+        }
+
+        if (newInputHeightStr != null && !newInputHeightStr.isEmpty()) {
+            try {
+                updateHeight = Integer.parseInt(newInputHeightStr);
+            } catch (NumberFormatException e) {
+                updateHeight = oldCarportHeight;
+            }
+        } else {
+            updateHeight = oldCarportHeight;
+        }
+
+        DTOCarportWithIdLengthWidthHeight carportWithIdLengthWidthHeight = new DTOCarportWithIdLengthWidthHeight
+                (dto.getId(), updateLength, updateWidth, updateHeight);
+
+        //Opdater brugere oplysningerne
+        CarportMapper.updateCarport(carportWithIdLengthWidthHeight, connectionPool);
+
+
+        //int result = Integer.parseInt(ctx.formParam("orderID"));
+        int orderID = Integer.parseInt(ctx.formParam("orderID"));
+
+
+        ctx.attribute("orderID", orderID);
+
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderID, connectionPool);
+        ctx.sessionAttribute("user", oldUser);
+
+        DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(orderID, connectionPool);
+        ctx.sessionAttribute("old_carport", oldCarport);
+
+        FormController.loadMeasurements(ctx, connectionPool);
+
+
+        //Load the page
+        ctx.render("se-nærmere-på-ordre.html");
+    }
+
+    public static void updateShed(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+
+        int updateLength;
+        int updateWidth;
+
+        DTOShedIdLengthWidth dto = ctx.sessionAttribute("old_shed");
+
+        //Old information
+        int oldShedLength = dto.getLength();
+        int oldShedWidth = dto.getWidth();
+
+
+        //New information
+        String newInputLengthStr = ctx.formParam("shed_length");
+        String newInputWidthStr = ctx.formParam("shed_width");
+
+        if (newInputLengthStr != null && !newInputLengthStr.isEmpty()) {
+            try {
+                updateLength = Integer.parseInt(newInputLengthStr);
+            } catch (NumberFormatException e) {
+                updateLength = oldShedLength;
+            }
+        } else {
+            updateLength = oldShedLength;
+        }
+
+        //Width
+        if (newInputWidthStr != null && !newInputWidthStr.isEmpty()) {
+            try {
+                updateWidth = Integer.parseInt(newInputWidthStr);
+            } catch (NumberFormatException e) {
+                updateWidth = oldShedWidth;
+            }
+        } else {
+            updateWidth = oldShedWidth;
+        }
+
+        DTOShedIdLengthWidth shedIdLengthWidth = new DTOShedIdLengthWidth
+                (dto.getId(), updateLength, updateWidth);
+
+
+        //Opdater brugere oplysningerne
+        ShedMapper.updateShed(shedIdLengthWidth, connectionPool);
+
+        //int result = Integer.parseInt(ctx.formParam("orderID"));
+        int orderID = Integer.parseInt(ctx.formParam("orderID"));
+
+        ctx.attribute("orderID", orderID);
+
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderID, connectionPool);
+        ctx.sessionAttribute("user", oldUser);
+
+        DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(orderID, connectionPool);
+        ctx.sessionAttribute("old_carport", oldCarport);
+
+        DTOShedIdLengthWidth oldShed = OrderMapper.getSpecificShedByOrderId(orderID, connectionPool);
+        ctx.sessionAttribute("old_shed", oldShed);
+
+        FormController.loadMeasurements(ctx, connectionPool);
+
+        //Load the page
+        ctx.render("se-nærmere-på-ordre.html");
+    }
+
+    public static void addShed(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+
+
+        //ShedMapper.addShed()
+        int updateLength;
+        int updateWidth;
+
+        DTOShedIdLengthWidth dto = ctx.sessionAttribute("old_shed");
+
+        //Old information
+        int oldShedLength = dto.getLength();
+        int oldShedWidth = dto.getWidth();
+
+
+        //New information
+        String newInputLengthStr = ctx.formParam("new_shed_length");
+        String newInputWidthStr = ctx.formParam("new_shed_width");
+
+        if (newInputLengthStr != null && !newInputLengthStr.isEmpty()) {
+            try {
+                updateLength = Integer.parseInt(newInputLengthStr);
+            } catch (NumberFormatException e) {
+                updateLength = oldShedLength;
+            }
+        } else {
+            updateLength = oldShedLength;
+        }
+
+        //Width
+        if (newInputWidthStr != null && !newInputWidthStr.isEmpty()) {
+            try {
+                updateWidth = Integer.parseInt(newInputWidthStr);
+            } catch (NumberFormatException e) {
+                updateWidth = oldShedWidth;
+            }
+        } else {
+            updateWidth = oldShedWidth;
+        }
+
+        DTOShedLengthWidth shedLengthWidth = new DTOShedLengthWidth
+                (updateLength, updateWidth);
+
+
+        //Opdater brugere oplysningerne
+        Shed newShed = ShedMapper.addShed(shedLengthWidth, connectionPool);
+
+        //int result = Integer.parseInt(ctx.formParam("orderID"));
+        int orderID = Integer.parseInt(ctx.formParam("orderID"));
+
+        ctx.attribute("orderID", orderID);
+
+        DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(orderID, connectionPool);
+        ctx.sessionAttribute("old_carport", oldCarport);
+
+        //Update Order with new created Shed
+        OrderMapper.addShedToSpecificOrderId(oldCarport.getId(), newShed.getId(), connectionPool);
+
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderID, connectionPool);
+        ctx.sessionAttribute("user", oldUser);
+
+        DTOShedIdLengthWidth oldShed = OrderMapper.getSpecificShedByOrderId(orderID, connectionPool);
+        oldShed.setId(newShed.getId());
+        oldShed.setLength(newShed.getLength());
+        oldShed.setWidth(newShed.getWidth());
+
+        ctx.sessionAttribute("old_shed", oldShed);
+
+        FormController.loadMeasurements(ctx, connectionPool);
+
+        //Load the page
         ctx.render("se-nærmere-på-ordre.html");
     }
 

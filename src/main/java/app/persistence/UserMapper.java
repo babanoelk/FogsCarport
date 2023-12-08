@@ -1,5 +1,6 @@
 package app.persistence;
 
+import app.dtos.DTOUserWithUserIdNameAddressZipcodeMobileEmail;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 
@@ -52,7 +53,7 @@ public class UserMapper {
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                ps.setString(1,email);
+                ps.setString(1, email);
                 ResultSet rs = ps.executeQuery();
                 rs.next();
 
@@ -84,8 +85,7 @@ public class UserMapper {
                 ps.setString(2, password);
 
                 ResultSet rs = ps.executeQuery();
-                if (rs.next())
-                {
+                if (rs.next()) {
                     isLoggedIn = true;
                 }
             }
@@ -95,4 +95,33 @@ public class UserMapper {
         return isLoggedIn;
     }
 
+    public static void updateUser(DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUser, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE public.user SET name = ?, email = ?, address = ?, mobile = ?, zipcode = ? WHERE id = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, dtoUser.getName());
+                ps.setString(2, dtoUser.getEmail());
+                ps.setString(3, dtoUser.getAddress());
+                ps.setInt(4, dtoUser.getMobile());
+                ps.setInt(5, dtoUser.getZipcode());
+                ps.setInt(6, dtoUser.getUserId());
+
+                int rowsAffected = ps.executeUpdate();
+
+                // Check the number of rows affected
+                if (rowsAffected > 0) {
+                    System.out.println("Update successful. Rows affected: " + rowsAffected);
+
+                } else {
+                    System.out.println("No rows were updated. Check your update query or conditions.");
+                    throw new DatabaseException("Der opstod en fejl under rettele af kontaktoplysninger");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
+

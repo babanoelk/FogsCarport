@@ -14,6 +14,12 @@ public class Shed {
         this.length = length;
     }
 
+    public Shed(int id, int width, int length) {
+        this.id = id;
+        this.width = width;
+        this.length = length;
+    }
+
     public Shed(int width, int length) {
         this.width = width;
         this.length = length;

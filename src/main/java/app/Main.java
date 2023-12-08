@@ -5,6 +5,7 @@ import app.controllers.FormController;
 import app.controllers.OrderController;
 import app.controllers.SystemController;
 import app.controllers.UserController;
+import app.persistence.CarportMapper;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -37,11 +38,18 @@ public class Main {
         app.get("/min-side", ctx -> OrderController.getAllOrders(ctx, connectionPool));
         app.post("/delete", ctx -> OrderController.deleteOrder(ctx, connectionPool));
         app.post("/se-order", ctx -> OrderController.getSpecificOrder(ctx, connectionPool));
+
         //app.get("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
+
         app.post("/opdater-ordre", ctx -> OrderController.updateOrderStatus(ctx, connectionPool));
         app.post("/name-chang", ctx -> OrderController.updateOrderUser(ctx, connectionPool));
-        app.post("/gem", ctx -> OrderController.updateOrderUser(ctx, connectionPool));
-        app.get("/gem", ctx -> OrderController.updateOrderUser(ctx, connectionPool));
+        app.post("/gem-bruger-oplysninger", ctx -> OrderController.updateOrderUser(ctx, connectionPool));
+        app.post("/gem-carport-oplysninger", ctx -> OrderController.updateCarport(ctx, connectionPool));
+        app.post("/gem-skur-oplysninger", ctx -> OrderController.updateShed(ctx, connectionPool));
+        app.post("/tilfoej-skur", ctx -> OrderController.addShed(ctx, connectionPool));
+
+        //app.post("/gem-bruger-oplysninger",ctx -> OrderController.u)
+        //app.get("/gem", ctx -> OrderController.updateOrderUser(ctx, connectionPool));
     }
 
 }

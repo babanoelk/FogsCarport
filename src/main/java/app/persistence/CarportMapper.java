@@ -1,5 +1,7 @@
 package app.persistence;
 
+import app.dtos.DTOCarportWithIdLengthWidthHeight;
+import app.dtos.DTOUserWithUserIdNameAddressZipcodeMobileEmail;
 import app.entities.Carport;
 import app.entities.Shed;
 import app.exceptions.DatabaseException;
@@ -84,4 +86,32 @@ public class CarportMapper {
 
         return shed;
     }
+
+    public static void updateCarport(DTOCarportWithIdLengthWidthHeight dtoUser, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "UPDATE public.carport SET width = ?, length = ?, height = ? WHERE id = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, dtoUser.getWidth());
+                ps.setInt(2, dtoUser.getLength());
+                ps.setInt(3, dtoUser.getHeight());
+                ps.setInt(4, dtoUser.getId());
+
+
+                int rowsAffected = ps.executeUpdate();
+
+                // Check the number of rows affected
+                if (rowsAffected > 0) {
+                    System.out.println("Update successful. Rows affected: " + rowsAffected);
+
+                } else {
+                    System.out.println("No rows were updated. Check your update query or conditions.");
+                    throw new DatabaseException("Der opstod en fejl under rettele af kontaktoplysninger");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

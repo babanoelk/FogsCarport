@@ -17,8 +17,7 @@ public class Main {
 
     private static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         // Initializing Javalin and Jetty webserver
 
         Javalin app = Javalin.create(config -> {
@@ -33,14 +32,16 @@ public class Main {
         app.get("/", ctx -> SystemController.load(ctx));
         app.get("/bestil-carport", ctx -> FormController.loadMeasurements(ctx, connectionPool));
         app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));
-        app.get("/login", ctx ->  ctx.render("login.html"));
-        app.post("/min-side", ctx -> UserController.login(ctx,connectionPool));
-        app.get("/min-side", ctx -> OrderController.getAllOrders(ctx,connectionPool));
-        app.post("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
-        app.post("/se-order", ctx -> OrderController.getSpecificOrder(ctx,connectionPool));
+        app.get("/login", ctx -> ctx.render("login.html"));
+        app.post("/min-side", ctx -> UserController.login(ctx, connectionPool));
+        app.get("/min-side", ctx -> OrderController.getAllOrders(ctx, connectionPool));
+        app.post("/delete", ctx -> OrderController.deleteOrder(ctx, connectionPool));
+        app.post("/se-order", ctx -> OrderController.getSpecificOrder(ctx, connectionPool));
         //app.get("/delete", ctx -> OrderController.deleteOrder(ctx,connectionPool));
         app.post("/opdater-ordre", ctx -> OrderController.updateOrderStatus(ctx, connectionPool));
-
+        app.post("/name-chang", ctx -> OrderController.updateOrderUser(ctx, connectionPool));
+        app.post("/gem", ctx -> OrderController.updateOrderUser(ctx, connectionPool));
+        app.get("/gem", ctx -> OrderController.updateOrderUser(ctx, connectionPool));
     }
 
 }

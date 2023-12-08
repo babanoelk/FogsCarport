@@ -3,6 +3,7 @@ package app.persistence;
 import app.dtos.DTOGetOrderWithIdDateCustomerNoteConsentStatus;
 import app.dtos.DTOSpecificOrderByOrderIdWithUserAndCarportAndShed;
 import app.dtos.DTOUserCarportOrder;
+import app.dtos.DTOUserWithUserIdNameAddressZipcodeMobileEmail;
 import app.entities.Carport;
 import app.entities.Order;
 import app.entities.User;
@@ -195,11 +196,12 @@ public class OrderMapper {
         return specificOrderByOrderIdWithUserAndCarportAndShed;
     }*/
 
-    public static DTOSpecificOrderByOrderIdWithUserAndCarportAndShed getSpecificOrderByOrderIdWithUserAndCarportAndShed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static DTOUserWithUserIdNameAddressZipcodeMobileEmail getSpecificOrderByOrderIdWithUserAndCarportAndShed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
 
         DTOSpecificOrderByOrderIdWithUserAndCarportAndShed specificOrderByOrderIdWithUserAndCarportAndShed;
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = null;
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -237,6 +239,9 @@ public class OrderMapper {
                         // No need to initialize shedId, shedWidth, and shedLength here
                     }
 
+                    dtoUserWithUserIdNameAddressZipcodeMobileEmail =
+                            new DTOUserWithUserIdNameAddressZipcodeMobileEmail(userId,name,address,zipcode,mobile,email);
+
                     specificOrderByOrderIdWithUserAndCarportAndShed = new DTOSpecificOrderByOrderIdWithUserAndCarportAndShed(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
                 } else {
                     // Handle the case where no rows are returned
@@ -248,11 +253,11 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return specificOrderByOrderIdWithUserAndCarportAndShed;
+        return dtoUserWithUserIdNameAddressZipcodeMobileEmail;
     }
 
 
-    public static void updateOrderStatus(int orderId, int statusId, ConnectionPool connectionPool) throws DatabaseException{
+    public static void updateOrderStatus(int orderId, int statusId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "update public.order set order_status = ? where id = ?";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -267,4 +272,27 @@ public class OrderMapper {
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    public static boolean updateName(String newName, int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        boolean updatedName = false;
+
+        String sql = "UPDATE public.user AS u SET name = ? FROM public.order AS o JOIN public.user AS u2 ON o.user_id = u2.id JOIN public.carport AS c ON o.carport_id = c.id LEFT JOIN public.shed AS s ON c.shed_id = s.id WHERE o.id = ? AND u.id = u2.id";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newName);
+            ps.setInt(2, orderID);
+
+            int rowsUpdated = ps.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                updatedName = true;
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Kunne ikke ændre navnet " + e);
+        }
+
+        return updatedName;
+    }
+
 }

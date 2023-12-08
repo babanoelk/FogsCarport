@@ -11,7 +11,7 @@ public class User {
     private int zipcode;
     private boolean consent;
 
-    public User(String name, String email, String password, String address, int mobile, int zipcode, boolean consent) {
+    public User(String name, String email, String password, String address, int mobile, int zipcode) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -30,6 +30,16 @@ public class User {
         this.mobile = mobile;
         this.role = role;
         this.zipcode = zipcode;
+    }
+
+    public User(String name, String email, String password, String address, int mobile, int zipcode, boolean consent) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.mobile = mobile;
+        this.zipcode = zipcode;
+        this.consent = consent;
     }
 
     public void setId(int id) {

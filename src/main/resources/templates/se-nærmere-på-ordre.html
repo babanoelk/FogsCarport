@@ -32,129 +32,69 @@
     </div>
 </div>
 
-<div id="main-content">
-
-    <!-- Information som vises til sælgeren -->
-
-    <div id="main-content">
-       <!-- <h2>Du er nu ved at rette i ordrenummeret: <span th:text="${}"/></h2>  Det kunne være fedt, hvis der ordrenummeret står her-->
-
-        <!--kontakt oplysniger, -->
-        <h4>Kontakt Oplysninger</h4>
-
-        <!--Bruger ID-->
-        <h4>Bruger ID: <span th:text="${order.getUserId()}"/></h4>
-
-        <!--Opdatere oplysningerne forneden -->
-        <h1>Opdatere forneden</h1>
-
-        <div class="Order-box">
-            <form id="form" method="post">
-
-                <!--Drop down Carport bredde-->
-                <label for="carport_width">Carport bredde*</label>
-                <select id="carport_width" name="carport_width" th:required="true">
-                    <option
-                            th:each="width : ${widthList}"
-                            th:value="${width}"
-                            th:text="${width + 'cm'}">
-                        bredde
-                    </option>
-                </select><br>
-
-                <!--Drop down Carport længde-->
-                <label for="carport_length">Carport længde*</label>
-                <select id="carport_length" name="carport_length" th:required="true">
-                    <option
-                            th:each="length : ${lengthList}"
-                            th:value="${length}"
-                            th:text="${length + 'cm'}">
-                        længde
-                    </option>
-                </select><br>
-
-                <!--Drop down Carport højde-->
-                <label for="carport_height">Carport højde*</label>
-                <select id="carport_height" name="carport_height" th:required="true">
-                    <option
-                            th:each="height : ${heightList}"
-                            th:value="${height}"
-                            th:text="${height + 'cm - Kan kun bestilles med denne højde'}">
-                        højde
-                    </option>
-                </select><br>
 
 
-                <!--Drop down trapetztag-->
-                <label for="trapetztag">Carport trapetztag*</label>
-
-
-                <select id="trapetztag" name="carport_trapetztag">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
+<!-- Start her  -->
 
 
 
-                <!--Drop down Redskabsrum bredde-->
-                <div>
-                    <p>Ønsker kunden et redskabsrum:</p>
-                    <input type="radio" onclick="show()" id="ja" name="redskabsrum" value="ja" th:required>
-                    <label for="ja">ja</label><br>
-                    <input type="radio" id="nej" onclick="hide()" name="redskabsrum" value="nej" th:required>
-                    <label for="nej">nej</label><br>
-
-                    <!-- Additional shed dimensions -->
-                    <div id="hidden_menu" hidden="true">
-                        <div id="shed-dimensions">
-                            <label for="shed_width">Redskabsrum bredde*</label><br>
-                            <select id="shed_width" name="shed_width" th:required>
-                                <option
-                                        th:each="width : ${widthList}"
-                                        th:value="${width}"
-                                        th:text="${width + 'cm'}">
-                                    bredde
-                                </option>
-                            </select><br>
-
-                            <label for="shed_length">Redskabsrum længde*</label><br>
-                            <select id="shed_length" name="shed_length" th:required>
-                                <option
-                                        th:each="length : ${lengthList}"
-                                        th:value="${length}"
-                                        th:text="${length + 'cm'}">
-                                    længde
-                                </option>
-                            </select><br>
-                        </div>
-                        <!-- End of additional shed dimensions -->
-                    </div>
-
-                </div>
-                <br>
-
-
-                <button type="submit" formaction="/send-regning">Send regning</button>
-            </form>
-        </div>
+<div id = "big-frame">
+    <div id = "left-frame">
+        <iframe src="C:\Users\baban\OneDrive\Skrivebord\FogsCarport\src\main\resources\templates\kontakt.html" width="600" height="400"></iframe>
     </div>
 
+    <div id = "mid-frame">
+        <!-- <iframe src="kontakt.html" width="600" height="400"></iframe> -->
+    </div>
 
-    <script>
-        function hide() {
-            document.getElementById('hidden_menu').hidden = true
-        }
+    <div id = "right-frame">
+        <!-- <iframe src="kontakt.html" width="600" height="400"></iframe> -->
+    </div>
+</div>
 
-        function show() {
-            document.getElementById('hidden_menu').hidden = false
-        }
-    </script>
 
-<!-- Informationen ender her-->
+
+<!-- TODO: Lav til mobil-version/pc-version -->
+
+<!-- Main content -->
+<div id>
+
+<!-- Ordre informationer -->
+<div>
+
+    <!-- Ændre så den får ordre id her-->
+    <h4>Ordre ID: order <span th:text="${orderID}"/></h4>
 
 </div>
+
+
+<!-- User information Userid,name,address,zipcode,mobile,email-->
+
+
+<!-- Carport information Carport id,width,length,height,-->
+
+
+<!-- User note -->
+<div>
+
+    <!-- <h4>Bemærkninger: <span th:text="${order.getCustomerNote()}"/></h4> -->
+
+</div>
+
+
+<!-- Send regnings knappen -->
+<div>
+
+    <button type="submit" formaction="/send-regning">Send regning</button>
+
+</div>
+
+</div>
+
+
+
+
+<!-- INDTIL HER -->
 
 <footer>
     <!-- REPLACE ME WITH A FRAGMENT -->

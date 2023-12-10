@@ -179,26 +179,82 @@ footer {
 
 }
 
-/* Frame til kontakt*/
 
- #big-frame {
-     display: flex;
-     justify-content: space-between;
- }
-
-#left-frame,
-#mid-frame,
-#right-frame {
-    width: 30%; /* Adjust the width as needed */
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+/* START: Styling til se-nærmere-på-ordre.html*/
+/* Flex container styling: Enables flexbox layout for the main container */
+/* Container for the main content */
+#main-container {
+    display: flex;
 }
 
-#left-frame iframe,
-#mid-frame iframe,
-#right-frame iframe {
-    width: 100%;
-    height: 400px; /* Adjust the height as needed */
-    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+/* Styling for the left, middle, and right content divs within the main container */
+#main-container-left,
+#main-container-mid,
+#main-container-right {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
 }
+
+/* Adjusting the order of the left content div: Changes the visual order on the screen */
+#main-container-left {
+    order: 1;
+}
+
+/* Adjusting the order of the middle content div: Changes the visual order on the screen */
+#main-container-mid {
+    order: 2;
+
+}
+
+/* Adjusting the order of the right content div: Changes the visual order on the screen */
+#main-container-right {
+    order: 3;
+}
+
+/* Styling for the header: Centers the text within the header */
+#main-header {
+    text-align: center;
+}
+
+/* Container for the form sections */
+#form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the items horizontally */
+}
+
+/* Styling for labels */
+#form-container label {
+    margin-right: 10px;
+}
+
+/* Styling for form inputs and selects */
+#form-container select,
+#form-container input {
+    flex: 1;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Styling for the submit button */
+#gem-knap {
+    margin-top: auto; /* Push the button to the bottom of the container */
+    margin-bottom: 10px; /* Add some space between the last select and the button */
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Hover effect for the submit button */
+#gem-knap:hover {
+    background-color: #45a049;
+}
+
+
+/* SLUT: Styling til se-nærmere-på-ordre.html*/

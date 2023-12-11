@@ -230,7 +230,7 @@ footer {
     flex: 1;
     padding: 20px;
     border: 1px solid #ccc;
-    height: 65vh;
+    height: 70vh;
 }
 
 /* Adjusting the order of the left content div: Changes the visual order on the screen */
@@ -278,10 +278,46 @@ footer {
 
 
 /* Styling for the submit button */
-#gem-knap {
+#gem-knap-user {
     display: block;
     margin: 0 auto; /* Centrer knappen vandret */
     margin-top: 10px; /* Tilføj lidt plads over knappen */
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#gem-knap-carport {
+    display: block;
+    margin: 0 auto; /* Centrer knappen vandret */
+    margin-top: 212px; /* Tilføj lidt plads over knappen */
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#gem-knap-skur {
+    display: block;
+    margin: 0 auto; /* Centrer knappen vandret */
+    margin-top: 392px; /* Tilføj lidt plads over knappen */
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#gem-knap-nyt-skur {
+    display: block;
+    margin: 0 auto; /* Centrer knappen vandret */
+    margin-top: 376px; /* Tilføj lidt plads over knappen */
     padding: 10px;
     background-color: #4CAF50;
     color: white;
@@ -295,7 +331,18 @@ footer {
     background-color: #45a049;
 }
 
-
+#send-regning-knap {
+    display: block;
+    margin: 0 auto; /* Centrer knappen vandret */
+    /* Tilføj lidt plads over knappen */
+    margin-bottom: 5px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
 
 /* SLUT: Styling til se-nærmere-på-ordre.html*/

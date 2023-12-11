@@ -43,6 +43,8 @@
     <h1>Ordre ID: <span th:text="${orderID}"/>
         <input type="hidden" name="orderID" th:value="${orderID}">
     </h1>
+    <button id="send-regning-knap" type="submit" formaction="/gem-bruger-oplysninger">Send regning</button>
+
 
 </div>
 
@@ -87,7 +89,7 @@
                 <input type="text" name="newEmail">
             </div>
 
-            <button id="gem-knap" type="submit" formaction="/gem-bruger-oplysninger">Gem nye ændringer</button>
+            <button id="gem-knap-user" type="submit" formaction="/gem-bruger-oplysninger">Gem nye ændringer</button>
         </form>
     </div>
 
@@ -104,6 +106,7 @@
             <input type="hidden" name="orderID" th:value="${session.old_carport.getLength()}">
             <label>Ny længde:</label>
             <select name="newLength">
+                <option value="" disabled selected>Vælg en ny længde</option>
                 <option th:each="length : ${lengthList}" th:value="${length}" th:text="${length + 'cm'}">Vælg en ny længde</option>
             </select>
 
@@ -111,16 +114,18 @@
             <input type="hidden" name="orderID" th:value="${session.old_carport.getWidth()}">
             <label>Ny bredde:</label>
             <select name="newWidth">
+                <option value="" disabled selected>Vælg en ny bredde</option>
                 <option th:each="width : ${widthList}" th:value="${width}" th:text="${width + 'cm'}">Vælg en ny bredde</option>
             </select>
 
             <h4>Højde: <span th:text="${session.old_carport.getHeight()}"></span></h4>
             <label>Ny højde:</label>
             <select name="newHeight">
+                <option value="" disabled selected>Vælg en ny højde</option>
                 <option th:each="height : ${heightList}" th:value="${height}" th:text="${height + 'cm'}">Vælg en ny højde</option>
             </select>
 
-            <button id="gem-knap" type="submit" formaction="/gem-carport-oplysninger">Gem nye ændringer</button>
+            <button id="gem-knap-carport" type="submit" formaction="/gem-carport-oplysninger">Gem nye ændringer</button>
         </form>
     </div>
 
@@ -136,6 +141,7 @@
                 <h4>Længde: <span th:text="${session.old_shed.getLength()}"></span>
                     <label>Ny længde:</label>
                     <select name="shed_length">
+                        <option value="" disabled selected>Vælg en ny længde</option>
                         <option th:each="length : ${lengthList}" th:value="${length}" th:text="${length + 'cm'}">længde</option>
                     </select>
                 </h4>
@@ -143,12 +149,13 @@
                 <h4>Bredde: <span th:text="${session.old_shed.getWidth()}"></span>
                     <label>Ny bredde:</label>
                     <select name="shed_width">
+                        <option value="" disabled selected>Vælg en ny bredde</option>
                         <option th:each="width : ${widthList}" th:value="${width}" th:text="${width + 'cm'}">bredde</option>
                     </select>
                 </h4>
             </div>
 
-            <button id="gem-knap" type="submit" formaction="/gem-skur-oplysninger">Gem nye ændringer</button>
+            <button id="gem-knap-skur" type="submit" formaction="/gem-skur-oplysninger">Gem nye ændringer</button>
         </form>
     </div>
 
@@ -169,14 +176,16 @@
 
                     <label>Redskabsrum længde</label><br>
                     <select name="new_shed_length" th:required>
+                        <option value="" disabled selected>Vælg længde</option>
                         <!-- Options will be dynamically added using JavaScript -->
                     </select><br>
 
                     <label>Redskabsrum bredde</label><br>
                     <select name="new_shed_width" th:required>
+                        <option value="" disabled selected>Vælg bredde</option>
                         <!-- Options will be dynamically added using JavaScript -->
                     </select><br>
-                    <button id="gem-knap" type="submit" formaction="/tilfoej-skur">Gem nye ændringer</button>
+                    <button id="gem-knap-nyt-skur" type="submit" formaction="/tilfoej-skur">Gem nye ændringer</button>
                 </form>
             </div>
         </div>

@@ -408,4 +408,10 @@ public class OrderController {
         ctx.render("se-nærmere-på-ordre.html");
     }
 
+    public static void orderContact(Context ctx) {
+        int orderId = Integer.parseInt(ctx.formParam("order_id"));
+        ctx.attribute("order_id", orderId);
+
+        ctx.render("kontakt.html");
+    }
 }

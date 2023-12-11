@@ -37,32 +37,42 @@
 
     <p>Du er nu logget ind</p>
 
-</div>
 
-<div id="ordre_liste">
-    <h2>Hej <span th:text="${session.currentUser.getName()}"/> Din ordre</h2>
-    <table>
-        <tr>
-            <th>Ordre ID</th>
-            <th>Dato</th>
-            <th>Kommentar</th>
-            <th>Samtykkeerklæring</th>
-            <th>Status</th>
-        </tr>
-        <tr th:each="order : ${orderlist}">
-            <td th:text="${order.getOrderId()}">Ordre ID</td>
-            <td th:text="${order.getDate()}">Dato</td>
-            <td th:text="${order.getCustomerNote}">Kommentar</td>
-            <td th:text="${order.getOrderStatus}">Status</td>
-            <td>
-                <form class="taskform" method="post">
-                    <button type="submit" name="order_id" th:value="${order.getOrderId()}" formaction="/delete">Delete</button>
-                </form>
-            </td>
-        </tr>
-    </table>
+    <div id="ordre_liste">
+        <h2>Hej <span th:name="name" th:text="${session.currentUser.getName()}"/> Din ordre</h2>
+        <table>
+            <tr>
+                <th>Ordre ID</th>
+                <th>Dato</th>
+                <th>Kommentar</th>
+                <th>Ordre status</th>
+                <th>Handling</th>
+            </tr>
+            <tr th:each="order : ${orderlist}">
+                <td th:text="${order.getOrderId()}">Ordre ID</td>
+                <td th:text="${order.getDate()}">Dato</td>
+                <td th:text="${order.getCustomerNote}">Kommentar</td>
+                <td th:text="${order.getOrderStatus}">Status</td>
+                <td>
+                    <div th:if="${order.getOrderStatus == 'Under behandling'}">
+                        <form class="taskform" method="post">
+                            <button type="submit" name="order_id" th:value="${order.getOrderId()}" formaction="/slet">
+                                Slet
+                            </button>
+                        </form>
+                    </div>
+                    <div th:if="${order.getOrderStatus != 'Under behandling'}">
+                        <form class="taskform" method="post">
+                            <button type="submit" name="order_id" th:value="${order.getOrderId()}"
+                                    formaction="/kontakt">Kontakt os
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
-
 
 <footer>
     <!-- REPLACE ME WITH A FRAGMENT -->

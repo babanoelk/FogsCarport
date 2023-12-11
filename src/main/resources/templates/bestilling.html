@@ -27,8 +27,8 @@
 
     <p class="error_message" th:text="${#ctx.message}"></p>
 
-    <div class="Order-box">
-        <form id="form" method="post">
+    <div>
+        <form class="form" method="post">
 
             <!--Drop down Carport bredde-->
             <label for="carport_width">Carport bredde*</label>
@@ -76,7 +76,6 @@
             <h4> RedskabsrumNB!</h4>
             <p>Der skal beregnes 15cm tagudhæng på hver side a redskabsrummet</p><br>
 
-            <!--Drop down Redskabsrum bredde-->
             <div>
                 <p>Ønsker du et redskabsrum:</p>
                 <input type="radio" onclick="show()" id="ja" name="redskabsrum" value="ja" th:required>

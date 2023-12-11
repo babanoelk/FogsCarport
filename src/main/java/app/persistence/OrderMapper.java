@@ -1,13 +1,10 @@
 package app.persistence;
 
-import app.dtos.DTOGetOrderWithIdDateCustomerNoteConsentStatus;
-import app.dtos.DTOSpecificOrderByOrderIdWithUserAndCarportAndShed;
-import app.dtos.DTOUserCarportOrder;
+import app.dtos.*;
 import app.entities.Carport;
 import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -136,70 +133,12 @@ public class OrderMapper {
         }
     }
 
-/*
-    public static DTOSpecificOrderByOrderIdWithUserAndCarportAndShed getSpecificOrderByOrderIdWithUserAndCarportAndShed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static DTOUserWithUserIdNameAddressZipcodeMobileEmail getSpecificOrderByOrderIdWithUserAndCarportAndShed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
 
         DTOSpecificOrderByOrderIdWithUserAndCarportAndShed specificOrderByOrderIdWithUserAndCarportAndShed;
-
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
-
-                ps.setInt(1, orderId);
-                ResultSet rs = ps.executeQuery();
-
-                int userId = rs.getInt("user_id");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                int zipcode = rs.getInt("zipcode");
-                int mobile = rs.getInt("mobile");
-                String email = rs.getString("email");
-                int carportId = rs.getInt("carport_id");
-                int carportWidth = rs.getInt("width");
-                int carportLength = rs.getInt("length");
-                int carportHeight = rs.getInt("height");
-                String customerNote = rs.getString("customer_note");
-
-                // Declare variables outside the if-else blocks
-                int shedId = 0;
-                int shedWidth = 0;
-                int shedLength = 0;
-                int shedId = rs.getObject("shed_id") != null ? rs.getInt("width") : 0;
-                int shedWidth = rs.getObject("width") != null ? rs.getInt("width") : 0;
-                int shedLength = rs.getObject("length") != null ? rs.getInt("length") : 0;
-
-
-                // Check if shedId is not NULL to determine if there's a shed associated
-                if (!rs.wasNull()) {
-                    // Handle the case where there is a shed
-                    // Use shedId, shedWidth, and shedLength accordingly
-                    //int shedWidth = rs.getObject("width") != null ? rs.getInt("width") : 0;
-                    //int shedLength = rs.getObject("length") != null ? rs.getInt("length") : 0;
-
-
-                } else {
-                    // Handle the case where there is no shed
-                    // Set shedId, shedWidth, and shedLength to appropriate default values or handle it as needed
-                    // No need to initialize shedId, shedWidth, and shedLength here
-                }
-
-                specificOrderByOrderIdWithUserAndCarportAndShed = new DTOSpecificOrderByOrderIdWithUserAndCarportAndShed(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return specificOrderByOrderIdWithUserAndCarportAndShed;
-    }*/
-
-    public static DTOSpecificOrderByOrderIdWithUserAndCarportAndShed getSpecificOrderByOrderIdWithUserAndCarportAndShed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
-
-        String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
-
-        DTOSpecificOrderByOrderIdWithUserAndCarportAndShed specificOrderByOrderIdWithUserAndCarportAndShed;
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = null;
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -237,6 +176,9 @@ public class OrderMapper {
                         // No need to initialize shedId, shedWidth, and shedLength here
                     }
 
+                    dtoUserWithUserIdNameAddressZipcodeMobileEmail =
+                            new DTOUserWithUserIdNameAddressZipcodeMobileEmail(userId, name, address, zipcode, mobile, email);
+
                     specificOrderByOrderIdWithUserAndCarportAndShed = new DTOSpecificOrderByOrderIdWithUserAndCarportAndShed(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
                 } else {
                     // Handle the case where no rows are returned
@@ -248,11 +190,71 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return specificOrderByOrderIdWithUserAndCarportAndShed;
+        return dtoUserWithUserIdNameAddressZipcodeMobileEmail;
+    }
+
+    public static DTOCarportWithIdLengthWidthHeight getSpecificCarportByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+
+        String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
+
+        DTOCarportWithIdLengthWidthHeight carportWithIdLengthWidthHeight;
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = null;
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                ps.setInt(1, orderId);
+                ResultSet rs = ps.executeQuery();
+
+                // Check if there are any rows in the result set
+                if (rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    String name = rs.getString("name");
+                    String address = rs.getString("address");
+                    int zipcode = rs.getInt("zipcode");
+                    int mobile = rs.getInt("mobile");
+                    String email = rs.getString("email");
+                    int carportId = rs.getInt("carport_id");
+                    int carportWidth = rs.getInt("width");
+                    int carportLength = rs.getInt("length");
+                    int carportHeight = rs.getInt("height");
+                    String customerNote = rs.getString("customer_note");
+
+                    // Declare variables outside the if-else blocks
+                    int shedId = 0;
+                    int shedWidth = 0;
+                    int shedLength = 0;
+
+                    // Check if shedId is not NULL to determine if there's a shed associated
+                    if (!rs.wasNull()) {
+                        // Handle the case where there is a shed
+                        shedId = rs.getInt("shed_id");
+                        shedWidth = rs.getInt("shed_width");
+                        shedLength = rs.getInt("shed_length");
+                    } else {
+                        // Handle the case where there is no shed
+                        // No need to initialize shedId, shedWidth, and shedLength here
+                    }
+
+                    carportWithIdLengthWidthHeight =
+                            new DTOCarportWithIdLengthWidthHeight(carportId, carportLength, carportWidth, carportHeight);
+
+                    //carportWithIdLengthWidthHeight = new DTOCarportWithIdLengthWidthHeight(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
+                } else {
+                    // Handle the case where no rows are returned
+                    carportWithIdLengthWidthHeight = null; // or handle it as needed
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return carportWithIdLengthWidthHeight;
     }
 
 
-    public static void updateOrderStatus(int orderId, int statusId, ConnectionPool connectionPool) throws DatabaseException{
+    public static void updateOrderStatus(int orderId, int statusId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "update public.order set order_status = ? where id = ?";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -267,4 +269,115 @@ public class OrderMapper {
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    public static boolean updateName(String newName, int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        boolean updatedName = false;
+
+        String sql = "UPDATE public.user AS u SET name = ? FROM public.order AS o JOIN public.user AS u2 ON o.user_id = u2.id JOIN public.carport AS c ON o.carport_id = c.id LEFT JOIN public.shed AS s ON c.shed_id = s.id WHERE o.id = ? AND u.id = u2.id";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newName);
+            ps.setInt(2, orderID);
+
+            int rowsUpdated = ps.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                updatedName = true;
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Kunne ikke ændre navnet " + e);
+        }
+
+        return updatedName;
+    }
+
+    public static DTOShedIdLengthWidth getSpecificShedByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+
+        String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
+
+        DTOShedIdLengthWidth dtoShedIdLengthWidth;
+        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = null;
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                ps.setInt(1, orderId);
+                ResultSet rs = ps.executeQuery();
+
+                // Check if there are any rows in the result set
+                if (rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    String name = rs.getString("name");
+                    String address = rs.getString("address");
+                    int zipcode = rs.getInt("zipcode");
+                    int mobile = rs.getInt("mobile");
+                    String email = rs.getString("email");
+                    int carportId = rs.getInt("carport_id");
+                    int carportWidth = rs.getInt("width");
+                    int carportLength = rs.getInt("length");
+                    int carportHeight = rs.getInt("height");
+                    String customerNote = rs.getString("customer_note");
+
+                    // Declare variables outside the if-else blocks
+                    int shedId = 0;
+                    int shedWidth = 0;
+                    int shedLength = 0;
+
+                    // Check if shedId is not NULL to determine if there's a shed associated
+                    if (!rs.wasNull()) {
+                        // Handle the case where there is a shed
+                        shedId = rs.getInt("shed_id");
+                        shedWidth = rs.getInt("shed_width");
+                        shedLength = rs.getInt("shed_length");
+                    } else {
+                        // Handle the case where there is no shed
+                        // No need to initialize shedId, shedWidth, and shedLength here
+                    }
+
+                    dtoShedIdLengthWidth =
+                            new DTOShedIdLengthWidth(shedId, shedLength, shedWidth);
+
+                    //carportWithIdLengthWidthHeight = new DTOCarportWithIdLengthWidthHeight(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
+                } else {
+                    // Handle the case where no rows are returned
+                    dtoShedIdLengthWidth = null; // or handle it as needed
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return dtoShedIdLengthWidth;
+    }
+
+
+    public static void addShedToSpecificOrderId(int carportId, int shedId, ConnectionPool connectionPool) throws DatabaseException {
+
+        String sql = "UPDATE public.carport SET shed_id = ? WHERE shed_id IS NULL AND id = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                ps.setInt(1, shedId);
+                ps.setInt(2, carportId);
+
+                int shedAdded = ps.executeUpdate();
+
+                if (shedAdded > 0) {
+                    System.out.println("Shed added successfully");
+                } else {
+                    System.out.println("No rows updated. Order ID not found or shed ID already set.");
+                    // Remove the following line that throws an exception
+                    // throw new DatabaseException("ikke godkendt");
+                }
+
+            }
+        } catch (SQLException e) {
+            // Log the exception or handle it appropriately, but avoid throwing a new exception here
+            throw new RuntimeException(e);
+        }
+    }
+
 }

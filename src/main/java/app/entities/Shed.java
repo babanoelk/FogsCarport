@@ -14,6 +14,12 @@ public class Shed {
         this.length = length;
     }
 
+    public Shed(int id, int width, int length) {
+        this.id = id;
+        this.width = width;
+        this.length = length;
+    }
+
     public Shed(int width, int length) {
         this.width = width;
         this.length = length;
@@ -31,24 +37,27 @@ public class Shed {
         return carportID;
     }
 
+    /* Udkommenteret d. 11.12.2023
     public void setCarportID(int carportID) {
         this.carportID = carportID;
-    }
+    } */
 
     public int getWidth() {
         return width;
     }
 
+    /* Udkommenteret d. 11.12.2023
     public void setWidth(int width) {
         this.width = width;
-    }
+    } */
 
     public int getLength() {
         return length;
     }
 
+    /* Udkommenteret d. 11.12.2023
     public void setLength(int length) {
         this.length = length;
-    }
+    } */
 
 }

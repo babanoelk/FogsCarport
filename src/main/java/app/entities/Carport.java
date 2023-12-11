@@ -21,6 +21,7 @@ public class Carport {
         this.height = height;
     }
 
+
     public Carport(int id, int width, int length, int height, Shed shed) {
         this.id = id;
         this.width = width;
@@ -41,6 +42,7 @@ public class Carport {
         return width;
     }
 
+
     public void setWidth(int width) {
         this.width = width;
     }
@@ -49,6 +51,7 @@ public class Carport {
         return length;
     }
 
+
     public void setLength(int length) {
         this.length = length;
     }
@@ -56,6 +59,7 @@ public class Carport {
     public int getHeight() {
         return height;
     }
+
 
     public void setHeight(int height) {
         this.height = height;

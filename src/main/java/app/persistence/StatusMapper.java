@@ -26,9 +26,7 @@ public class StatusMapper {
                     String status = rs.getString("status");
                     statusList.add(new Status(id, status));
                 }
-
             }
-
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());

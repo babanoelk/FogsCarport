@@ -11,7 +11,7 @@ public class User {
     private int zipcode;
     private boolean consent;
 
-    public User(String name, String email, String password, String address, int mobile, int zipcode) {
+   /* public User(String name, String email, String password, String address, int mobile, int zipcode) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -19,7 +19,7 @@ public class User {
         this.mobile = mobile;
         this.zipcode = zipcode;
         this.consent = consent;
-    }
+    }*/
 
     public User(int id, String name, String email, String password, String address, int mobile, int role, int zipcode) {
         this.id = id;
@@ -62,7 +62,7 @@ public class User {
         this.address = address;
     }
 
-    public void setMobile(int mobile) {
+   /* public void setMobile(int mobile) {
         this.mobile = mobile;
     }
 
@@ -72,7 +72,7 @@ public class User {
 
     public void setZipcode(int zipcode) {
         this.zipcode = zipcode;
-    }
+    }*/
 
     public int getId() {
         return id;

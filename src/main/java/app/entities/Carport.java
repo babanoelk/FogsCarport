@@ -21,13 +21,14 @@ public class Carport {
         this.height = height;
     }
 
+    /* Udkommenteret d. 11.12.2023
     public Carport(int id, int width, int length, int height, Shed shed) {
         this.id = id;
         this.width = width;
         this.length = length;
         this.height = height;
         this.shed = shed;
-    }
+    } */
 
     public int getId() {
         return id;
@@ -41,25 +42,28 @@ public class Carport {
         return width;
     }
 
+    /* Udkommenteret d. 11.12.2023
     public void setWidth(int width) {
         this.width = width;
-    }
+    } */
 
     public int getLength() {
         return length;
     }
 
+    /* Udkommenteret d. 11.12.2023
     public void setLength(int length) {
         this.length = length;
-    }
+    } */
 
     public int getHeight() {
         return height;
     }
 
+    /* Udkommenteret d. 11.12.2023
     public void setHeight(int height) {
         this.height = height;
-    }
+    } */
 
     public Shed getShed() {
         return shed;

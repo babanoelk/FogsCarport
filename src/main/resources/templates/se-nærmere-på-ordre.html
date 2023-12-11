@@ -103,26 +103,31 @@
             <input type="hidden" name="carportId">
 
             <h4>Længde: <span th:text="${session.old_carport.getLength()}"></span></h4>
-            <input type="hidden" name="orderID" th:value="${session.old_carport.getLength()}">
+            <input type="hidden" id="old_carport_length" name="orderID" th:value="${session.old_carport.getLength()}">
             <label>Ny længde:</label>
             <select name="newLength">
                 <option value="" disabled selected>Vælg en ny længde</option>
-                <option th:each="length : ${lengthList}" th:value="${length}" th:text="${length + 'cm'}">Vælg en ny længde</option>
+                <option th:each="length : ${lengthList}" th:value="${length}" th:text="${length + 'cm'}">Vælg en ny
+                    længde
+                </option>
             </select>
 
             <h4>Bredde: <span th:text="${session.old_carport.getWidth()}"></span></h4>
-            <input type="hidden" name="orderID" th:value="${session.old_carport.getWidth()}">
+            <input type="hidden" id="old_carport_width" name="orderID" th:value="${session.old_carport.getWidth()}">
             <label>Ny bredde:</label>
             <select name="newWidth">
                 <option value="" disabled selected>Vælg en ny bredde</option>
-                <option th:each="width : ${widthList}" th:value="${width}" th:text="${width + 'cm'}">Vælg en ny bredde</option>
+                <option th:each="width : ${widthList}" th:value="${width}" th:text="${width + 'cm'}">Vælg en ny bredde
+                </option>
             </select>
 
             <h4>Højde: <span th:text="${session.old_carport.getHeight()}"></span></h4>
             <label>Ny højde:</label>
             <select name="newHeight">
                 <option value="" disabled selected>Vælg en ny højde</option>
-                <option th:each="height : ${heightList}" th:value="${height}" th:text="${height + 'cm'}">Vælg en ny højde</option>
+                <option th:each="height : ${heightList}" th:value="${height}" th:text="${height + 'cm'}">Vælg en ny
+                    højde
+                </option>
             </select>
 
             <button id="gem-knap-carport" type="submit" formaction="/gem-carport-oplysninger">Gem nye ændringer</button>
@@ -139,18 +144,20 @@
                 <h4>Skur ID: <span th:text="${session.old_shed.getId()}"></span></h4>
 
                 <h4>Længde: <span th:text="${session.old_shed.getLength()}"></span>
+                    <input type="hidden" id="old_shed_length" name="old_shed_length"
+                           th:value="${session.old_shed.getLength()}">
                     <label>Ny længde:</label>
-                    <select name="shed_length">
+                    <select id="old_shed_length_select" name="shed_length">
                         <option value="" disabled selected>Vælg en ny længde</option>
-                        <option th:each="length : ${lengthList}" th:value="${length}" th:text="${length + 'cm'}">længde</option>
                     </select>
                 </h4>
 
                 <h4>Bredde: <span th:text="${session.old_shed.getWidth()}"></span>
+                    <input type="hidden" id="old_shed_width" name="old_shed_width"
+                           th:value="${session.old_shed.getWidth()}">
                     <label>Ny bredde:</label>
-                    <select name="shed_width">
+                    <select id="old_shed_width_select" name="shed_width">
                         <option value="" disabled selected>Vælg en ny bredde</option>
-                        <option th:each="width : ${widthList}" th:value="${width}" th:text="${width + 'cm'}">bredde</option>
                     </select>
                 </h4>
             </div>
@@ -175,16 +182,14 @@
                     <input type="hidden" name="orderID" th:value="${orderID}">
 
                     <label>Redskabsrum længde</label><br>
-                    <select name="new_shed_length" th:required>
-                        <option value="" disabled selected>Vælg længde</option>
-                        <!-- Options will be dynamically added using JavaScript -->
-                    </select><br>
+                    <select id="old_shed_length_select" name="shed_length">
+                    </select>
 
                     <label>Redskabsrum bredde</label><br>
-                    <select name="new_shed_width" th:required>
-                        <option value="" disabled selected>Vælg bredde</option>
-                        <!-- Options will be dynamically added using JavaScript -->
-                    </select><br>
+                    <select id="old_shed_width_select" name="shed_width">
+                    </select>
+
+                    <br>
                     <button id="gem-knap-nyt-skur" type="submit" formaction="/tilfoej-skur">Gem nye ændringer</button>
                 </form>
             </div>
@@ -207,8 +212,8 @@
         var carportWidth = parseInt(document.getElementById('old_carport_width').value);
         var carportLength = parseInt(document.getElementById('old_carport_length').value);
 
-        var shedWidthSelect = document.getElementById('new_shed_width');
-        var shedLengthSelect = document.getElementById('new_shed_length');
+        var shedWidthSelect = document.getElementById('old_shed_width_select');
+        var shedLengthSelect = document.getElementById('old_shed_length_select');
 
         // Calculate shed width and length based on carport dimensions
         var shedWidthOptions = [Math.floor(carportWidth * 0.5), carportWidth];  // 50% or 100% of carport width
@@ -218,6 +223,12 @@
         shedWidthSelect.innerHTML = "";
         shedLengthSelect.innerHTML = "";
 
+        // Add a default option
+        var defaultOption = document.createElement('option');
+        defaultOption.value = ""; // You can set this to an empty string or another value that makes sense for your application
+        defaultOption.text = "Vælg en ny bredde";
+        shedWidthSelect.add(defaultOption);
+
         // Add width options
         shedWidthOptions.forEach(function (width) {
             var option = document.createElement('option');
@@ -225,6 +236,12 @@
             option.text = width + 'cm';
             shedWidthSelect.add(option);
         });
+
+        // Add a default option for shed length
+        var defaultLengthOption = document.createElement('option');
+        defaultLengthOption.value = ""; // You can set this to an empty string or another value that makes sense for your application
+        defaultLengthOption.text = "Vælg en ny længde";
+        shedLengthSelect.add(defaultLengthOption);
 
         // Add length options
         shedLengthOptions.forEach(function (length) {
@@ -234,6 +251,9 @@
             shedLengthSelect.add(option);
         });
     }
+
+    // Call the function when the page loads
+    window.onload = updateShedDimensions;
 </script>
 
 

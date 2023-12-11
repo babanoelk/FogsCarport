@@ -5,7 +5,6 @@ import app.entities.Carport;
 import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,65 +132,6 @@ public class OrderMapper {
             throw new DatabaseException("Fejl ved sletning af ordre. " + e.getMessage());
         }
     }
-
-/*
-    public static DTOSpecificOrderByOrderIdWithUserAndCarportAndShed getSpecificOrderByOrderIdWithUserAndCarportAndShed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
-
-        String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
-
-        DTOSpecificOrderByOrderIdWithUserAndCarportAndShed specificOrderByOrderIdWithUserAndCarportAndShed;
-
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
-
-                ps.setInt(1, orderId);
-                ResultSet rs = ps.executeQuery();
-
-                int userId = rs.getInt("user_id");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                int zipcode = rs.getInt("zipcode");
-                int mobile = rs.getInt("mobile");
-                String email = rs.getString("email");
-                int carportId = rs.getInt("carport_id");
-                int carportWidth = rs.getInt("width");
-                int carportLength = rs.getInt("length");
-                int carportHeight = rs.getInt("height");
-                String customerNote = rs.getString("customer_note");
-
-                // Declare variables outside the if-else blocks
-                int shedId = 0;
-                int shedWidth = 0;
-                int shedLength = 0;
-                int shedId = rs.getObject("shed_id") != null ? rs.getInt("width") : 0;
-                int shedWidth = rs.getObject("width") != null ? rs.getInt("width") : 0;
-                int shedLength = rs.getObject("length") != null ? rs.getInt("length") : 0;
-
-
-                // Check if shedId is not NULL to determine if there's a shed associated
-                if (!rs.wasNull()) {
-                    // Handle the case where there is a shed
-                    // Use shedId, shedWidth, and shedLength accordingly
-                    //int shedWidth = rs.getObject("width") != null ? rs.getInt("width") : 0;
-                    //int shedLength = rs.getObject("length") != null ? rs.getInt("length") : 0;
-
-
-                } else {
-                    // Handle the case where there is no shed
-                    // Set shedId, shedWidth, and shedLength to appropriate default values or handle it as needed
-                    // No need to initialize shedId, shedWidth, and shedLength here
-                }
-
-                specificOrderByOrderIdWithUserAndCarportAndShed = new DTOSpecificOrderByOrderIdWithUserAndCarportAndShed(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return specificOrderByOrderIdWithUserAndCarportAndShed;
-    }*/
 
     public static DTOUserWithUserIdNameAddressZipcodeMobileEmail getSpecificOrderByOrderIdWithUserAndCarportAndShed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
 

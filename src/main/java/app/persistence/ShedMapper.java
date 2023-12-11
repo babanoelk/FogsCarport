@@ -4,7 +4,6 @@ import app.dtos.DTOShedIdLengthWidth;
 import app.dtos.DTOShedLengthWidth;
 import app.entities.Shed;
 import app.exceptions.DatabaseException;
-
 import java.sql.*;
 
 public class ShedMapper {

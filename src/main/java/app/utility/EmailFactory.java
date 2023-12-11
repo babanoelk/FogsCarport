@@ -13,10 +13,10 @@ public class EmailFactory {
 
     private static String companyMail = "badranyoussef@gmail.com";
 
-
     //Der kunne evt. tilføjes ordre nr også...
     public static void sendOrderQuestion(String customerName, String orderId, String customerEmail, String message) throws IOException {
-        // Erstat xyx@gmail.com med din egen email, som er afsender
+
+        // Erstat xyx@gmail.com med din egen email, som er afsenderen
         Email from = new Email(companyMail);
         from.setName(customerName);
 
@@ -27,9 +27,9 @@ public class EmailFactory {
 
         Personalization personalization = new Personalization();
 
-        /* Erstat kunde@gmail.com, name, ema
-        il og zip med egne værdier ****/
-        /* I test-fasen - brug din egen email, så du kan modtage beskeden */
+        // Erstat kunde@gmail.com, name, email og zip med egne værdier
+        // I test-fasen - brug din egen email, så du kan modtage beskeden
+
         personalization.addTo(new Email("badranyoussef@gmail.com"));
         personalization.addDynamicTemplateData("name", customerName);
         personalization.addDynamicTemplateData("orderId", orderId);

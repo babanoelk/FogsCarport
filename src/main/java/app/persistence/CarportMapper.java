@@ -1,7 +1,6 @@
 package app.persistence;
 
 import app.dtos.DTOCarportWithIdLengthWidthHeight;
-import app.dtos.DTOUserWithUserIdNameAddressZipcodeMobileEmail;
 import app.entities.Carport;
 import app.entities.Shed;
 import app.exceptions.DatabaseException;

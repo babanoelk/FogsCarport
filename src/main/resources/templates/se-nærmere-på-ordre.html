@@ -45,6 +45,16 @@
         <input type="hidden" name="orderID" th:value="${orderID}">
     </h1>
 
+<div id="price">
+
+    <h4>Vejledende pris: <span th:text="${session.totalPrice}"></span>
+        <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+        <label>Sæt prisen til:</label>
+        <input type="text" name="newPrice">
+    </h4>
+
+</div>
+
     <button id="send-regning-knap" type="submit" name="send-regning-knap" formaction="/send-regning">Send regning</button>
     </form>
 </div>

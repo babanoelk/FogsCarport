@@ -1,5 +1,7 @@
 package app.utility;
 
+import app.dtos.DTOCarportWithIdLengthWidthHeight;
+import app.dtos.DTOShedIdLengthWidth;
 import app.entities.Carport;
 import app.entities.Shed;
 
@@ -9,7 +11,7 @@ public class Calculator {
 
     private static float shedpPricePerSqMeter = 500;
 
-    public static float carportPriceCalculator(Carport carport){
+    public static float carportPriceCalculator(DTOCarportWithIdLengthWidthHeight carport){
         float price;
 
         float sqMeter = carport.getLength() * carport.getWidth();
@@ -18,7 +20,7 @@ public class Calculator {
         return price;
     }
 
-    public static float shedPriceCalculator(Shed shed){
+    public static float shedPriceCalculator(DTOShedIdLengthWidth shed){
         float price;
 
         float sqMeter = shed.getLength() * shed.getWidth();
@@ -27,7 +29,7 @@ public class Calculator {
     }
 
 
-    public static float carportPriceCalculator2(Carport carport){
+    /*public static float carportPriceCalculator2(DTOCarportWithIdLengthWidthHeight carport){
         float price;
 
         float carportSqMeter = carport.getLength() * carport.getWidth();
@@ -39,7 +41,7 @@ public class Calculator {
         }
 
         return price;
-    }
+    }*/
 
 
 }

@@ -19,10 +19,10 @@ public class EmailController {
             EmailFactory.sendOrderQuestion(name, orderId, customerMail, message);
             String confirmation = "Tak for din besked. Vi vender retur indenfor 24 timer.";
             ctx.attribute("confirmation", confirmation);
-            ctx.render("kontakt.html");
+            ctx.render("kontakt-indsendt.html");
         } catch (IOException e) {
             ctx.attribute("message", e.getMessage());
-            ctx.render("kontakt.html");
+            ctx.render("kontakt-indsendt.html");
         }
 
     }

@@ -380,4 +380,25 @@ public class OrderMapper {
         }
     }
 
+    public static void sendBill(int orderID, ConnectionPool connectionPool) throws DatabaseException{
+
+        String sql ="UPDATE public.order SET order_status = 2 WHERE id = ?;";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1,orderID);
+
+                int statusChanged = ps.executeUpdate();
+                if (statusChanged > 0){
+                    System.out.println("Status changed!");
+                } else {
+                    System.out.println("Status wasn't changed");
+                }
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }

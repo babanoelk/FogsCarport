@@ -40,12 +40,13 @@
 
 <div id="main-header">
 
+    <form id="send-regning" method="post" action="/send-regning">
     <h1>Ordre ID: <span th:text="${orderID}"/>
         <input type="hidden" name="orderID" th:value="${orderID}">
     </h1>
-    <button id="send-regning-knap" type="submit" formaction="/gem-bruger-oplysninger">Send regning</button>
 
-
+    <button id="send-regning-knap" type="submit" name="send-regning-knap" formaction="/send-regning">Send regning</button>
+    </form>
 </div>
 
 <div id="main-content">

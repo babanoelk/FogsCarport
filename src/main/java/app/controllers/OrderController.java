@@ -414,4 +414,10 @@ public class OrderController {
 
         ctx.render("kontakt.html");
     }
+
+    public static void sendBill(Context ctx)
+    {
+        ctx.formParam("send-regning-knap");
+        ctx.render("admin-side.html");
+    }
 }

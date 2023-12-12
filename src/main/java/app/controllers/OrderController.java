@@ -415,9 +415,20 @@ public class OrderController {
         ctx.render("kontakt.html");
     }
 
-    public static void sendBill(Context ctx)
+    public static void sendBill(Context ctx, ConnectionPool connectionPool) throws DatabaseException
     {
-        ctx.formParam("send-regning-knap");
-        ctx.render("admin-side.html");
+        try {
+            //OrderController.getAllOrders(ctx, connectionPool);
+            String message = "Regningen er nu sendt afsted.";
+            ctx.attribute("message", message);
+            int order_ID = Integer.parseInt(ctx.formParam("orderID"));
+            OrderMapper.sendBill(order_ID,connectionPool);
+            OrderController.getAllOrders(ctx, connectionPool);
+            //ctx.render("admin-side.html");
+        } catch (Exception e) {
+            OrderController.getAllOrders(ctx, connectionPool);
+            ctx.attribute("message", e.getMessage());
+            ctx.render("bestilling.html");
+        }
     }
 }

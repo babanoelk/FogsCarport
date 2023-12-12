@@ -7,15 +7,15 @@ import app.entities.Shed;
 
 public class Calculator {
 
-    private static float carportPricePerSqMeter = 1200;
+    private static float carportPricePerSqCM = 1200;
 
-    private static float shedpPricePerSqMeter = 500;
+    private static float shedPricePerSqMeter = 500;
 
     public static float carportPriceCalculator(DTOCarportWithIdLengthWidthHeight carport){
         float price;
 
-        float sqMeter = carport.getLength() * carport.getWidth();
-        price = sqMeter * carportPricePerSqMeter;
+        float sqMeter = (carport.getLength()/100) * (carport.getWidth()/100);
+        price = sqMeter * carportPricePerSqCM;
 
         return price;
     }
@@ -23,8 +23,8 @@ public class Calculator {
     public static float shedPriceCalculator(DTOShedIdLengthWidth shed){
         float price;
 
-        float sqMeter = shed.getLength() * shed.getWidth();
-        price = sqMeter * shedpPricePerSqMeter;
+        float sqMeter = (shed.getLength()/100) * (shed.getWidth()/100);
+        price = sqMeter * shedPricePerSqMeter;
         return price;
     }
 
@@ -32,12 +32,12 @@ public class Calculator {
     /*public static float carportPriceCalculator2(DTOCarportWithIdLengthWidthHeight carport){
         float price;
 
-        float carportSqMeter = carport.getLength() * carport.getWidth();
-        price = carportSqMeter * carportPricePerSqMeter;
+        float carportSqMeter = (carport.getLength()/100) * (carport.getWidth()/100);
+        price = carportSqMeter * carportPricePerSqCM;
 
         if(carport.getShed() != null){
-            float shedSqMeter = carport.getShed().getLength() * carport.getWidth();
-            price += shedSqMeter*shedpPricePerSqMeter;
+            float shedSqMeter = (carport.getShed().getLength()/100) * (carport.getShed().getWidth()/100);
+            price += shedSqMeter* shedPricePerSqMeter;
         }
 
         return price;

@@ -27,4 +27,31 @@ public class EmailController {
 
     }
 
+    public static void sendBill(Context ctx, float totalPrice) throws Exception {
+
+        String name = ctx.formParam("full_name");
+        String customerMail = ctx.formParam("email");
+        String orderId = ctx.formParam("orderID");
+        String price = ""+totalPrice;
+
+        try {
+
+
+            EmailFactory.sendOrderQuestion(name, orderId, customerMail, price);
+            String confirmation = "Tak for din besked. Vi vender retur indenfor 24 timer.";
+            ctx.attribute("confirmation", confirmation);
+            ctx.render("kontakt-indsendt.html");
+
+
+        } catch (IOException e) {
+
+
+            ctx.attribute("message", e.getMessage());
+            ctx.render("kontakt-indsendt.html");
+
+
+        }
+
+    }
+
 }

@@ -22,6 +22,7 @@ public class OrderController {
             int result = Integer.parseInt(ctx.formParam("order_id"));
             ctx.attribute("orderID", result);
 
+
             //Brugeren
             DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(result, connectionPool);
             ctx.sessionAttribute("user", oldUser);
@@ -434,7 +435,7 @@ public class OrderController {
             float updatePrice;
 
             //Old price
-            float oldPrice = Integer.parseInt(ctx.formParam("total_price"));
+            float oldPrice = Float.parseFloat((ctx.formParam("total_price")));
 
             String newInputPrice = ctx.formParam("newPrice");
 
@@ -452,11 +453,14 @@ public class OrderController {
 
             OrderMapper.updateOrderPrice(order_ID,updatePrice,connectionPool);
 
+            EmailController.sendBill(ctx,updatePrice);
+
             OrderController.getAllOrders(ctx, connectionPool);
         } catch (Exception e) {
-            //OrderController.getAllOrders(ctx, connectionPool);
+            OrderController.getAllOrders(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());
-            OrderController.getSpecificOrder(ctx, connectionPool);
+            //OrderController.getSpecificOrder(ctx, connectionPool);
+            OrderController.getAllOrders(ctx, connectionPool);
         }
     }
 }

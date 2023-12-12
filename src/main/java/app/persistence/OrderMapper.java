@@ -401,4 +401,25 @@ public class OrderMapper {
 
     }
 
+    public static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool){
+
+        String sql ="UPDATE public.order SET price = ? WHERE id = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setFloat(1,price);
+                ps.setInt(2,orderID);
+
+                int priceChanged = ps.executeUpdate();
+
+                if (priceChanged > 0){
+                    System.out.println("Status changed!");
+                } else {
+                    System.out.println("Status wasn't changed");
+                }
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 }

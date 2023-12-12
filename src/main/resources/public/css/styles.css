@@ -78,6 +78,10 @@ body{
     align-items: center;
 }
 
+#main-container{
+    display: flex;
+}
+
 .pictures-frontpage{
     margin: auto;
     margin-top: 10px;
@@ -183,6 +187,18 @@ footer {
     color: #fff;
     text-align: center;
 }
+
+
+
+@media screen and (max-width: 900px){
+
+    #main-container{
+        display: flex;
+        flex-direction: column;
+    }
+
+}
+
 
 @media screen and (max-width: 400px){
 

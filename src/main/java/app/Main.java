@@ -46,6 +46,8 @@ public class Main {
         app.post("/gem-carport-oplysninger", ctx -> OrderController.updateCarport(ctx, connectionPool));
         app.post("/gem-skur-oplysninger", ctx -> OrderController.updateShed(ctx, connectionPool));
         app.post("/tilfoej-skur", ctx -> OrderController.addShed(ctx, connectionPool));
+
+        app.post("/send-regning", ctx -> OrderController.sendBill(ctx, connectionPool));
     }
 
 }

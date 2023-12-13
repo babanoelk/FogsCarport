@@ -1,5 +1,5 @@
 /* Stylesheet for the application */
-.error_message{
+.error_message, .error{
     color: red;
     font-weight: bold;
     font-size: 18px;

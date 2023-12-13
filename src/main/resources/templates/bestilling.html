@@ -28,7 +28,7 @@
     <p class="error_message" th:text="${#ctx.message}"></p>
 
     <div>
-        <form class="form" method="post">
+        <form class="form" method="post" onsubmit="return validateForm()">
 
             <!--Drop down Carport bredde-->
             <label for="carport_width">Carport bredde*</label>
@@ -117,13 +117,16 @@
             <input type="text" id="zip" name="zip" th:required="true"><br>
 
             <label for="phone">Telefon nr*</label>
-            <input type="text" id="phone" name="phone" th:required="true"><br>
+            <input type="text" id="phone" name="phone" th:required="true">
+            <div class="error" id="phoneError"></div><br>
 
             <label for="email">Email*</label>
-            <input type="text" id="email" name="email" th:required="true"><br>
+            <input type="text" id="email" name="email" th:required="true">
+            <div class="error" id="emailError"></div><br>
 
             <label for="pass">Password*</label>
-            <input type="text" id="pass" name="pass" th:required="true"><br>
+            <input type="text" id="pass" name="pass" th:required="true">
+            <div class="error" id="passwordError"></div><br>
 
             <input type="checkbox" id="consent" name="consent" value="true" checked th:required="true">
             <label for="consent">Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport*</label><br>
@@ -180,6 +183,43 @@
         });
     }
 
+    function validateForm() {
+        var password = document.getElementById("pass").value;
+        var email = document.getElementById("email").value;
+        var phone = document.getElementById("phone").value;
+
+        var isValid = true;
+
+        // Ryd tidligere fejlmeddelelser
+        document.getElementById("emailError").textContent = '';
+        document.getElementById("passwordError").textContent = '';
+        document.getElementById("phoneError").textContent = '';
+
+
+        // Validere mobil nr
+        var phonePattern = /^\d+$/;  // Regex for kun tal
+        if (!phonePattern.test(phone)) {
+            document.getElementById("phoneError").textContent = "Telefonnummer må kun indeholde tal.";
+            isValid = false;
+        }
+
+
+        // Valider adgangskode
+        var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordPattern.test(password)) {
+            document.getElementById("passwordError").textContent = "Adgangskoden skal indeholde store og små bogstaver, tal og mindst ét specialtegn.";
+            isValid = false;
+        }
+
+        // Valider email
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailPattern.test(email)) {
+            document.getElementById("emailError").textContent = "Indtast venligst en gyldig e-mail-adresse.";
+            isValid = false;
+        }
+
+        return isValid;
+    }
 
 </script>
 

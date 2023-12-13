@@ -82,6 +82,16 @@
             <artifactId>sendgrid-java</artifactId>
             <version>4.10.1</version> <!-- Use the latest version -->
         </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-dom</artifactId>
+            <version>1.14</version> <!-- Use the appropriate version -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-all</artifactId>
+            <version>1.14</version> <!-- Replace with the appropriate version -->
+        </dependency>
 
     </dependencies>
 
@@ -132,5 +142,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

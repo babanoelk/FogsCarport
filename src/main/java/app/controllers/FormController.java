@@ -7,9 +7,12 @@ import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.*;
+import app.utility.SvgGenerator;
 import io.javalin.http.Context;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FormController {
@@ -61,7 +64,12 @@ public class FormController {
             ctx.attribute("length", carportLength);
             ctx.attribute("width", carportWidth);
 
-            ctx.render("tilbud-indsendt.html");
+            String svgContent = SvgGenerator.generateSvg(carportLength,carportWidth);
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("svgContent", svgContent);
+
+            ctx.render("tilbud-indsendt.html",model);
         } catch (Exception e) {
             loadMeasurements(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());

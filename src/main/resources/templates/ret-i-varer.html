@@ -29,70 +29,30 @@
 
     <p class="error_message" th:text="${#ctx.message}"></p>
     <table id="materials_table">
-          <!--  <thead>
+        <thead>
             <tr>
-                <th>Column 1</th>
-                <th>Column 2</th>
-                <th>Column 3</th>
-                <th>Column 4</th>
-                <th>Column 5</th>
-                <th>Column 6</th>
-                <th>Column 7</th>
+                <th>Id</th>
+                <th>Vare navn</th>
+                <th>Beskrivelse</th>
+                <th>Varer nummer</th>
+                <th>Bredde</th>
+                <th>Højde</th>
+                <th>Pris</th>
 
             </tr>
             </thead>
             <tbody>
             <tr th:each="materials : ${materialsList}">
-                <td th:text="${materials.getId}">Property 1</td>
-                <td th:text="${materials.getName}">Property 2</td>
-
+                <td th:text="${materials.Id}">Property 1</td>
+                <td th:text="${materials.Name}">Property 2</td>
+                <td th:text="${materials.Description}">Property 2</td>
+                <td th:text="${materials.ItemNumber}">Property 2</td>
+                <td th:text="${materials.Width}">Property 2</td>
+                <td th:text="${materials.Height}">Property 2</td>
+                <td th:text="${materials.Price}">Property 2</td>
             </tr>
             </tbody>
         </table>
-        <tr>
-            <th>id</th>
-            <th>Produkt navn</th>
-            <th>Længde(cm)</th>
-            <th>Description</th>
-            <th>Vare nummer</th>
-            <th>Bredde(cm)</th>
-            <th>Højde(cm)</th>
-            <th>Pris (Dkk)</th>
-            <th>Gem</th>
-        </tr>
-
-        <tr>
-            <td>
-                th:each="materials : ${materialList}"
-                th:value="${materials}"
-                th:text="${width + 'cm'}">
-                </td>
-
-                <!--<td>Produkt</td>
-                <td>100</td>
-                <td>Description</td>
-                <td>11414040498487474</td>
-                <td>4.43</td>
-                <td>14.50</td>
-                <td><input type="number" name="new_price" value="100"></td>
-                <td><button onclick="savePrice()">Gem</button></td>
-            </tr>
-
-           <!-- <tr>
-                <td>Produkt 2</td>
-                <td>100</td>
-                <td><input type="number" name="new_price" value="100"></td>
-                <td><button onclick="savePrice()">Gem</button></td>
-            </tr>
-
-            <tr>
-                <td>Produkt 3</td>
-                <td>100</td>
-                <td><input type="number" name="new_price" value="100"></td>
-                <td><button onclick="savePrice()">Gem</button></td>
-            </tr>-->
-
-    </table>
 </div>
 
 <footer>

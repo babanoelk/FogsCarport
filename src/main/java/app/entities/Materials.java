@@ -5,12 +5,12 @@ public class Materials {
         private String name;
         private int length;
         private String description;
-        private int itemNumber;
+        private long itemNumber;
         private int width;
         private int height;
         private int price;
 
-    public Materials(int id, String name, int length, String description, int itemNumber, int width, int height, int price) {
+    public Materials(int id, String name, int length, String description, long itemNumber, int width, int height, int price) {
         this.id = id;
         this.name = name;
         this.length = length;
@@ -52,7 +52,7 @@ public class Materials {
             this.description = description;
         }
 
-        public int getItemNumber() {
+        public long getItemNumber() {
             return itemNumber;
         }
 

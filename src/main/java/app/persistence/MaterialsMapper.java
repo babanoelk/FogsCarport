@@ -11,7 +11,7 @@ public class MaterialsMapper {
     public static List<Materials> getAllMaterials(ConnectionPool connectionPool) throws DatabaseException {
         List<Materials> allMaterials = new ArrayList<>();
 
-        String sql = "select id, name, length_cm, description, item_number, width_cm, height_cm, price from MATERIALS";
+        String sql = "SELECT id, name, length_cm, description, item_number, width_cm, height_cm, price from MATERIALS";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
@@ -21,7 +21,7 @@ public class MaterialsMapper {
                     String name = rs.getString("name");
                     int length = rs.getInt("length_cm");
                     String description = rs.getString("description");
-                    int itemNumber = rs.getInt("item_number");
+                    long itemNumber = rs.getLong("item_number");
                     int width = rs.getInt("width_cm");
                     int height = rs.getInt("height_cm");
                     int price = rs.getInt("price");
@@ -46,7 +46,7 @@ public class MaterialsMapper {
                 ps.setString(1, materials.getName());
                 ps.setInt(2, materials.getLength());
                 ps.setString(3, materials.getDescription());
-                ps.setInt(4, materials.getItemNumber());
+                ps.setLong(4,materials.getItemNumber());
                 ps.setInt(5, materials.getWidth());
                 ps.setInt(6, materials.getHeight());
                 ps.setInt(7, materials.getPrice());

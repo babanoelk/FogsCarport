@@ -66,12 +66,12 @@ public class OrderController {
                 ctx.render("min-side.html");
             } else {
                 List<Status> statusList = StatusMapper.getAllStatuses(connectionPool);
-                List<Order> allOrders = OrderMapper.getAllOrders(connectionPool);
+                List<DTOOrderCustomer> allOrders = OrderMapper.getAllOrders(connectionPool);
                 //ctx.sessionAttribute("currentSession", "all");
 
                 ctx.attribute("statusList", statusList);
                 ctx.attribute("allOrders", allOrders);
-                ctx.render("admin-side.html");
+                ctx.render("ordre-side.html");
             }
         } catch (DatabaseException e) {
             throw new DatabaseException("Fejl ved indlæsning af kundeordre " + e.getMessage());

@@ -41,9 +41,19 @@
 <div id="main-header">
 
     <form id="send-regning" method="post" action="/send-regning">
-    <h1>Ordre ID: <span th:text="${orderID}"/>
-        <input type="hidden" name="orderID" th:value="${orderID}">
-    </h1>
+        <h1>Ordre ID: <span th:text="${orderID}"/>
+            <input type="hidden" name="orderID" th:value="${orderID}">
+        </h1>
+
+<div id="price">
+
+    <h4>Vejledende pris: <span th:text="${session.totalPrice}"></span>
+        <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+        <label>Sæt prisen til:</label>
+        <input type="text" name="newPrice">
+    </h4>
+
+</div>
 
     <button id="send-regning-knap" type="submit" name="send-regning-knap" formaction="/send-regning">Send regning</button>
     </form>
@@ -54,7 +64,7 @@
     <div id="main-container">
         <div id="main-container-left">
             <form id="user-form" method="post" action="/gem-bruger-oplysninger">
-                <input type="hidden" name="orderID" th:value="${orderID}">
+                <input type="hidden" name="orderID" th:value="${session.orderID}">
                 <h1>Bruger Oplysninger</h1>
 
                 <h4>Bruger ID: <span th:text="${session.user.getUserId()}"></span>
@@ -62,7 +72,9 @@
                 </h4>
 
                 <div class="form-section">
-                    <h4>Fulde navn: <span th:text="${session.user.getName()}"></span></h4>
+                    <h4>Fulde navn: <span th:text="${session.user.getName()}"></span>
+                        <input type="hidden" name="full_name" th:value="${session.user.getName()}">
+                    </h4>
                     <label>Ændre fulde navn til:</label>
                     <input type="text" name="newName">
                 </div>
@@ -86,7 +98,9 @@
                 </div>
 
                 <div class="form-section">
-                    <h4>E-mail: <span th:text="${session.user.getEmail()}"></span></h4>
+                    <h4>E-mail: <span th:text="${session.user.getEmail()}"></span>
+                        <input type="hidden" name="email" th:value="${session.user.getEmail()}">
+                    </h4>
                     <label>Ændre e-mail til</label>
                     <input type="text" name="newEmail">
                 </div>
@@ -98,7 +112,7 @@
         <!-- Carport informationer -->
         <div id="main-container-mid">
             <form id="carport-form" method="post" action="/gem-carport-oplysninger">
-                <input type="hidden" name="orderID" th:value="${orderID}">
+                <input type="hidden" name="orderID" th:value="${session.orderID}">
                 <h1>Carport Oplysninger</h1>
 
                 <h4>Carport ID: <span th:text="${session.old_carport.getId()}"></span></h4>
@@ -142,7 +156,7 @@
         <!-- Shed informationer -->
         <div id="main-container-right" th:if="${session.old_shed.getId() != 0}">
             <form id="shed-form" method="post" action="/gem-skur-oplysninger">
-                <input type="hidden" name="orderID" th:value="${orderID}">
+                <input type="hidden" name="orderID" th:value="${session.orderID}">
                 <h1>Skur Oplysninger</h1>
 
                 <div>
@@ -184,7 +198,7 @@
             <div id="hidden_menu" hidden="true">
                 <div id="shed-dimensions">
                     <form method="post" action="/tilfoej-skur">
-                        <input type="hidden" name="orderID" th:value="${orderID}">
+                        <input type="hidden" name="orderID" th:value="${session.orderID}">
 
                         <label>Redskabsrum længde</label><br>
                         <select id="old_shed_length_select" name="shed_length">

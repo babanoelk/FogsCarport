@@ -7,6 +7,7 @@ import app.entities.Status;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.*;
+import app.utility.Calculator;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class OrderController {
             int result = Integer.parseInt(ctx.formParam("order_id"));
             ctx.attribute("orderID", result);
 
+
             //Brugeren
             DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(result, connectionPool);
             ctx.sessionAttribute("user", oldUser);
@@ -33,8 +35,12 @@ public class OrderController {
             DTOShedIdLengthWidth oldShed = OrderMapper.getSpecificShedByOrderId(result, connectionPool);
             ctx.sessionAttribute("old_shed", oldShed);
 
+            float price1 = Calculator.carportPriceCalculator(oldCarport);
+            float price2 = Calculator.shedPriceCalculator(oldShed);
+            float totalPrice = price1 + price2;
 
             //Load data
+            ctx.sessionAttribute("totalPrice", totalPrice);
             FormController.loadMeasurements(ctx, connectionPool);
 
             ctx.render("se-nærmere-på-ordre.html");
@@ -423,12 +429,38 @@ public class OrderController {
             ctx.attribute("message", message);
             int order_ID = Integer.parseInt(ctx.formParam("orderID"));
             OrderMapper.sendBill(order_ID,connectionPool);
+
+
+            //Update price
+            float updatePrice;
+
+            //Old price
+            float oldPrice = Float.parseFloat((ctx.formParam("total_price")));
+
+            String newInputPrice = ctx.formParam("newPrice");
+
+
+            //New information
+            if (newInputPrice != null && !newInputPrice.isEmpty()) {
+                try {
+                    updatePrice = Integer.parseInt(newInputPrice);
+                } catch (NumberFormatException e) {
+                    updatePrice = oldPrice;
+                }
+            } else {
+                updatePrice = oldPrice;
+            }
+
+            OrderMapper.updateOrderPrice(order_ID,updatePrice,connectionPool);
+
+            EmailController.sendBill(ctx,updatePrice);
+
             OrderController.getAllOrders(ctx, connectionPool);
-            //ctx.render("admin-side.html");
         } catch (Exception e) {
             OrderController.getAllOrders(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());
-            ctx.render("bestilling.html");
+            //OrderController.getSpecificOrder(ctx, connectionPool);
+            OrderController.getAllOrders(ctx, connectionPool);
         }
     }
 }

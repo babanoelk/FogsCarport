@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Side</title>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div id="nav-fullwidth">
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <div id="navbar">
+        <div id="logo">
+            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
+        </div>
+        <ul class="main-menu">
+            <li class="button"><a href="/">Hjem</a></li>
+            <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
+            <li class="button"><a href="/login">Login</a></li>
+            <li class="button"><a href="/log-ud">Log ud</a></li>
+            <li class="button"><a href="/admin-side">Admin Side</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="main-content">
+    <h2>Ret i varer</h2>
+
+    <p class="error_message" th:text="${#ctx.message}"></p>
+    <table id="materials_table">
+          <!--  <thead>
+            <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+                <th>Column 3</th>
+                <th>Column 4</th>
+                <th>Column 5</th>
+                <th>Column 6</th>
+                <th>Column 7</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="materials : ${materialsList}">
+                <td th:text="${materials.getId}">Property 1</td>
+                <td th:text="${materials.getName}">Property 2</td>
+
+            </tr>
+            </tbody>
+        </table>
+        <tr>
+            <th>id</th>
+            <th>Produkt navn</th>
+            <th>Længde(cm)</th>
+            <th>Description</th>
+            <th>Vare nummer</th>
+            <th>Bredde(cm)</th>
+            <th>Højde(cm)</th>
+            <th>Pris (Dkk)</th>
+            <th>Gem</th>
+        </tr>
+
+        <tr>
+            <td>
+                th:each="materials : ${materialList}"
+                th:value="${materials}"
+                th:text="${width + 'cm'}">
+                </td>
+
+                <!--<td>Produkt</td>
+                <td>100</td>
+                <td>Description</td>
+                <td>11414040498487474</td>
+                <td>4.43</td>
+                <td>14.50</td>
+                <td><input type="number" name="new_price" value="100"></td>
+                <td><button onclick="savePrice()">Gem</button></td>
+            </tr>
+
+           <!-- <tr>
+                <td>Produkt 2</td>
+                <td>100</td>
+                <td><input type="number" name="new_price" value="100"></td>
+                <td><button onclick="savePrice()">Gem</button></td>
+            </tr>
+
+            <tr>
+                <td>Produkt 3</td>
+                <td>100</td>
+                <td><input type="number" name="new_price" value="100"></td>
+                <td><button onclick="savePrice()">Gem</button></td>
+            </tr>-->
+
+    </table>
+</div>
+
+<footer>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+</footer>
+
+<script>
+    function savePrice() {
+        alert("New price saved!");
+    }
+</script>
+
+</body>
+</html>

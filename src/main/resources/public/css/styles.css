@@ -122,6 +122,10 @@ body{
     transition: background-color 0.3s; /* Tilføjer en overgangseffekt for farveskift */
 }
 
+#logout_button{
+    background-color: red;
+}
+
 .button:hover {
     background-color: #134d8a;
 }
@@ -165,6 +169,22 @@ a:link, a:visited{
     gap: 10px;
 }
 
+#dashboard_content{
+    margin-top: 50px;
+    display: flex;
+    gap: 20px;
+
+}
+
+.dash_button{
+    width: 150px;
+    height: 150px;
+    background-color: #134d8a;
+    color: white;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
 #hidden_menu select {
     width: 100%;
     box-sizing: border-box;
@@ -194,6 +214,11 @@ footer {
 
     #main-container{
         display: flex;
+        flex-direction: column;
+    }
+
+    #dashboard_content{
+        margin-top: 10px;
         flex-direction: column;
     }
 

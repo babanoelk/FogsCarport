@@ -45,18 +45,54 @@
             <input type="hidden" name="orderID" th:value="${orderID}">
         </h1>
 
-<div id="price">
+        <div id="price">
 
-    <h4>Vejledende pris: <span th:text="${session.totalPrice}"></span>
-        <input type="hidden" name="total_price" th:value="${session.totalPrice}">
-        <label>Sæt prisen til:</label>
-        <input type="text" name="newPrice">
-    </h4>
+            <h4>Vejledende pris: <span th:text="${session.totalPrice}"></span>
+                <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+                <label>Sæt prisen til:</label>
+                <input type="text" name="newPrice">
+            </h4>
 
+        </div>
+
+
+        <button id="send-regning-knap" type="submit" name="send-regning-knap" formaction="/send-regning">Send regning
+        </button>
+    </form>
 </div>
 
-    <button id="send-regning-knap" type="submit" name="send-regning-knap" formaction="/send-regning">Send regning</button>
-    </form>
+    <!-- Price information -->
+<div id="main-sub-header">
+    <div id="main-price-left">
+        <h4>Vejlende pris: <span th:text="${session.totalPrice}"></span> DKK
+            <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+        </h4>
+    </div>
+    <div id="main-price-mid">
+        <form id="send-regning" method="post" action="/send-regning">
+            <h4>Pris for kunden: </h4>
+            <label>Sæt prisen til:</label>
+            <input type="text" name="newPrice">
+            <button id="send-regning-kna" type="submit" name="send-regning-knap" formaction="/send-regning">Send regning
+            </button>
+        </form>
+    </div>
+    <div id="main-price-right">
+        <form id="rabat" method="post" action="/se-nærmere-på-ordre.html">
+            <h4>Rabat:</h4>
+            <div>
+                <label>Rabat i kroner:</label>
+                <input type="text" name="discountAmount">
+            </div>
+            <div>
+                <label>Rabat i procent:</label>
+                <input type="text" name="discountPercentage">
+            </div>
+            <button id="gem-rabat" type="submit" name="gem-rabat" formaction="/se-nærmere-på-ordre.html">Gem rabat</button>
+        </form>
+    </div>
+
+
 </div>
 
 <div id="main-content">
@@ -64,7 +100,7 @@
     <div id="main-container">
         <div id="main-container-left">
             <form id="user-form" method="post" action="/gem-bruger-oplysninger">
-                <input type="hidden" name="orderID" th:value="${session.orderID}">
+                <input type="hidden" name="orderID" th:value="${orderID}">
                 <h1>Bruger Oplysninger</h1>
 
                 <h4>Bruger ID: <span th:text="${session.user.getUserId()}"></span>
@@ -112,7 +148,7 @@
         <!-- Carport informationer -->
         <div id="main-container-mid">
             <form id="carport-form" method="post" action="/gem-carport-oplysninger">
-                <input type="hidden" name="orderID" th:value="${session.orderID}">
+                <input type="hidden" name="orderID" th:value="${orderID}">
                 <h1>Carport Oplysninger</h1>
 
                 <h4>Carport ID: <span th:text="${session.old_carport.getId()}"></span></h4>
@@ -156,7 +192,7 @@
         <!-- Shed informationer -->
         <div id="main-container-right" th:if="${session.old_shed.getId() != 0}">
             <form id="shed-form" method="post" action="/gem-skur-oplysninger">
-                <input type="hidden" name="orderID" th:value="${session.orderID}">
+                <input type="hidden" name="orderID" th:value="${orderID}">
                 <h1>Skur Oplysninger</h1>
 
                 <div>
@@ -198,14 +234,15 @@
             <div id="hidden_menu" hidden="true">
                 <div id="shed-dimensions">
                     <form method="post" action="/tilfoej-skur">
-                        <input type="hidden" name="orderID" th:value="${session.orderID}">
+                        <input type="hidden" name="orderID" th:value="${orderID}">
+                        <input type="hidden" name="order_id" th:value="${orderID}">
 
-                        <label>Redskabsrum længde</label><br>
-                        <select id="old_shed_length_select" name="shed_length">
+                        <label>Skur længde</label><br>
+                        <select id="old_shed_length_select" name="new_shed_length">
                         </select>
 
-                        <label>Redskabsrum bredde</label><br>
-                        <select id="old_shed_width_select" name="shed_width">
+                        <label>Skur bredde</label><br>
+                        <select id="old_shed_width_select" name="new_shed_width">
                         </select>
 
                         <br>

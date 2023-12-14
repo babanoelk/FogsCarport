@@ -2,7 +2,6 @@ package app.persistence;
 
 import app.dtos.*;
 import app.entities.Carport;
-import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import java.sql.*;
@@ -383,7 +382,7 @@ public class OrderMapper {
         }
     }
 
-    public static void sendBill(int orderID, ConnectionPool connectionPool) throws DatabaseException{
+    public static void updateStatusBillSent(int orderID, ConnectionPool connectionPool) throws DatabaseException{
 
         String sql ="UPDATE public.order SET order_status = 2 WHERE id = ?;";
 

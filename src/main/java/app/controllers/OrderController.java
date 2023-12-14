@@ -69,7 +69,7 @@ public class OrderController {
             if (user.getRole() == 1) {
                 List<DTOGetOrderWithIdDateCustomerNoteConsentStatus> orders = OrderMapper.getAllOrdersByUser(user, connectionPool);
                 ctx.attribute("orderlist", orders);
-                ctx.render("min-side.html");
+                ctx.render("ordre-side.html");
             } else {
                 List<Status> statusList = StatusMapper.getAllStatuses(connectionPool);
                 List<DTOOrderCustomer> allOrders = OrderMapper.getAllOrders(connectionPool);

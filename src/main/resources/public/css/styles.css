@@ -1,4 +1,11 @@
 /* Stylesheet for the application */
+
+/* Font: Inter */
+:root { font-family: 'Inter', sans-serif; }
+@supports (font-variation-settings: normal) {
+    :root { font-family: 'Inter var', sans-serif; }
+}
+
 .error_message, .error{
     color: red;
     font-weight: bold;

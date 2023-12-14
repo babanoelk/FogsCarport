@@ -38,9 +38,10 @@ public class FormController {
             String email = ctx.formParam("email");
             String password = (ctx.formParam("pass"));
             boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
+            int role = 1; //Standard role 'Kunde'
 
             //Create User instance from input data
-            User user = new User(name, email, password, address, mobile, zip, consent);
+            User user = new User(name, email, password, address, mobile, zip, consent, role);
 
             //Create Carport instance from carport input data
             Carport carport = new Carport(carportWidth, carportLength, carportHeight);

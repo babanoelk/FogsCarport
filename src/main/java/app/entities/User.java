@@ -42,6 +42,17 @@ public class User {
         this.consent = consent;
     }
 
+    public User(String name, String email, String password, String address, int mobile, int zipcode, boolean consent, int role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.mobile = mobile;
+        this.zipcode = zipcode;
+        this.consent = consent;
+        this.role = role;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

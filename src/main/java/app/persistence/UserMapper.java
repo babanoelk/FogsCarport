@@ -8,10 +8,9 @@ import java.sql.*;
 
 public class UserMapper {
     public static User addUser(User newUser, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO public.USER (name, email, password, address, mobile, zipcode, consent) values (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO public.USER (name, email, password, address, mobile, zipcode, consent, role) values (?,?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                //Number 0 is serialized ID
                 ps.setString(1, newUser.getName());
                 ps.setString(2, newUser.getEmail());
                 ps.setString(3, newUser.getPassword());
@@ -19,6 +18,7 @@ public class UserMapper {
                 ps.setInt(5, newUser.getMobile());
                 ps.setInt(6, newUser.getZipcode());
                 ps.setBoolean(7, newUser.getConsent());
+                ps.setInt(8, newUser.getRole());
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {

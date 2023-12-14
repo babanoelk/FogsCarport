@@ -19,6 +19,10 @@ public class FormController {
 
     public static void formInput(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 
+        User user;
+        String name = null;
+
+        boolean loggedIn = false;
 
         try {
             //Carport data
@@ -30,18 +34,24 @@ public class FormController {
             //Shed data
             String shedChoice = ctx.formParam("redskabsrum");
 
-            //User data
-            String name = ctx.formParam("name");
-            String address = ctx.formParam("address");
-            int zip = Integer.parseInt(ctx.formParam("zip"));
-            int mobile = Integer.parseInt(ctx.formParam("phone"));
-            String email = ctx.formParam("email");
-            String password = (ctx.formParam("pass"));
-            boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
-            int role = 1; //Standard role 'Kunde'
+            if (ctx.sessionAttribute("currentUser") == null) {
+                //User data
+                name = ctx.formParam("name");
+                String address = ctx.formParam("address");
+                int zip = Integer.parseInt(ctx.formParam("zip"));
+                int mobile = Integer.parseInt(ctx.formParam("phone"));
+                String email = ctx.formParam("email");
+                String password = (ctx.formParam("pass"));
+                boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
+                int role = 1; //Standard role 'Kunde'
 
-            //Create User instance from input data
-            User user = new User(name, email, password, address, mobile, zip, consent, role);
+                //Create User instance from input data
+                user = new User(name, email, password, address, mobile, zip, consent, role);
+            } else {
+                user = ctx.sessionAttribute("currentUser");
+                name = user.getName();
+                loggedIn = true;
+            }
 
             //Create Carport instance from carport input data
             Carport carport = new Carport(carportWidth, carportLength, carportHeight);
@@ -49,16 +59,20 @@ public class FormController {
             //Create Order instance from note
             Order order = new Order(note);
 
-            if(shedChoice.equalsIgnoreCase("ja")){
+            if (shedChoice.equalsIgnoreCase("ja")) {
                 int shedWidth = Integer.parseInt(ctx.formParam("shed_width"));
                 int shedLength = Integer.parseInt(ctx.formParam("shed_length"));
                 Shed shed = new Shed(shedWidth, shedLength);
                 carport.setShed(shed);
             }
 
-            DTOUserCarportOrder dto = new DTOUserCarportOrder(user, carport, order);
-            OrderMapper.addOrder(dto, connectionPool);
-
+            if (loggedIn) {
+                DTOUserCarportOrder dto = new DTOUserCarportOrder(user, carport, order);
+                OrderMapper.addOrderToExistingUser(dto, connectionPool);
+            } else {
+                DTOUserCarportOrder dto = new DTOUserCarportOrder(user, carport, order);
+                OrderMapper.addOrder(dto, connectionPool);
+            }
 
 
             ctx.attribute("name", name);
@@ -67,14 +81,14 @@ public class FormController {
             ctx.attribute("height", carportHeight);
 
 
-            String svgContent = SvgGenerator.generateSvg(carportLength,carportWidth);
+            String svgContent = SvgGenerator.generateSvg(carportLength, carportWidth);
 
             Map<String, Object> model = new HashMap<>();
             model.put("svgContent", svgContent);
 
             EmailController.sendOrderToSalesTeam(ctx);
 
-            ctx.render("tilbud-indsendt.html",model);
+            ctx.render("tilbud-indsendt.html", model);
         } catch (Exception e) {
             loadMeasurements(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());
@@ -84,7 +98,7 @@ public class FormController {
 
     }
 
-    public static void loadMeasurements(Context ctx, ConnectionPool connectionPool){
+    public static void loadMeasurements(Context ctx, ConnectionPool connectionPool) {
 
         try {
             //Carport data

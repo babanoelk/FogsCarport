@@ -28,6 +28,25 @@ public class OrderMapper {
         }
     }
 
+    public static void addOrderToExistingUser(DTOUserCarportOrder dto, ConnectionPool connectionPool) throws DatabaseException {
+        User user = UserMapper.getUserByEmail(dto.getUser().getEmail(), connectionPool);
+        Carport carportAdded = CarportMapper.addCarport(dto.getCarport(), connectionPool);
+        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id) values (?,?,?)";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, dto.getOrder().getCustomerNote());
+                ps.setInt(2, user.getId());
+                ps.setInt(3, carportAdded.getId());
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected != 1) {
+                    throw new DatabaseException("Ordre ikke oprettet. Fejl i data sendt til databasen.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Ordren blev ikke oprettet." + e.getMessage());
+        }
+    }
+
     public static List<DTOOrderCustomer> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<DTOOrderCustomer> allOrders = new ArrayList<>();
         String sql = "select public.order.id, date, customer_note, order_status, name, email, mobile FROM public.order JOIN public.user ON public.order.user_id = public.user.id";

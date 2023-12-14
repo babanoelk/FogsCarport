@@ -26,14 +26,13 @@
 <div id="main-content">
     <p class="error_message" th:text="${#ctx.message}"></p>
     <form method="post">
-
         <label for="email">E-mail</label>
         <input type="text" id="email" name="email" th:required="true"><br>
 
         <label for="password">Kodeord</label>
         <input type="text" id="password" name="password" th:required="true"><br>
 
-        <button type="submit" formaction="/min-side">Log på</button>
+        <button type="submit" formaction="/dashboard">Log på</button>
     </form>
 
 </div>

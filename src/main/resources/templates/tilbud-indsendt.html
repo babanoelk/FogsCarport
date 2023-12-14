@@ -9,19 +9,7 @@
 
 </head>
 <body>
-<div id="nav-fullwidth">
-    <!-- REPLACE ME WITH A FRAGMENT -->
-    <div id="navbar">
-        <div id="logo">
-            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
-        </div>
-        <ul class="main-menu">
-            <li class="button"><a href="/">Hjem</a></li>
-            <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
-            <li class="button"><a href="/">Login</a></li>
-        </ul>
-    </div>
-</div>
+<header th:replace="~{fragments :: header}"></header>
 
 <div id="main-content">
     <h2>Tak for din bestilling, <span th:text="${name}"/>!</h2>
@@ -31,9 +19,9 @@
 
     <h1>Forhåndsvisning af din carport ses forneden</h1>
 
-    <div>
+    <!--<div>
         <svg th:utext="${svgContent}" width="800" height=800 viewBox="0 0 800 800"></svg>
-    </div>
+    </div>-->
 
 
 
@@ -47,9 +35,7 @@
 
 
 
-<footer>
-    <!-- REPLACE ME WITH A FRAGMENT -->
-    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
-</footer>
+<footer th:replace="~{fragments :: footer}"></footer>
+
 </body>
 </html>

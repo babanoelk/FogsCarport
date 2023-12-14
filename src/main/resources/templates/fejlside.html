@@ -9,19 +9,8 @@
 
 </head>
 <body>
-<div id="nav-fullwidth">
-  <!-- REPLACE ME WITH A FRAGMENT -->
-  <div id="navbar">
-    <div id="logo">
-      <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
-    </div>
-    <ul class="main-menu">
-      <li class="button"><a href="/public">Hjem</a></li>
-      <li class="button"><a href="/public">Bestil unik carport</a></li>
-      <li class="button"><a href="/public">Login</a></li>
-    </ul>
-  </div>
-</div>
+<header th:replace="~{fragments :: header}"></header>
+
 
 <div id="main-content">
 <h1>Hovsa... Der opstod en fej</h1>
@@ -30,9 +19,7 @@
 
 </div>
 
-<footer>
-  <!-- REPLACE ME WITH A FRAGMENT -->
-  <p id="footer-text">Created by Team LAHY - All rights reserved</p>
-</footer>
+<footer th:replace="~{fragments :: footer}"></footer>
+
 </body>
 </html>

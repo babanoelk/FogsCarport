@@ -33,8 +33,9 @@
         <div class="error" id="emailError"></div><br>
 
         <label for="pass">Password*</label>
-        <input type="text" id="pass" name="pass" th:required="true">
-        <div class="error" id="passwordError"></div><br>
+        <input type="password" id="pass" name="pass" th:required="true">
+        <button type="button" onclick="togglePasswordVisibility()">Vis/Skjul kode</button><br>
+        <div class="error" id="passwordError"></div>
 
         <input type="checkbox" id="consent" name="consent" value="true" checked th:required="true">
         <label for="consent">Medarbejder har samtykket til brugeroprettelse*</label><br>
@@ -83,6 +84,16 @@
 
         return isValid;
     }
+
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("pass");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
 </script>
 </body>
 </html>

@@ -89,34 +89,40 @@
             <label for="note">Evt. bemærkninger</label>
             <textarea id="note" name="note" rows="4" cols="50"></textarea>
 
-            <!--kontakt oplysniger, -->
-            <h4>Kontakt Oplysninger</h4>
+            <div class="form" th:if="${session.currentUser == null}">
+                <!--kontakt oplysniger, -->
+                <h4>Kontakt Oplysninger</h4>
 
-            <label for="name">Navn*</label>
-            <input type="text" id="name" name="name" th:required="true"><br>
+                <label for="name">Navn*</label>
+                <input type="text" id="name" name="name" th:required="true"><br>
 
-            <label for="address">Adresse*</label>
-            <input type="text" id="address" name="address" th:required="true"><br>
+                <label for="address">Adresse*</label>
+                <input type="text" id="address" name="address" th:required="true"><br>
 
-            <label for="zip">Postnummer*</label>
-            <input type="text" id="zip" name="zip" th:required="true"><br>
+                <label for="zip">Postnummer*</label>
+                <input type="text" id="zip" name="zip" th:required="true"><br>
 
-            <label for="phone">Telefon nr*</label>
-            <input type="text" id="phone" name="phone" th:required="true">
-            <div class="error" id="phoneError"></div><br>
+                <label for="phone">Telefon nr*</label>
+                <input type="text" id="phone" name="phone" th:required="true">
+                <div class="error" id="phoneError"></div>
+                <br>
 
-            <label for="email">Email*</label>
-            <input type="text" id="email" name="email" th:required="true">
-            <div class="error" id="emailError"></div><br>
+                <label for="email">Email*</label>
+                <input type="text" id="email" name="email" th:required="true">
+                <div class="error" id="emailError"></div>
+                <br>
 
-            <label for="pass">Password*</label>
-            <input type="text" id="pass" name="pass" th:required="true">
-            <div class="error" id="passwordError"></div><br>
+                <label for="pass">Password*</label>
+                <input type="text" id="pass" name="pass" th:required="true">
+                <div class="error" id="passwordError"></div>
+                <br>
 
-            <input type="checkbox" id="consent" name="consent" value="true" checked th:required="true">
-            <label for="consent">Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport*</label><br>
+                <input type="checkbox" id="consent" name="consent" value="true" checked th:required="true">
+                <label for="consent">Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud
+                    på QuickByg carport*</label><br>
+            </div>
+                <button class="button" type="submit" formaction="/ordre-indsendt">Bestil tilbud</button>
 
-            <button type="submit" formaction="/ordre-indsendt">Bestil tilbud</button>
         </form>
     </div>
 </div>

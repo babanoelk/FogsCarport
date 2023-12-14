@@ -164,13 +164,18 @@ a:link, a:visited{
 }
 
 
-.form, .contact {
+.form, .contact, #login_container {
     background-color: white;
     margin-top: 20px;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+#login_container{
+    width: 300px;
+
 }
 
 .dashboard_content{

@@ -47,6 +47,7 @@ public class Main {
         app.post("/gem-skur-oplysninger", ctx -> OrderController.updateShed(ctx, connectionPool));
         app.post("/tilfoej-skur", ctx -> OrderController.addShed(ctx, connectionPool));
         app.post("/send-regning", ctx -> OrderController.sendBill(ctx, connectionPool));
+        app.get("/ret-i-varer", ctx -> MaterialController.loadMaterials(ctx,connectionPool));
     }
 
 }

@@ -14,9 +14,9 @@
 <!-- HEADER FRAGMENT START -->
 <header id="nav-fullwidth" th:fragment="header">
     <nav id="navbar">
-            <div id="logo">
+        <div id="logo">
                 <a href="/"><img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/></a>
-            </div>
+        </div>
             <ul class="main-menu">
                 <li class="button"><a href="/">Hjem</a></li>
                 <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
@@ -29,6 +29,7 @@
                     </div>
                     <li th:case="false" class="button"><a href="/login">Login</a></li>
                 </div>
+            </ul>
     </nav>
 </header>
 <!-- HEADER FRAGMENT END -->

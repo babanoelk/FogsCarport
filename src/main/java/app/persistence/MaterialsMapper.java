@@ -26,7 +26,6 @@ public class MaterialsMapper {
                     int height = rs.getInt("height_cm");
                     int price = rs.getInt("price");
                     allMaterials.add(new Materials(id, name, length, description, itemNumber, width, height, price));
-
                 }
             }
         } catch (SQLException e) {

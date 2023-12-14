@@ -65,7 +65,15 @@
                                 </button>
                             </form>
                         </div>
-                        <div th:if="${order.getOrderStatus != 'Under behandling'}">
+                        <div th:if="${order.getOrderStatus == 'Betalt'}">
+                            <form class="taskform" method="post">
+                                <button type="submit" name="order_id" th:value="${order.getOrderId()}"
+                                        formaction="/ordre-info">
+                                    Se ordre
+                                </button>
+                            </form>
+                        </div>
+                        <div>
                             <form class="taskform" method="post">
                                 <button type="submit" name="order_id" th:value="${order.getOrderId()}"
                                         formaction="/kontakt">Kontakt os

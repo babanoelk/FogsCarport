@@ -10,29 +10,6 @@
 </head>
 <body>
 <header th:replace="~{fragments :: header}"></header>
-<div id="nav-fullwidth">
-    <!-- REPLACE ME WITH A FRAGMENT -->
-    <div id="navbar">
-        <div id="logo">
-            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
-        </div>
-        <ul class="main-menu">
-            <li class="button"><a href="/">Hjem</a></li>
-            <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
-            <li class="button"><a href="/login">Login</a></li>
-            <li class="button"><a href="/log-ud">Log ud</a></li>
-            <!-- <li class="button" th:if="${session.loggedinUser == null}" th:remove="tag"><a href="/min-side" th:text="${session.loggedinUser.email}"></a></li>-->
-
-            <div th:if="${session.currentUser != null}">
-                <li class="button"><a href="/min-side" th:text="${session.currentUser.email}"></a></li>
-            </div>
-
-            <div th:if="${session.currentUser == null}">
-                <li class="button"><a href="/min-side" th:text="test"></a></li>
-            </div>
-        </ul>
-    </div>
-</div>
 
 
 <div id="main-content">
@@ -145,6 +122,8 @@
         </div>
     </div>
 </div>
+<footer th:replace="~{fragments :: footer}"></footer>
+
 <script>
     function updateTable() {
         var statusSelect = document.getElementById("status_column");
@@ -195,11 +174,5 @@
     }
 
 </script>
-
-<footer>
-    <!-- REPLACE ME WITH A FRAGMENT -->
-    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
-
-</footer>
 </body>
 </html>

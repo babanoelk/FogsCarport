@@ -50,6 +50,11 @@ public class Main {
         app.post("/tilfoej-skur", ctx -> OrderController.addShed(ctx, connectionPool));
         app.post("/send-regning", ctx -> OrderController.sendBill(ctx, connectionPool));
         app.post("/send-besked", ctx -> ContactController.contact(ctx));
+        app.get("/ret-i-varer", ctx -> MaterialController.loadMaterials(ctx,connectionPool));
+
+        //Opret medarbejder
+        app.get("/opret-medarbejder", ctx -> ctx.render("opret-medarbejder.html"));
+        app.post("/medarbejder-oprettet", ctx -> UserController.addAdminUser(ctx, connectionPool));
     }
 
 }

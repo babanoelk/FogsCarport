@@ -12,7 +12,7 @@
 <header th:replace="~{fragments :: header}"></header>
 
 <div id="main-content">
-    <p class="error_message" th:text="${#ctx.message}"></p>
+    <p class="error_message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
     <form method="post">
         <label for="email">E-mail</label>
         <input type="text" id="email" name="email" th:required="true"><br>

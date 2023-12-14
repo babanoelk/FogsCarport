@@ -31,6 +31,7 @@ public class Main {
         app.get("/bestil-carport", ctx -> FormController.loadMeasurements(ctx, connectionPool));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.get("/ordre-side", ctx -> OrderController.getAllOrders(ctx, connectionPool));
+        app.get("/lagervare", ctx -> MaterialController.loadMaterials(ctx, connectionPool));
 
         // Routing post
         app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));

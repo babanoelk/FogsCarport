@@ -63,11 +63,15 @@ public class FormController {
             ctx.attribute("name", name);
             ctx.attribute("length", carportLength);
             ctx.attribute("width", carportWidth);
+            ctx.attribute("height", carportHeight);
+
 
             String svgContent = SvgGenerator.generateSvg(carportLength,carportWidth);
 
             Map<String, Object> model = new HashMap<>();
             model.put("svgContent", svgContent);
+
+            EmailController.sendOrderToSalesTeam(ctx);
 
             ctx.render("tilbud-indsendt.html",model);
         } catch (Exception e) {

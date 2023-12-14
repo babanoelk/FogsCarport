@@ -13,6 +13,7 @@
 
 <div id="main-content">
     <h1>Dashboard</h1>
+    <p class="message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
     <div>
         <div class="dashboard_content" th:if="${session.currentUser.getRole() == 1}">
             <div>
@@ -44,12 +45,7 @@
             </div>
             <div>
                 <form method="get">
-                    <button class="dash_button" type="submit" formaction="/ordre-side">Opret medarbejder</button>
-                </form>
-            </div>
-            <div>
-                <form method="get">
-                    <button class="dash_button" type="submit" formaction="/ordre-side">Opret kunde</button>
+                    <button class="dash_button" type="submit" formaction="/opret-medarbejder">Opret medarbejder</button>
                 </form>
             </div>
             <div>

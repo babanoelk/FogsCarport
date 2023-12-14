@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Side</title>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div id="nav-fullwidth">
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <div id="navbar">
+        <div id="logo">
+            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
+        </div>
+        <ul class="main-menu">
+            <li class="button"><a href="/">Hjem</a></li>
+            <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
+            <li class="button"><a href="/login">Login</a></li>
+            <li class="button"><a href="/log-ud">Log ud</a></li>
+            <li class="button"><a href="/admin-side">Admin Side</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="main-content">
+    <h2>Ret i varer</h2>
+
+    <p class="error_message" th:text="${#ctx.message}"></p>
+    <table id="materials_table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Vare navn</th>
+                <th>Beskrivelse</th>
+                <th>Varer nummer</th>
+                <th>Bredde</th>
+                <th>Højde</th>
+                <th>Pris</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="materials : ${materialsList}">
+                <td th:text="${materials.Id}">Property 1</td>
+                <td th:text="${materials.Name}">Property 2</td>
+                <td th:text="${materials.Description}">Property 2</td>
+                <td th:text="${materials.ItemNumber}">Property 2</td>
+                <td th:text="${materials.Width}">Property 2</td>
+                <td th:text="${materials.Height}">Property 2</td>
+                <td th:text="${materials.Price}">Property 2</td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+
+<footer>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+</footer>
+
+<script>
+    function savePrice() {
+        alert("New price saved!");
+    }
+</script>
+
+</body>
+</html>

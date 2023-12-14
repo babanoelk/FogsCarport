@@ -57,4 +57,16 @@ public class EmailController {
             ctx.render("ordre-side.html");
         }
     }
+
+    public static void sendMessageToSalesTeam(Context ctx, String customerName, String customerPhone, String customerEmail, String message) throws Exception {
+
+        try {
+            EmailFactory.sendMessageToSalesTeam(customerName, customerPhone, customerEmail, message);
+        } catch (IOException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("ordre-side.html");
+        }
+
+
+    }
 }

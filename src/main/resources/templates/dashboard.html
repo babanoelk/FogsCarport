@@ -34,8 +34,8 @@
         </div>
         <div class="dashboard_content" th:if="${session.currentUser.getRole() == 2 || session.currentUser.getRole() == 3}">
             <div>
-                <form method="get">
-                    <button class="dash_button" type="submit" formaction="/ordre-side">Se ordre</button>
+                <form method="post">
+                    <button class="dash_button" type="submit" formaction="/ordre-info">Se ordre</button>
                 </form>
             </div>
             <div>

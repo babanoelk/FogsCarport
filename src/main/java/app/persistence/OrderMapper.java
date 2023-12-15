@@ -2,6 +2,7 @@ package app.persistence;
 
 import app.dtos.*;
 import app.entities.Carport;
+import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import java.sql.*;
@@ -442,5 +443,32 @@ public class OrderMapper {
         } catch (SQLException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public static Order getOrderById(int id, ConnectionPool connectionPool) throws DatabaseException {
+        Order order = null;
+        String sql = "select * from public.order where id = ?";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, id);
+
+                ResultSet rs = ps.executeQuery();
+
+                while(rs.next()) {
+                    int orderId = rs.getInt("id");
+                    Date date = rs.getDate("date");
+                    String note = rs.getString("customer_note");
+                    int userId = rs.getInt("user_id");
+                    int status = rs.getInt("order_status");
+                    int carportId = rs.getInt("carport_id");
+                    order = new Order(orderId, date, note, getStatusByID(status, connectionPool));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return order;
     }
 }

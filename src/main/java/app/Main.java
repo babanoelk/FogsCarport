@@ -33,6 +33,7 @@ public class Main {
         app.get("/ordre-side", ctx -> OrderController.getAllOrders(ctx, connectionPool));
         app.get("/lagervare", ctx -> MaterialController.loadMaterials(ctx, connectionPool));
         app.get("/kontakt", ctx -> ctx.render("kontakt.html"));
+        app.post("/ordre-info", ctx -> MaterialController.loadParts(ctx, connectionPool));
 
         // Routing post
         app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));
@@ -53,10 +54,10 @@ public class Main {
         app.post("/gem-nye-pris", ctx -> OrderController.changePriceManually(ctx,connectionPool));
         app.get("/ret-i-varer", ctx -> MaterialController.loadMaterials(ctx,connectionPool));
 
+
         //Opret medarbejder
         app.get("/opret-medarbejder", ctx -> ctx.render("opret-medarbejder.html"));
         app.post("/medarbejder-oprettet", ctx -> UserController.addAdminUser(ctx, connectionPool));
-
+        
     }
-
 }

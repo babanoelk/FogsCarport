@@ -51,5 +51,40 @@ public class Calculator {
         return price;
     }*/
 
+    public static int piecesOfPost(Carport carport){
+
+        int maxLengthBetweenPost = 240;
+        int minNumberOfPosts = 4;
+        //hvis bredden på shed er 100% skal der være 5 stolper og hvis bredden er 50% skal der være 4 stolper
+        int shedPosts = 5;
+        int totalPost = 0;
+
+        int carportLength = carport.getLength();
+
+        if(carportLength > maxLengthBetweenPost && carportLength < maxLengthBetweenPost * 2){
+            totalPost += minNumberOfPosts + 2;
+        } else if (carportLength > maxLengthBetweenPost * 2) {
+            totalPost += minNumberOfPosts + 4;
+        }
+
+        if (carport.getShed() != null){
+            if(carport.getShed().getWidth() == carport.getWidth()){
+                totalPost += shedPosts;
+            }else{
+                totalPost += shedPosts -1;
+            }
+        }
+        return totalPost;
+    }
+
+    public static int numberOfRafter(Carport carport){
+        int maxLengthBetweenRafts = 60;
+        int result = carport.getLength() / maxLengthBetweenRafts;
+        if(carport.getLength() % maxLengthBetweenRafts != 0) {
+            result++;
+        }
+        return result;
+    }
+
 
 }

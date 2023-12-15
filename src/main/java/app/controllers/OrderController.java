@@ -458,4 +458,29 @@ public class OrderController {
             OrderController.getAllOrders(ctx, connectionPool);
         }
     }
+    public static void changePriceManually(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        try {
+            int order_ID = Integer.parseInt(ctx.formParam("orderID"));
+            float firstPrice = Float.parseFloat(ctx.formParam("total_price"));
+            String newInputPrice = ctx.formParam("changePrice");
+
+            float changePrice;
+            if (newInputPrice != null && !newInputPrice.isEmpty()) {
+                try {
+                    changePrice = Float.parseFloat(newInputPrice);
+                } catch (NumberFormatException e) {
+                    changePrice = firstPrice;
+                }
+            } else {
+                changePrice = firstPrice;
+            }
+
+            OrderMapper.updateOrderPrice(order_ID, changePrice, connectionPool);
+            OrderController.getSpecificOrder(ctx, connectionPool);
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", e.getMessage());
+        }
+    }
+
+
 }

@@ -48,11 +48,15 @@ public class Main {
         app.post("/gem-skur-oplysninger", ctx -> OrderController.updateShed(ctx, connectionPool));
         app.post("/tilfoej-skur", ctx -> OrderController.addShed(ctx, connectionPool));
         app.post("/send-regning", ctx -> OrderController.sendBill(ctx, connectionPool));
+
+        app.post("/gem-nye-pris", ctx -> OrderController.changePriceManually(ctx,connectionPool));
+
         app.get("/ret-i-varer", ctx -> MaterialController.loadMaterials(ctx,connectionPool));
 
         //Opret medarbejder
         app.get("/opret-medarbejder", ctx -> ctx.render("opret-medarbejder.html"));
         app.post("/medarbejder-oprettet", ctx -> UserController.addAdminUser(ctx, connectionPool));
+
     }
 
 }

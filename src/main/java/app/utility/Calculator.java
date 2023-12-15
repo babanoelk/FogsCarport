@@ -1,5 +1,6 @@
 package app.utility;
 
+import app.Main;
 import app.dtos.DTOCarportWithIdLengthWidthHeight;
 import app.dtos.DTOShedIdLengthWidth;
 import app.entities.Carport;
@@ -26,6 +27,13 @@ public class Calculator {
         float sqMeter = (shed.getLength()/100) * (shed.getWidth()/100);
         price = sqMeter * shedPricePerSqMeter;
         return price;
+    }
+
+    public static float discountCalculator(float totalPrice, float discountPercentage){
+        discountPercentage = Math.max(0,Math.min(discountPercentage, 100));
+        float discountedPrice = totalPrice - (totalPrice * discountPercentage/100);
+
+        return discountedPrice;
     }
 
 

@@ -32,6 +32,7 @@ public class Main {
         app.get("/login", ctx -> ctx.render("login.html"));
         app.get("/ordre-side", ctx -> OrderController.getAllOrders(ctx, connectionPool));
         app.get("/lagervare", ctx -> MaterialController.loadMaterials(ctx, connectionPool));
+        app.get("/kontakt", ctx -> ctx.render("kontakt.html"));
 
         // Routing post
         app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));
@@ -48,9 +49,8 @@ public class Main {
         app.post("/gem-skur-oplysninger", ctx -> OrderController.updateShed(ctx, connectionPool));
         app.post("/tilfoej-skur", ctx -> OrderController.addShed(ctx, connectionPool));
         app.post("/send-regning", ctx -> OrderController.sendBill(ctx, connectionPool));
-
+        app.post("/send-besked", ctx -> ContactController.contact(ctx));
         app.post("/gem-nye-pris", ctx -> OrderController.changePriceManually(ctx,connectionPool));
-
         app.get("/ret-i-varer", ctx -> MaterialController.loadMaterials(ctx,connectionPool));
 
         //Opret medarbejder

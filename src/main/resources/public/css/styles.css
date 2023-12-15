@@ -119,7 +119,7 @@ body{
     transition: background-color 0.3s; /* Tilføjer en overgangseffekt for farveskift */
 }
 
-.button{
+.button, #contact-button{
     background-color: #3A3B3C;
     color: white;
     padding: 10px;
@@ -164,13 +164,18 @@ a:link, a:visited{
 }
 
 
-.form, .contact {
+.form, .contact, #login_container {
     background-color: white;
     margin-top: 20px;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+#login_container{
+    width: 300px;
+
 }
 
 .dashboard_content{
@@ -213,12 +218,17 @@ a:link, a:visited{
 
 footer {
     margin-top: auto; /* Placerer footer nederst på siden */
+    display: flex;
+    padding: 10px;
     background-color: #757575;
-    color: #fff;
-    text-align: center;
+    color: white;
 }
 
-
+#footer-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
 
 @media screen and (max-width: 900px){
 
@@ -236,6 +246,12 @@ footer {
 
 
 @media screen and (max-width: 400px){
+
+    #footer-container{
+        flex-direction: column;
+        text-align: center;
+    }
+
 
     #navbar {
         flex-direction: column;

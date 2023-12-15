@@ -27,31 +27,34 @@ public class EmailController {
 
     }
 
-    public static void sendBill(Context ctx, float totalPrice) throws Exception {
+    public static void sendBill(Context ctx) throws Exception {
 
-        String name = ctx.formParam("full_name");
+        String customerName = ctx.formParam("full_name");
         String customerMail = ctx.formParam("email");
+        String price = ctx.formParam("total_price");
+        String employeeName = ctx.formParam("employeeName");
         String orderId = ctx.formParam("orderID");
-        String price = ""+totalPrice;
 
         try {
-
-
-            EmailFactory.sendOrderQuestion(name, orderId, customerMail, price);
-            String confirmation = "Tak for din besked. Vi vender retur indenfor 24 timer.";
-            ctx.attribute("confirmation", confirmation);
-            ctx.render("kontakt-indsendt.html");
-
-
+            EmailFactory.sendBill(customerName, orderId, price, employeeName);
         } catch (IOException e) {
-
-
             ctx.attribute("message", e.getMessage());
-            ctx.render("kontakt-indsendt.html");
-
-
+            ctx.render("ordre-side.html");
         }
-
     }
 
+    public static void sendOrderToSalesTeam(Context ctx) throws Exception {
+
+        String customerName = ctx.formParam("name");
+        String length = ctx.formParam("carport_length");
+        String width = ctx.formParam("carport_width");
+        String height = ctx.formParam("carport_height");
+        //String id = orderId;
+        try {
+            EmailFactory.sendOrderToSalesTeam(customerName, length, width, height);
+        } catch (IOException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("ordre-side.html");
+        }
+    }
 }

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<title>Ordre oversigt</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+
+<div id="main-content">
+
+    <p class="error_message" th:text="${#ctx.message}"></p>
+
+    <div id="order_list">
+        <div th:if="${session.currentUser.getRole() == 1}">
+
+            <h1>Mine Ordre</h1>
+
+            <p>Hej <span th:name="name" th:text="${session.currentUser.getName()}"/> her ses dine ordre</p>
+            <table>
+                <tr>
+                    <th>Ordre ID</th>
+                    <th>Dato</th>
+                    <th>Kommentar</th>
+                    <th>Ordre status</th>
+                    <th>Handling</th>
+                </tr>
+                <tr th:each="order : ${orderlist}">
+                    <td th:text="${order.getOrderId()}">Ordre ID</td>
+                    <td th:text="${order.getDate()}">Dato</td>
+                    <td th:text="${order.getCustomerNote}">Kommentar</td>
+                    <td th:text="${order.getOrderStatus}">Status</td>
+                    <td>
+                        <div th:if="${order.getOrderStatus == 'Under behandling'}">
+                            <form class="taskform" method="post">
+                                <button type="submit" name="order_id" th:value="${order.getOrderId()}"
+                                        formaction="/slet">
+                                    Slet
+                                </button>
+                            </form>
+                        </div>
+                        <div th:if="${order.getOrderStatus == 'Betalt'}">
+                            <form class="taskform" method="post">
+                                <button type="submit" name="order_id" th:value="${order.getOrderId()}"
+                                        formaction="/ordre-info">
+                                    Se ordre
+                                </button>
+                            </form>
+                        </div>
+                        <div>
+                            <form class="taskform" method="post">
+                                <button type="submit" name="order_id" th:value="${order.getOrderId()}"
+                                        formaction="/kontakt">Kontakt os
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div th:if="${session.currentUser.getRole() == 2 || session.currentUser.getRole() == 3}">
+
+            <h1>Salgsordre</h1>
+
+            <p><span th:text="${session.currentUser.getName()}"/> er logget ind</p>
+
+            <input type="text" id="searchBox" placeholder="Søg i ordre...">
+            <button onclick="filterOrders()">Søg</button>
+            <table id="order_table">
+                <tr>
+                    <th>Ordre ID</th>
+                    <th>Kunde navn</th>
+                    <th>Tlf nr</th>
+                    <th>Mail</th>
+                    <th>Ordre dato</th>
+                    <th>Kommentar</th>
+                    <th>
+                        <select name="status_column" id="status_column" onchange="updateTable()">
+                            <option value="alle">Filtrer efter status...</option>
+                            <option th:each="status : ${statusList}" th:text="${status.getText()}"
+                                    th:value="${status.getText()}"></option>
+                        </select>
+                    </th>
+                    <th>
+                        Handlinger
+                    </th>
+                </tr>
+                <tr th:each="order : ${allOrders}">
+                    <td th:text="${order.getId()}">Ordre ID</td>
+                    <td th:text="${order.getCustomerName()}">Kunde navn</td>
+                    <td th:text="${order.getMobile()}">Tlf nr</td>
+                    <td th:text="${order.getEmail()}">email</td>
+                    <td th:text="${order.getDate()}">Ordre dato</td>
+                    <td th:text="${order.getCustomerNote()}">Kommentar</td>
+                    <form method="post">
+                        <td>
+                            <select name="status_id">
+                                <option th:text="${order.getOrderStatus}" value="current_status" selected></option>
+                                <option th:each="status : ${statusList}"
+                                        th:unless="${status.getText()==order.getOrderStatus}"
+                                        th:text="${status.getText()}" th:value="${status.getId()}"></option>
+                            </select>
+
+                        </td>
+                        <td>
+                            <button type="submit" name="order_id" formaction="/opdater-ordre"
+                                    th:value="${order.getId()}">
+                                Gem ændring
+                            </button>
+                            <button type="submit" name="order_id" th:value="${order.getId()}" formaction="/se-order">Se
+                                ordre
+                            </button>
+                    </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{fragments :: footer}"></footer>
+
+<script>
+    function updateTable() {
+        var statusSelect = document.getElementById("status_column");
+        var selectedStatus = statusSelect.value.toLowerCase();
+        var orderTable = document.getElementById("order_table");
+        var tableRows = orderTable.getElementsByTagName("tr");
+
+        for (var i = 1; i < tableRows.length; i++) {
+            var orderRow = tableRows[i];
+            var orderStatusCell = orderRow.getElementsByTagName("td")[6];
+            var orderStatusSelect = orderStatusCell.getElementsByTagName("select")[0];
+            var orderStatus = orderStatusSelect ? orderStatusSelect.options[orderStatusSelect.selectedIndex].text.toLowerCase() : "";
+
+            if (selectedStatus === "alle" || orderStatus === selectedStatus) {
+                orderRow.style.display = "";
+            } else {
+                orderRow.style.display = "none";
+            }
+        }
+    }
+
+    function filterOrders() {
+        // Få input fra søgefeltet
+        var input = document.getElementById("searchBox");
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById("order_table");
+        var tr = table.getElementsByTagName("tr");
+
+        // Loop igennem alle rækker i tabellen, undtagen headeren
+        for (var i = 1; i < tr.length; i++) {
+            var td, j, shouldDisplayRow = false;
+
+            // Hent alle celler i rækken og tjek dem mod søgefilteret
+            td = tr[i].getElementsByTagName("td");
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    var txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        shouldDisplayRow = true;
+                        break; // Stopper søgningen, hvis der er match i nogen kolonne
+                    }
+                }
+            }
+
+            // Skjul eller vis rækken baseret på, om der blev fundet et match
+            tr[i].style.display = shouldDisplayRow ? "" : "none";
+        }
+    }
+
+</script>
+</body>
+</html>

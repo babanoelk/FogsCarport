@@ -7,9 +7,12 @@ import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.*;
+import app.utility.SvgGenerator;
 import io.javalin.http.Context;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FormController {
@@ -35,9 +38,10 @@ public class FormController {
             String email = ctx.formParam("email");
             String password = (ctx.formParam("pass"));
             boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
+            int role = 1; //Standard role 'Kunde'
 
             //Create User instance from input data
-            User user = new User(name, email, password, address, mobile, zip, consent);
+            User user = new User(name, email, password, address, mobile, zip, consent, role);
 
             //Create Carport instance from carport input data
             Carport carport = new Carport(carportWidth, carportLength, carportHeight);
@@ -60,8 +64,17 @@ public class FormController {
             ctx.attribute("name", name);
             ctx.attribute("length", carportLength);
             ctx.attribute("width", carportWidth);
+            ctx.attribute("height", carportHeight);
 
-            ctx.render("tilbud-indsendt.html");
+
+            String svgContent = SvgGenerator.generateSvg(carportLength,carportWidth);
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("svgContent", svgContent);
+
+            EmailController.sendOrderToSalesTeam(ctx);
+
+            ctx.render("tilbud-indsendt.html",model);
         } catch (Exception e) {
             loadMeasurements(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());

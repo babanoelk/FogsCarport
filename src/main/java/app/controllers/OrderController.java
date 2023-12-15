@@ -1,7 +1,6 @@
 package app.controllers;
 
 import app.dtos.*;
-import app.entities.Order;
 import app.entities.Shed;
 import app.entities.Status;
 import app.entities.User;
@@ -69,15 +68,15 @@ public class OrderController {
             if (user.getRole() == 1) {
                 List<DTOGetOrderWithIdDateCustomerNoteConsentStatus> orders = OrderMapper.getAllOrdersByUser(user, connectionPool);
                 ctx.attribute("orderlist", orders);
-                ctx.render("min-side.html");
+                ctx.render("ordre-side.html");
             } else {
                 List<Status> statusList = StatusMapper.getAllStatuses(connectionPool);
-                List<Order> allOrders = OrderMapper.getAllOrders(connectionPool);
+                List<DTOOrderCustomer> allOrders = OrderMapper.getAllOrders(connectionPool);
                 //ctx.sessionAttribute("currentSession", "all");
 
                 ctx.attribute("statusList", statusList);
                 ctx.attribute("allOrders", allOrders);
-                ctx.render("admin-side.html");
+                ctx.render("ordre-side.html");
             }
         } catch (DatabaseException e) {
             throw new DatabaseException("Fejl ved indlæsning af kundeordre " + e.getMessage());
@@ -421,14 +420,13 @@ public class OrderController {
         ctx.render("kontakt.html");
     }
 
-    public static void sendBill(Context ctx, ConnectionPool connectionPool) throws DatabaseException
-    {
+    public static void sendBill(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
             //OrderController.getAllOrders(ctx, connectionPool);
             String message = "Regningen er nu sendt afsted.";
             ctx.attribute("message", message);
             int order_ID = Integer.parseInt(ctx.formParam("orderID"));
-            OrderMapper.sendBill(order_ID,connectionPool);
+            OrderMapper.updateStatusBillSent(order_ID, connectionPool);
 
 
             //Update price
@@ -451,15 +449,12 @@ public class OrderController {
                 updatePrice = oldPrice;
             }
 
-            OrderMapper.updateOrderPrice(order_ID,updatePrice,connectionPool);
+            OrderMapper.updateOrderPrice(order_ID, updatePrice, connectionPool);
 
-            EmailController.sendBill(ctx,updatePrice);
-
+            EmailController.sendBill(ctx);
             OrderController.getAllOrders(ctx, connectionPool);
         } catch (Exception e) {
-            OrderController.getAllOrders(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());
-            //OrderController.getSpecificOrder(ctx, connectionPool);
             OrderController.getAllOrders(ctx, connectionPool);
         }
     }

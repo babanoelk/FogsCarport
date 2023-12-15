@@ -5,7 +5,7 @@
 <!-- REPLACE ME WITH A FRAGMENT -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+<link href="../../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 
 </head>
 <body>
@@ -13,10 +13,10 @@
     <!-- REPLACE ME WITH A FRAGMENT -->
     <div id="navbar">
         <div id="logo">
-            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
+            <img src="../../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
         </div>
         <ul class="main-menu">
-            <li class="button"><a href="/">Hjem</a></li>
+            <li class="button"><a href="/public">Hjem</a></li>
             <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
             <li class="button"><a href="/login">Login</a></li>
             <li class="button"><a href="/log-ud">Log ud</a></li>
@@ -38,9 +38,6 @@
     <p>Du er nu logget ind</p>
     <p class="error_message" th:text="${#ctx.message}"></p>
 
-</div>
-
-<div id="ordre_liste">
     <h2>Hej <span th:text="${session.currentUser.getName()}"/></h2>
     <p>Alle ordre</p>
     <table id="order_table">
@@ -51,7 +48,8 @@
             <th>
                 <select name="status_column" id="status_column" onchange="updateTable()">
                     <option value="alle">Alle</option>
-                    <option th:each="status : ${statusList}" th:text="${status.getText()}" th:value="${status.getText()}"></option>
+                    <option th:each="status : ${statusList}" th:text="${status.getText()}"
+                            th:value="${status.getText()}"></option>
                 </select>
             </th>
             <th>
@@ -64,16 +62,19 @@
             <td th:text="${order.getCustomerNote}">Kommentar</td>
             <td>
                 <form method="post">
-                <select name="status_id">
-                    <option th:text="${order.getOrderStatus}" value="current_status" selected></option>
-                    <option th:each="status : ${statusList}" th:unless="${status.getText()==order.getOrderStatus}" th:text="${status.getText()}" th:value="${status.getId()}"></option>
-                </select>
-                    <button type="submit" name="order_id" formaction="/opdater-ordre" th:value="${order.getId()}">Gem</button>
+                    <select name="status_id">
+                        <option th:text="${order.getOrderStatus}" value="current_status" selected></option>
+                        <option th:each="status : ${statusList}" th:unless="${status.getText()==order.getOrderStatus}"
+                                th:text="${status.getText()}" th:value="${status.getId()}"></option>
+                    </select>
+                    <button type="submit" name="order_id" formaction="/opdater-ordre" th:value="${order.getId()}">Gem
+                    </button>
                 </form>
             </td>
             <td>
                 <form class="taskform" method="post">
-                    <button type="submit" name="order_id" th:value="${order.getId()}" formaction="/se-order">Se ordre</button>
+                    <button type="submit" name="order_id" th:value="${order.getId()}" formaction="/se-order">Se ordre
+                    </button>
                 </form>
             </td>
         </tr>

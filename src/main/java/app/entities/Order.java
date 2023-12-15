@@ -11,7 +11,6 @@ public class Order {
     private String orderStatus; //this is an int in DB
     private int carportId;
 
-
     public Order(String customerNote) {
         this.customerNote = customerNote;
     }
@@ -30,6 +29,8 @@ public class Order {
         this.orderStatus = orderStatus;
         this.carportId = carportId;
     }
+
+
 
     public Order(int id, Date date, String customerNote, String orderStatus) {
         this.id = id;

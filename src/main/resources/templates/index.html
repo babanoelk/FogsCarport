@@ -7,30 +7,11 @@
 <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 
 </head>
-<div id="nav-fullwidth">
-    <div id="navbar">
-        <div id="logo">
-            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
-        </div>
-        <ul class="main-menu">
-            <li class="button"><a href="/">Hjem</a></li>
-            <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
-            <li class="button"><a href="/login">Login</a></li>
-            <li class="button"><a href="/log-ud">Log ud</a></li>
-            <!-- <li class="button" th:if="${session.currentUser == null}" th:remove="tag"><a href="/min-side" th:text="${session.currentUser.email}"></a></li>-->
 
-            <div th:if="${session.currentUser != null}">
-                <li class="button"><a href="/min-side" th:text="${session.currentUser.email}"></a></li>
-            </div>
-
-            <div th:if="${session.currentUser == null}">
-                <li class="button"><a href="/min-side" th:text="test"></a></li>
-            </div>
-        </ul>
-    </div>
-</div>
 
 <body>
+<header th:replace="~{fragments :: header}"></header>
+
 <div id="main-content">
     <div class="pictures-frontpage">
         <div><img src="../public/images/aabning.png" th:src="@{/images/aabning.png}"
@@ -46,8 +27,7 @@
         <button id="button-order"><a href="/bestil-carport">Bestil din carport her</a></button>
     </div>
 </div>
-<footer>
-    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
-</footer>
+<footer th:replace="~{fragments :: footer}"></footer>
+
 </body>
 </html>

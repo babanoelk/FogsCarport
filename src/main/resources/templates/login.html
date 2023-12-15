@@ -9,38 +9,23 @@
 
 </head>
 <body>
-<div id="nav-fullwidth">
-    <!-- REPLACE ME WITH A FRAGMENT -->
-    <div id="navbar">
-        <div id="logo">
-            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
-        </div>
-        <ul class="main-menu">
-            <li class="button"><a href="/">Hjem</a></li>
-            <li class="button"><a href="/">Bestil unik carport</a></li>
-            <li class="button"><a href="/">Login</a></li>
-        </ul>
-    </div>
-</div>
+<header th:replace="~{fragments :: header}"></header>
 
 <div id="main-content">
-    <p class="error_message" th:text="${#ctx.message}"></p>
+    <p class="error_message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
     <form method="post">
-
         <label for="email">E-mail</label>
         <input type="text" id="email" name="email" th:required="true"><br>
 
         <label for="password">Kodeord</label>
         <input type="text" id="password" name="password" th:required="true"><br>
 
-        <button type="submit" formaction="/min-side">Log på</button>
+        <button type="submit" formaction="/dashboard">Log på</button>
     </form>
 
 </div>
 
-<footer>
-    <!-- REPLACE ME WITH A FRAGMENT -->
-    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
-</footer>
+<footer th:replace="~{fragments :: footer}"></footer>
+
 </body>
 </html>

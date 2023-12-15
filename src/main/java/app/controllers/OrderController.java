@@ -476,6 +476,9 @@ public class OrderController {
             }
 
             OrderMapper.updateOrderPrice(order_ID, changePrice, connectionPool);
+            ctx.attribute("order_id",order_ID);
+
+            ctx.attribute("orderID",order_ID);
             OrderController.getSpecificOrder(ctx, connectionPool);
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());

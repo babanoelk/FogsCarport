@@ -235,6 +235,9 @@ footer {
 /* START: Styling til se-nærmere-på-ordre.html*/
 /* Flex container styling: Enables flexbox layout for the main container */
 /* Container for the main content */
+#main-content-order{
+    display: flex;
+}
 #main-container {
     display: flex;
 }
@@ -246,7 +249,7 @@ footer {
     flex: 1;
     padding: 20px;
     border: 1px solid #ccc;
-    height: 75vh;
+
 }
 
 /* Adjusting the order of the left content div: Changes the visual order on the screen */

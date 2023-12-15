@@ -64,16 +64,19 @@
     <!-- Price information -->
 <div id="main-sub-header">
     <div id="main-price-left">
-        <h4>Vejlende pris: <span th:text="${session.totalPrice}"></span> DKK
+        <h4>Samlet materialepris: <span th:text="${session.totalPrice}"></span>,- DKK
             <input type="hidden" name="total_price" th:value="${session.totalPrice}">
         </h4>
     </div>
     <div id="main-price-mid">
-        <form id="send-regning" method="post" action="/send-regning">
-            <h4>Pris for kunden: </h4>
+        <form id="send-regning" method="post" action="/gem-nye-pris">
+            <input type="hidden" name="orderID" th:value="${orderID}">
+            <h4>Pris for kunden: <span th:text="${session.totalPrice}"></span>,- DKK
+            <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+            </h4>
             <label>Sæt prisen til:</label>
-            <input type="text" name="newPrice">
-            <button id="send-regning-kna" type="submit" name="send-regning-knap" formaction="/send-regning">Send regning
+            <input type="text" name="changePrice">
+            <button id="send-regning-kna" type="submit" name="send-regning-knap" formaction="/gem-nye-pris">Gem nye pris
             </button>
         </form>
     </div>
@@ -95,7 +98,7 @@
 
 </div>
 
-<div id="main-content">
+<div id="main-content-ordrer">
     <!-- User information-->
     <div id="main-container">
         <div id="main-container-left">

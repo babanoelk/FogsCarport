@@ -81,11 +81,31 @@ public class FormController {
             ctx.attribute("height", carportHeight);
 
 
+            //START: Ahmads SVG
+            String svgText = "<svg width=\"255\" height=210>\n" +
+                    "   <rect x=\"0\" y=\"0\" height=\"90\" width=\"90\"\n" +
+                    "        style=\"stroke:#000000; fill: #ff0000\"/>\n" +
+                    "   <rect x=\"120\" y=\"0\" height=\"90\" width=\"135\"\n" +
+                    "        style=\"stroke:#000000; fill: #ff0000\"/>\n" +
+                    "   <rect x=\"0\" y=\"120\" height=\"90\" width=\"90\"\n" +
+                    "        style=\"stroke:#000000; fill: #ff0000\"/>\n" +
+                    "   <rect x=\"120\" y=\"120\" height=\"90\" width=\"135\"\n" +
+                    "        style=\"stroke:#000000; fill: #ff0000\"/>\n" +
+                    "</svg>";
+
+            ctx.attribute("svg",svgText);
+
+            //SLUT: Ahmads SVG
+
+
+
+            //START: Mustafa måde at gøre det på. Skal slettes når Ahmar har fået det andet oppe og køre.
             String svgContent = SvgGenerator.generateSvg(carportLength, carportWidth);
 
             Map<String, Object> model = new HashMap<>();
             model.put("svgContent", svgContent);
 
+            //SLUT: Mustafa måde at gøre det på. Skal slettes når Ahmar har fået det andet oppe og køre.
             EmailController.sendOrderToSalesTeam(ctx);
 
             ctx.render("tilbud-indsendt.html", model);

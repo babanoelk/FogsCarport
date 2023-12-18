@@ -28,6 +28,15 @@ class FormController{
 class OrderController{
     + static boolean deleteOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException
     + static void getAllOrders(Context ctx, (ConnectionPool ConnectionPool) throws DatabaseException
+    + static void getSpecificOrder(Context ctx, ConnectionPool connectionPool)
+    + static void updateOrderStatus(Context ctx, ConnectionPool connectionPool)
+    + static void updateOrderUser(Context ctx, ConnectionPool connectionPool)
+    + static void updateCarport(Context ctx, ConnectionPool connectionPool)
+    + static void updateShed(Context ctx, ConnectionPool connectionPool)
+    + static void addShed(Context ctx, ConnectionPool connectionPool)
+    + static void orderContact(Context ctx)
+    + static void sendBill(Context ctx, ConnectionPool connectionPool)
+    + static void changePriceManually(Context ctx, ConnectionPool connectionPool)
 }
 
 class SystemController{
@@ -36,37 +45,68 @@ class SystemController{
 
 class UserController{
     + static void login(Context ctx, ConnectionPool connectionPool)
+    + static void addAdminUser(Context ctx, ConnectionPool connectionPool)
 }
 }
 
 package dtos {
-class GetOrderWithIdDateCustomerNoteConsentStatus{
-    - int orderId
-    - Date date
-    - String customerNote
-    - String orderStatus
-
-    + GetOrderWithIdDateCustomerNoteConsentStatus(int orderId, Date date, String customerNote, String orderStatus)
-    + int getOrderId()
-    + Date getDate()
-    + String getCustomerNote()
-    + getOrderStatus()
-}
-
-class UserCarportOrderDTO{
+class DTOUserCarportOrder {
     - User user
     - Carport carport
     - Order order
 
-    + UserCarportOrderDTO(User user, Carport carport, Order order)
+    + DTOUserCarportOrder(User user, Carport carport, Order order)
     + User getUser()
     + Carport getCarport()
     + Order getOrder()
 }
+class DTOOrderCustomer {
+    - int id;
+    - Date date;
+    - String customerNote;
+    - int statusId;
+    - String customerName;
+    - String email;
+    - int mobile;
+    - String orderStatus;
+
+    + DTOOrderCustomer()
+    + int getId()
+    + Date getDate()
+    + String getCustomerNote()
+    + int getStatusId()
+    + getEmail()
+    + int getMobile()
+    + String getOrderStatus()
+}
+class DTOPartsByMaterials {
+    - String name;
+    - int length;
+    - int amount;
+    - String description;
+
+    + DTOPartsByMaterials()
+    + String getName()
+    + int getLength()
+    + int getAmount()
+    + String getDescription()
+}
+class DTOSpecificOrderByOrderIdWithUserAndCarportAndShed {
+    - User user
+    - Order order
+    - Carport carport
+    - Shed shed
+
+    + DTOSpecificOrderByOrderIdWithUserAndCarportAndShed()
+    + User getUser()
+    + Order getOrder()
+    + Carport getCarport()
+    + Shed getShed()
+}
 }
 
 package entities {
-class User{
+class User {
     - int id
     - String name
     - String email
@@ -97,9 +137,9 @@ class User{
     + boolean getConsent()
 }
 
-interface Construction{}
+interface Construction {}
 
-class Shed{
+class Shed {
     - int id
     - int carportID
     - int width
@@ -117,7 +157,7 @@ class Shed{
     + void setLength(int length)
 }
 
-class Carport{
+class Carport {
     - int id
     - int width
     - int length
@@ -190,6 +230,7 @@ class CarportMapper{
     + static Carport addCarport(Carport carport, ConnectionPool connectionPool) throws DatabaseException
     + static deleteCarportByCarportID(int carportId, ConnectionPool connectionPool) throws DatabaseException
     + static Shed addShed(Shed shed, ConnectionPool connectionPool) throws DatabaseException
+    + static void updateCarport(DTOCarportWithIdLengthWidthHeight dtoUser, ConnectionPool connectionPool)
 }
 
 class ConnectionPool{
@@ -218,12 +259,23 @@ class OrderMapper{
     + static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException
     + static List<GetOrderWithIdDateCustomerNoteConsentStatus> getAllOrdersByUser(User user, (ConnectionPool connectionPool) throws DatabaseException
     + static String getStatusByID(int statusID, (ConnectionPool connectionPool) throws DatabaseException
+    + static void addOrderToExistingUser(DTOUserCarportOrder dto, ConnectionPool connectionPool)
+    + static void deleteOrderByOrderID(int orderId, ConnectionPool connectionPool)
+    + static DTOOrderUserCarport getOrderById(int orderId, ConnectionPool connectionPool)
+    + static Carport getCarportByOrderId(int orderId, ConnectionPool connectionPool)
+    + static void updateOrderStatus(int orderId, int statusId, ConnectionPool connectionPool)
+    + static Shed getShedByOrderId(int orderId, ConnectionPool connectionPool)
+    + static void addShedToOrder(int carportId, int shedId, ConnectionPool connectionPool)
+    + static void updateStatusBillSent(int orderID, ConnectionPool connectionPool)
+    + static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool)
+    + static Order getOrderById(int id, ConnectionPool connectionPool)
 }
 
 class UserMapper{
     + static User addUser(User newUser, ConnectionPool ConnectionPool) throws DatabaseException
     + static User getUserByEmail(String email, ConnectionPool connectionPool) throws DatabaseException
     + static boolean loginValidator(String email, String password, ConnectionPool connectionPool) throws DatabaseException, SQLException
+    + static void updateUser(User user, ConnectionPool connectionPool)
 }
 }
 
@@ -234,6 +286,31 @@ entities ----* persistence
 persistence ----* controllers
 config ----* Main
 controllers ----* Main
+
+package utility {
+class Calculator {
+    - static float carportPricePerSqCM
+    - static float shedPricePerSqMeter
+
+    + static float carportPriceCalculator(DTOCarportWithIdLengthWidthHeight carport)
+    + static float shedPriceCalculator(DTOShedIdLengthWidth shed)
+    + static float discountCalculator(float totalPrice, float discountPercentage)
+}
+class EmailFactory {
+    - static String companyMail
+
+    + static void sendOrderQuestion(String customerName, String orderId, String customerEmail, String message)
+    + static void sendBill(String customerName, String orderId, String price, String employeeName)
+    + static void sendOrderToSalesTeam(String customerName, String length, String width, String height)
+    + static void sendMessageToSalesTeam(String customerName, String customerPhone, String customerEmail, String message)
+}
+class SvgGenerator {
+    + static String generateSvg(double length, double width)
+    + static void drawStolpe(SVGGraphics2D svgGraphics2D, double length, double width)
+    + static void drawSpaer(SVGGraphics2D svgGraphics2D, double length, double width)
+}
+}
+
 }
 !pragma layout smetana
 @enduml

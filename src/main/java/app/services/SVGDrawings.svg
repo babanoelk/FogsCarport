@@ -1,0 +1,108 @@
+<!-- Carport -->
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1000" height="1000"> <!-- Størrelsen for billedet -->
+
+    <!-- Carport længde: 600 bredde: 780 -->
+    <!-- Rammen for billedet -->
+
+    <rect x="0" y="0" height="600" width="780" style="stroke-width:5px; stroke:#000000; fill: #ffffff"></rect>
+    <!-- Rem øverst -->
+    <rect x="30" y="35" height="20" width="600"
+          style="stroke:#000; fill:#fff"/>
+
+    <!-- Rem nederst -->
+    <rect x="30" y="725" height="20" width="600"
+          style="stroke:#000; fill:#fff"/>
+
+    <!-- Spærret til yderst til venstre -->
+    <rect x="30" y="0" height="780" width="20"
+          style="stroke:#000; fill:#fff"/>
+
+    <!-- Spærret til yderst til højre -->
+    <rect x="630" y="0" height="780" width="20"
+          style="stroke:#000; fill:#fff"/>
+
+    <!-- Første stiplet linje -->
+    <line x1="85" y1="45" x2="450" y2="735" stroke="#000" stroke-width="2" stroke-dasharray="10"/>
+
+    <!-- Anden stiplet linje -->
+    <line x1="85" y1="735" x2="450" y2="45" stroke="#000" stroke-width="2" stroke-dasharray="10"/>
+
+    <!-- De øverste tre stolper -->
+    <rect x="130" y="35" height="20" width="20"
+          style="stroke:#000; fill:#fff"/>
+    <rect x="370" y="35" height="20" width="20"
+          style="stroke:#000; fill:#fff"/>
+    <rect x="580" y="35" height="20" width="20"
+          style="stroke:#000; fill:#fff"/>
+
+    <!-- De nederste tre stolper -->
+    <rect x="130" y="725" height="20" width="20"
+          style="stroke:#000; fill:#fff"/>
+    <rect x="370" y="725" height="20" width="20"
+          style="stroke:#000; fill:#fff"/>
+    <rect x="580" y="725" height="20" width="20"
+          style="stroke:#000; fill:#fff"/>
+
+    <!-- X-aksen pil -->
+        <defs>
+            <marker
+                    id="beginArrow"
+                    markerWidth="12"
+                    markerHeight="12"
+                    refX="0"
+                    refY="6"
+                    orient="auto">
+                <path d="M0,6 L12,0 L12,12 L0,6" style="fill: #000000;" />
+            </marker>
+            <marker
+                    id="endArrow"
+                    markerWidth="12"
+                    markerHeight="12"
+                    refX="12"
+                    refY="6"
+                    orient="auto">
+                <path d="M0,0 L12,6 L0,12 L0,0 " style="fill: #000000;" />
+            </marker>
+        </defs>
+        <line x1="15"  y1="0" x2="15"   y2="780"
+              style="stroke: #006600;
+ marker-start: url(#beginArrow);
+ marker-end: url(#endArrow);" />
+
+    <!-- Y-aksen pil -->
+        <defs>
+            <marker
+                    id="beginArrow"
+                    markerWidth="12"
+                    markerHeight="12"
+                    refX="0"
+                    refY="6"
+                    orient="auto">
+                <path d="M0,6 L12,0 L12,12 L0,6" style="fill: #000000;" />
+            </marker>
+            <marker
+                    id="endArrow"
+                    markerWidth="12"
+                    markerHeight="12"
+                    refX="12"
+                    refY="6"
+                    orient="auto">
+                <path d="M0,0 L12,6 L0,12 L0,0 " style="fill: #000000;" />
+            </marker>
+        </defs>
+        <line x1="30"  y1="795" x2="650"   y2="795"
+              style="stroke: #006600;
+ marker-start: url(#beginArrow);
+ marker-end: url(#endArrow);" />
+
+    <!-- Tekst på y-aksen -->
+    <text style="text-anchor: middle" transform="translate(30,300) rotate(-90)">780 cm</text>
+
+    <!-- Tekst på x-aksen -->
+    <text transform="translate(250,790) rotate(0)">600 cm</text>
+
+
+</svg>
+
+

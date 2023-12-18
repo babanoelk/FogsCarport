@@ -1,5 +1,6 @@
 package app.persistence;
 
+import app.dtos.DTOParts;
 import app.dtos.DTOPartsByMaterials;
 import app.entities.Materials;
 import app.entities.Part;
@@ -68,20 +69,21 @@ public class MaterialMapper {
         return newMaterial;
     }
 
-    public static void addpartsList(Part part, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addpartsList(List<Part> partList, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "INSERT INTO parts_list (material_id, amount, order_id) values(?,?,?)";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-                ps.setInt(1, part.getMaterialId());
-                ps.setInt(2, part.getAmount());
-                ps.setInt(3, part.getOrder_id());
-
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected != 1) {
-                    throw new DatabaseException("Partslist wasn't added to the Database");
+                for (Part part : partList) {
+                    ps.setInt(1, part.getMaterialId());
+                    ps.setInt(2, part.getAmount());
+                    ps.setInt(3, part.getOrder_id());
+                    int rowsAffected = ps.executeUpdate();
+                    if (rowsAffected != 1) {
+                        throw new DatabaseException("Partslist wasn't added to the Database");
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -91,13 +93,12 @@ public class MaterialMapper {
 
     public static List<DTOPartsByMaterials> getPartsList(Order order, ConnectionPool connectionPool) throws DatabaseException {
         List<DTOPartsByMaterials> partsList = new ArrayList<>();
-        String sql= "Select materials.name, materials.length_cm, amount, description from materials join parts_list on materials.id = parts_list.material_id where parts_list.order_id = ?";
+        String sql = "Select materials.name, materials.length_cm, amount, description from materials join parts_list on materials.id = parts_list.material_id where parts_list.order_id = ?";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1, order.getId());
                 ResultSet rs = ps.executeQuery();
-
                 while (rs.next()) {
                     String name = rs.getString("name");
                     int length = rs.getInt("length_cm");

@@ -31,13 +31,18 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    background-color: #134d8a;
+    border-radius: 5px;
+    color: white;
+
 }
 
 td, th {
-    border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
-}
+    border-radius: 5px;
+    border: 1px solid #dddddd;
+    }
 
 body{
     background-color: #f1f1f1;
@@ -45,9 +50,7 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Mindst 100% af viewportens højde */
-    margin: 0;
-
-}
+    }
 
 #nav-fullwidth{
     width: 100%;

@@ -1,20 +1,20 @@
-/*package app.persistence;
+package app.persistence;
 
 import app.dtos.DTOPartsByMaterials;
 import app.entities.Materials;
-import app.entities.Part;
 import app.entities.Order;
+import app.entities.Part;
 import app.exceptions.DatabaseException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MaterialMapper {
+public class MaterialsMapper {
     public static List<Materials> getAllMaterials(ConnectionPool connectionPool) throws DatabaseException {
         List<Materials> allMaterials = new ArrayList<>();
 
-        String sql = "SELECT id, name, length_cm, description, item_number, width_cm, height_cm, price from MATERIALS";
+        String sql = "select id, name, length_cm, description, item_number, width_cm, height_cm, price from MATERIALS";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
@@ -29,6 +29,7 @@ public class MaterialMapper {
                     int height = rs.getInt("height_cm");
                     int price = rs.getInt("price");
                     allMaterials.add(new Materials(id, name, length, description, itemNumber, width, height, price));
+
                 }
             }
         } catch (SQLException e) {
@@ -37,7 +38,8 @@ public class MaterialMapper {
         return allMaterials;
     }
 
-    public static Materials addMaterial(Materials materials, ConnectionPool connectionPool) throws DatabaseException {
+    public static Materials addMaterial(Materials materials, ConnectionPool connectionPool)throws DatabaseException
+    {
         Materials newMaterial;
         String sql = "INSERT INTO materials (name, length_cm, description, item_number, width_cm, height_cm, price) values(?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
@@ -62,50 +64,43 @@ public class MaterialMapper {
 
                 newMaterial = new Materials(id, materials.getName(), materials.getLength(), materials.getDescription(), materials.getItemNumber(), materials.getWidth(), materials.getHeight(), materials.getPrice());
             }
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             throw new DatabaseException("Fejl ved oprettelse af material:" + e.getMessage());
-        }
+            }
         return newMaterial;
     }
+
+
     public static void deleteMaterial(int materialId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "DELETE FROM materials WHERE id = ?";
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setInt(1, materialId);
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected != 1) {
-                    throw new DatabaseException("Material with ID " + materialId + " was not found or could not be deleted.");
-                }
-            }
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, materialId);
+            ps.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error deleting material: " + e.getMessage());
+            throw new DatabaseException("Error when deleting material: " + e.getMessage());
         }
     }
 
     public static void updateMaterial(Materials material, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE materials SET name = ?, length_cm = ?, description = ?, item_number = ?, width_cm = ?, height_cm = ?, price = ? WHERE id = ?";
-        try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setString(1, material.getName());
-                ps.setInt(2, material.getLength());
-                ps.setString(3, material.getDescription());
-                ps.setLong(4, material.getItemNumber());
-                ps.setInt(5, material.getWidth());
-                ps.setInt(6, material.getHeight());
-                ps.setInt(7, material.getPrice());
-                ps.setInt(8, material.getId());
+        String sql = "UPDATE public.materials SET name = ?, length_cm = ?, description = ?, item_number = ?, width_cm = ?, height_cm = ?, price = ? WHERE id = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                int rowsAffected = ps.executeUpdate();
-                if (rowsAffected != 1) {
-                    throw new DatabaseException("Material with ID " + material.getId() + " was not found or could not be updated.");
-                }
-            }
+            ps.setString(1, material.getName());
+            ps.setInt(2, material.getLength());
+            ps.setString(3, material.getDescription());
+            ps.setLong(4, material.getLength());
+            ps.setInt(5, material.getWidth());
+            ps.setInt(6, material.getHeight());
+            ps.setInt(7, material.getPrice());
+            ps.setInt(8, material.getId());
+
+            ps.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error updating material: " + e.getMessage());
+            throw new DatabaseException("Der opstod en fejl ved oprettelse af vare: " + e.getMessage());
         }
     }
-
-
 
     public static void addpartsList(Part part, ConnectionPool connectionPool) throws DatabaseException {
 
@@ -153,7 +148,11 @@ public class MaterialMapper {
         return partsList;
     }
 
-}*/
+
+
+
+}
+
 
 
 

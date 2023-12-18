@@ -6,13 +6,14 @@ import app.entities.Order;
 import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
-import app.persistence.*;
-import app.utility.SvgGenerator;
+import app.persistence.ConnectionPool;
+import app.persistence.MeasurementMapper;
+import app.persistence.OrderMapper;
+import app.services.CarportSvgTopView;
 import io.javalin.http.Context;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 
 public class FormController {
@@ -82,33 +83,16 @@ public class FormController {
 
 
             //START: Ahmads SVG
-            String svgText = "<svg width=\"255\" height=210>\n" +
-                    "   <rect x=\"0\" y=\"0\" height=\"90\" width=\"90\"\n" +
-                    "        style=\"stroke:#000000; fill: #ff0000\"/>\n" +
-                    "   <rect x=\"120\" y=\"0\" height=\"90\" width=\"135\"\n" +
-                    "        style=\"stroke:#000000; fill: #ff0000\"/>\n" +
-                    "   <rect x=\"0\" y=\"120\" height=\"90\" width=\"90\"\n" +
-                    "        style=\"stroke:#000000; fill: #ff0000\"/>\n" +
-                    "   <rect x=\"120\" y=\"120\" height=\"90\" width=\"135\"\n" +
-                    "        style=\"stroke:#000000; fill: #ff0000\"/>\n" +
-                    "</svg>";
 
-            ctx.attribute("svg",svgText);
+            Locale.setDefault(new Locale("US"));
+            CarportSvgTopView svg = new CarportSvgTopView(carportLength, carportWidth);
+            ctx.attribute("svg", svg.toString());
 
             //SLUT: Ahmads SVG
 
-
-
-            //START: Mustafa måde at gøre det på. Skal slettes når Ahmar har fået det andet oppe og køre.
-            String svgContent = SvgGenerator.generateSvg(carportLength, carportWidth);
-
-            Map<String, Object> model = new HashMap<>();
-            model.put("svgContent", svgContent);
-
-            //SLUT: Mustafa måde at gøre det på. Skal slettes når Ahmar har fået det andet oppe og køre.
             EmailController.sendOrderToSalesTeam(ctx);
 
-            ctx.render("tilbud-indsendt.html", model);
+            ctx.render("tilbud-indsendt.html");
         } catch (Exception e) {
             loadMeasurements(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());

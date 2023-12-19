@@ -100,6 +100,15 @@ body {
     align-items: center;
 }
 
+.wrapper{
+    display: flex;
+    flex-direction: row; /* Elementer placeres i en række */
+    flex-wrap: wrap; /* Tillader elementerne at flytte til en ny række */
+    justify-content: center; /* Centrerer elementerne i rækken */
+    gap: 10px; /* Afstand mellem elementerne */
+    padding: 20px;
+}
+
 #main-content {
     margin: 0 auto;
     margin-top: 10px;

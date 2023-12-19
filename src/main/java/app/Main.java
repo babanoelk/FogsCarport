@@ -37,11 +37,14 @@ public class Main {
         });
 
 
+        app.get("/hjem", ctx -> UserController.home(ctx));
         app.get("/login", ctx -> ctx.render("login.html"));
         app.get("/ordre-side", ctx -> OrderController.getAllOrders(ctx, connectionPool));
         app.get("/lagervare", ctx -> MaterialController.loadMaterials(ctx, connectionPool));
         app.get("/kontakt", ctx -> ctx.render("kontakt.html"));
         app.get("/ret-i-varer", ctx -> MaterialController.loadMaterials(ctx,connectionPool));
+        app.get("/log-ud", ctx -> UserController.logout(ctx));
+        app.get("/main-menu", ctx -> UserController.dashboardMenu(ctx));
 
         //app.post("/ordre-info", ctx -> MaterialController.loadParts(ctx, connectionPool));
 

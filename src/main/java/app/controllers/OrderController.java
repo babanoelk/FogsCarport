@@ -12,47 +12,28 @@ import java.util.List;
 
 public class OrderController {
 
-
     public static void getSpecificOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 
+        float price = Float.parseFloat(ctx.formParam("price"));
+        ctx.sessionAttribute("totalPrice", price);
+
+        int orderId = Integer.parseInt(ctx.formParam("order_id"));
+        ctx.attribute("orderID", orderId);
+
         try {
-            //Order ID
-            int orderId = Integer.parseInt(ctx.formParam("order_id"));
-            ctx.attribute("orderID", orderId);
-
-
-
             //Brugeren
             DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderId, connectionPool);
             ctx.sessionAttribute("user", oldUser);
-
-
-
-
-
 
             //Carporten
             DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(orderId, connectionPool);
             ctx.sessionAttribute("old_carport", oldCarport);
 
-
-            /*          Tilføf pris i se nærmere siden, fang prisen derfra!!!!
-            //Caport - youssef....
-            Order order = OrderMapper.getOrderById(orderId, connectionPool);
-            DTOUserCarportOrder dto = new DTOUserCarportOrder(oldUser, oldCarport, order);
-             */
-
-
             //Shed
             DTOShedIdLengthWidth oldShed = OrderMapper.getSpecificShedByOrderId(orderId, connectionPool);
             ctx.sessionAttribute("old_shed", oldShed);
 
-            float price1 = Calculator.carportPriceCalculator(oldCarport);
-            float price2 = Calculator.shedPriceCalculator(oldShed);
-            float totalPrice = price1 + price2;
-
             //Load data
-            ctx.sessionAttribute("totalPrice", totalPrice);
             FormController.loadMeasurements(ctx, connectionPool);
 
             ctx.render("se-nærmere-på-ordre.html");
@@ -479,7 +460,6 @@ public class OrderController {
             OrderMapper.updateOrderPrice(order_ID, changePrice, connectionPool);
 
             ctx.sessionAttribute("totalPrice", changePrice);
-
             ctx.attribute("orderID",order_ID);
 
             FormController.loadMeasurements(ctx, connectionPool);

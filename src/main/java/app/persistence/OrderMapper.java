@@ -57,7 +57,7 @@ public class OrderMapper {
 
     public static List<DTOOrderCustomer> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<DTOOrderCustomer> allOrders = new ArrayList<>();
-        String sql = "select public.order.id, date, customer_note, order_status, name, email, mobile FROM public.order JOIN public.user ON public.order.user_id = public.user.id";
+        String sql = "select public.order.id, date, customer_note, order_status, name, email, mobile, price FROM public.order JOIN public.user ON public.order.user_id = public.user.id";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
@@ -71,7 +71,8 @@ public class OrderMapper {
                     String email = rs.getString("email");
                     int mobile = rs.getInt("mobile");
                     String orderStatus = getStatusByID(statusId, connectionPool);
-                    allOrders.add(new DTOOrderCustomer(id, date, customerNote, statusId, name, email, mobile, orderStatus));
+                    float price = rs.getFloat("price");
+                    allOrders.add(new DTOOrderCustomer(id, date, customerNote, statusId, name, email, mobile, orderStatus, price));
                 }
             }
         } catch (SQLException e) {

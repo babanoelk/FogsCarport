@@ -27,8 +27,8 @@ public class CarportMapper {
                 }
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
-                int id = rs.getInt(1);
-                carport.setId(id);
+                int carportId = rs.getInt(1);
+                carport.setId(carportId);
             }
         } catch (SQLException e) {
             if (e.getMessage().contains("\"has_shed\"")) {
@@ -73,8 +73,8 @@ public class CarportMapper {
                 }
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
-                int id = rs.getInt(1);
-                shed.setId(id);
+                int shedId = rs.getInt(1);
+                shed.setId(shedId);
             }
         } catch (SQLException e) {
                 throw new DatabaseException("Fejl ved oprettelse af chef:" + e.getMessage());
@@ -106,7 +106,7 @@ public class CarportMapper {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 

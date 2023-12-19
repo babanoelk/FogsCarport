@@ -51,7 +51,7 @@ public class OrderController {
     public static boolean deleteOrder(Context ctx, ConnectionPool connectionPool) {
         try {
             int result = Integer.parseInt(ctx.formParam("order_id"));
-            OrderMapper.deleteOrderByOrderID(result, connectionPool);
+            OrderMapper.deleteOrderById(result, connectionPool);
 
             ctx.render("ordre-slettet.html"); //todo: should not render its own page, replace with message
         } catch (DatabaseException e) {
@@ -200,7 +200,7 @@ public class OrderController {
             throw new RuntimeException(e);
         }
         ctx.sessionAttribute("user", oldUser);
-        FormController.loadMeasurements(ctx, connectionPool);
+        FormController.loadMeasurements(ctx, connectionPool); //todo: double rendering problem
 
 
         //Load the page
@@ -295,7 +295,6 @@ public class OrderController {
         int oldShedLength = shed.getLength();
         int oldShedWidth = shed.getWidth();
 
-
         //New information
         String newInputLengthStr = ctx.formParam("shed_length");
         String newInputWidthStr = ctx.formParam("shed_width");
@@ -323,25 +322,23 @@ public class OrderController {
 
         Shed newShed = new Shed(shed.getId(), updateWidth, updateLength);
 
-
         //Opdater brugere oplysningerne
         ShedMapper.updateShed(newShed, connectionPool);
 
-        //int result = Integer.parseInt(ctx.formParam("orderID"));
-        int orderID = Integer.parseInt(ctx.formParam("orderID"));
 
-        ctx.attribute("orderID", orderID);
+        int orderId = Integer.parseInt(ctx.formParam("orderID"));
+        ctx.attribute("orderID", orderId);
 
-        User oldUser = OrderMapper.getOrderDetails(orderID, connectionPool);
-        ctx.sessionAttribute("user", oldUser);
+        //User user = OrderMapper.getOrderDetails(orderId, connectionPool);
+        //ctx.sessionAttribute("user", user);
 
-        Carport oldCarport = OrderMapper.getCarportByOrderId(orderID, connectionPool);
-        ctx.sessionAttribute("old_carport", oldCarport);
+        //Carport oldCarport = OrderMapper.getCarportByOrderId(orderId, connectionPool);
+        //ctx.sessionAttribute("old_carport", oldCarport);
 
-        Shed oldShed = OrderMapper.getShedByOrderId(orderID, connectionPool);
-        ctx.sessionAttribute("old_shed", oldShed);
+        //Shed oldShed = OrderMapper.getShedByOrderId(orderId, connectionPool);
+        ctx.sessionAttribute("old_shed", newShed);
 
-        FormController.loadMeasurements(ctx, connectionPool);
+        FormController.loadMeasurements(ctx, connectionPool); //todo: double rendering problem
 
         //Load the page
         ctx.render("se-nærmere-på-ordre.html");

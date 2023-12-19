@@ -96,8 +96,8 @@
                 <input type="hidden" name="orderID" th:value="${orderID}">
                 <h1>Bruger Oplysninger</h1>
 
-                <h4>Bruger ID: <span th:text="${session.user.getUserId()}"></span>
-                    <input type="hidden" name="userId" th:value="${session.user.getUserId()}">
+                <h4>Bruger ID: <span th:text="${session.user.getId()}"></span>
+                    <input type="hidden" name="userId" th:value="${session.user.getId()}">
                 </h4>
 
                 <div class="form-section">

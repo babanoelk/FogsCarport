@@ -10,11 +10,8 @@ import java.util.*;
 public class Calculator {
 
     private static int amountOfRem = 2;
-
     private static List<Part> partsList = new ArrayList<>();
-
     private static float carportPricePerSqCM = 1200;
-
     private static float shedPricePerSqMeter = 500;
 
     public static float carportPriceCalculator(Carport carport){

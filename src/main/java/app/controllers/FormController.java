@@ -121,7 +121,7 @@ public class FormController {
 
     }
 
-    public static void renderBestillingPage(Context ctx) {
+    public static void renderOrderPage(Context ctx) {
         ctx.render("bestilling.html");
     }
 }

@@ -33,7 +33,7 @@ public class Main {
 
         app.get("/bestil-carport", ctx -> {
             FormController.loadMeasurements(ctx, connectionPool);
-            FormController.renderBestillingPage(ctx);
+            FormController.renderOrderPage(ctx);
         });
 
 

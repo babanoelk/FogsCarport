@@ -1,12 +1,18 @@
 package app.utility;
 
-import app.Main;
 import app.dtos.DTOCarportWithIdLengthWidthHeight;
+import app.dtos.DTOParts;
 import app.dtos.DTOShedIdLengthWidth;
 import app.entities.Carport;
-import app.entities.Shed;
+import app.entities.Part;
+
+import java.util.*;
 
 public class Calculator {
+
+    private static int amountOfRem = 2;
+
+    private static List<Part> partsList = new ArrayList<>();
 
     private static float carportPricePerSqCM = 1200;
 
@@ -51,7 +57,7 @@ public class Calculator {
         return price;
     }*/
 
-    public static int piecesOfPost(Carport carport){
+    public static int amountOfPost(Carport carport){
 
         int maxLengthBetweenPost = 240;
         int minNumberOfPosts = 4;
@@ -77,13 +83,29 @@ public class Calculator {
         return totalPost;
     }
 
-    public static int numberOfRafter(Carport carport){
+    public static int amountOfRafter(Carport carport){
         int maxLengthBetweenRafts = 60;
         int result = carport.getLength() / maxLengthBetweenRafts;
         if(carport.getLength() % maxLengthBetweenRafts != 0) {
             result++;
         }
         return result;
+    }
+
+
+    public static List<Part> calculateParts(Carport carport, int orderId){
+
+        // Calc Posts
+        partsList.add(new Part(DTOParts.POST_MATERIAL_ID, amountOfPost(carport), orderId ));
+
+        // Calc Rafters
+        partsList.add(new Part(DTOParts.RAFT_MATERIAL_ID, amountOfRafter(carport), orderId ));
+
+        // Calc Rems
+        partsList.add(new Part(DTOParts.REM_MATERIAL_ID, amountOfRem, orderId));
+
+
+        return partsList;
     }
 
 

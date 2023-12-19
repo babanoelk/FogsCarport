@@ -14,6 +14,13 @@ public class Part {
         this.order_id = order_id;
     }
 
+    public Part(int materialId, int amount, int order_id) {
+        this.materialId = materialId;
+        this.amount = amount;
+        this.order_id = order_id;
+    }
+
+
     public int getId() {
         return id;
     }

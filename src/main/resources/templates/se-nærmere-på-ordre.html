@@ -45,6 +45,7 @@
                 <label>Sæt prisen til:</label>
                 <input type="text" name="newPrice">
         </div>
+        <input type="hidden" name="carportId" th:value="${session.old_carport.getId()}">
         <button id="send-regning-knap" type="submit" name="send-regning-knap" formaction="/send-regning">Send regning
         </button>
     </form>
@@ -145,7 +146,6 @@
 
                 <h4>Carport ID: <span th:text="${session.old_carport.getId()}"></span></h4>
                 <input type="hidden" name="carportId">
-
                 <h4>Længde: <span th:text="${session.old_carport.getLength()}"></span></h4>
                 <input type="hidden" id="old_carport_length" name="orderID"
                        th:value="${session.old_carport.getLength()}">

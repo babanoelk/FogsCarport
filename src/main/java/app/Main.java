@@ -28,7 +28,15 @@ public class Main {
 
         // Routing get
         app.get("/", ctx -> SystemController.load(ctx));
-        app.get("/bestil-carport", ctx -> FormController.loadMeasurements(ctx, connectionPool));
+
+        //app.get("/bestil-carport", ctx -> FormController.loadMeasurements(ctx, connectionPool));
+
+        app.get("/bestil-carport", ctx -> {
+            FormController.loadMeasurements(ctx, connectionPool);
+            FormController.renderBestillingPage(ctx);
+        });
+
+
         app.get("/login", ctx -> ctx.render("login.html"));
         app.get("/ordre-side", ctx -> OrderController.getAllOrders(ctx, connectionPool));
         app.get("/lagervare", ctx -> MaterialController.loadMaterials(ctx, connectionPool));
@@ -58,7 +66,6 @@ public class Main {
         app.post("/tilfoej-rabat", ctx -> OrderController.discountPercentageOrAmount(ctx, connectionPool));
 
         app.post("/send-besked", ctx -> ContactController.contact(ctx));
-        app.post("/gem-nye-pris", ctx -> OrderController.changePriceManually(ctx,connectionPool));
         app.post("/delete-material", ctx -> MaterialController.deleteMaterial(ctx, connectionPool));
         app.post("/update-material", ctx -> MaterialController.updateMaterial(ctx, connectionPool));
         app.post("/add-material", ctx -> MaterialController.addMaterial(ctx, connectionPool));
@@ -68,6 +75,6 @@ public class Main {
         //Opret medarbejder
         app.get("/opret-medarbejder", ctx -> ctx.render("opret-medarbejder.html"));
         app.post("/medarbejder-oprettet", ctx -> UserController.addAdminUser(ctx, connectionPool));
-        
+
     }
 }

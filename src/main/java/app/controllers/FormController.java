@@ -114,10 +114,6 @@ public class FormController {
             ctx.attribute("widthList", widthList);
             ctx.attribute("heightList", heightList);
 
-            //Shed data:
-
-            ctx.render("bestilling.html");
-
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("fejlside.html");
@@ -125,4 +121,7 @@ public class FormController {
 
     }
 
+    public static void renderBestillingPage(Context ctx) {
+        ctx.render("bestilling.html");
+    }
 }

@@ -6,13 +6,14 @@ import app.entities.Order;
 import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
-import app.persistence.*;
-import app.utility.SvgGenerator;
+import app.persistence.ConnectionPool;
+import app.persistence.MeasurementMapper;
+import app.persistence.OrderMapper;
+import app.services.CarportSvgTopView;
 import io.javalin.http.Context;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 
 public class FormController {
@@ -81,14 +82,17 @@ public class FormController {
             ctx.attribute("height", carportHeight);
 
 
-            String svgContent = SvgGenerator.generateSvg(carportLength, carportWidth);
+            //START: Ahmads SVG
 
-            Map<String, Object> model = new HashMap<>();
-            model.put("svgContent", svgContent);
+            Locale.setDefault(new Locale("US"));
+            CarportSvgTopView svg = new CarportSvgTopView(carportLength, carportWidth);
+            ctx.attribute("svg", svg.toString());
+
+            //SLUT: Ahmads SVG
 
             EmailController.sendOrderToSalesTeam(ctx);
 
-            ctx.render("tilbud-indsendt.html", model);
+            ctx.render("tilbud-indsendt.html");
         } catch (Exception e) {
             loadMeasurements(ctx, connectionPool);
             ctx.attribute("message", e.getMessage());

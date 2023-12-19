@@ -43,14 +43,14 @@ class CalculatorTest {
     @Test
     void piecesOfPost() {
 
-        assertEquals(10, Calculator.piecesOfPost(carport));
+        assertEquals(10, Calculator.amountOfPost(carport));
 
     }
 
     @Test
     void numberOfRafter() {
 
-        assertEquals(10, Calculator.numberOfRafter(carport));
+        assertEquals(10, Calculator.amountOfRafter(carport));
 
     }
 }

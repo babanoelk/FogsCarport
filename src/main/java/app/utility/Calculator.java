@@ -29,12 +29,21 @@ public class Calculator {
         return price;
     }
 
-    public static float discountCalculator(float totalPrice, float discountPercentage){
+    public static float discountCalculatorPercentage(float totalPrice, float discountPercentage){
         discountPercentage = Math.max(0,Math.min(discountPercentage, 100));
         float discountedPrice = totalPrice - (totalPrice * discountPercentage/100);
 
         return discountedPrice;
     }
+
+    public static float discountCalculatorSubtraction(float totalPrice, float discountAmount){
+        discountAmount = Math.max(0, discountAmount);
+
+        float discountedPrice = totalPrice - discountAmount;
+
+        return discountedPrice;
+    }
+
 
 
     /*public static float carportPriceCalculator2(DTOCarportWithIdLengthWidthHeight carport){

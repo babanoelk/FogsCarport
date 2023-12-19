@@ -484,6 +484,33 @@ public class OrderController {
             ctx.attribute("message", e.getMessage());
         }
     }
+    public static void discountPercentageOrAmount(Context ctx, ConnectionPool connectionPool) throws DatabaseException{
+        try {
+            int order_ID = Integer.parseInt(ctx.formParam("orderID"));
+            float firstPrice = Float.parseFloat(ctx.formParam("total_price"));
+            String discountPercentageInput = ctx.formParam("discountPercentage");
+            String discountAmountInput = ctx.formParam("discountAmount");
 
+            float discountedPrice;
+            if (discountPercentageInput != null && !discountPercentageInput.isEmpty()) {
+                float discountPercentage = Float.parseFloat(discountPercentageInput);
+                discountedPrice = Calculator.discountCalculatorPercentage(firstPrice, discountPercentage);
+            } else if (discountAmountInput != null && !discountAmountInput.isEmpty()) {
+                float discountAmount = Float.parseFloat(discountAmountInput);
+                discountedPrice = Calculator.discountCalculatorSubtraction(firstPrice, discountAmount);
+            } else {
+                discountedPrice = firstPrice;
+            }
+            OrderMapper.updateOrderPrice(order_ID,discountedPrice,connectionPool);
+            ctx.attribute("orderID", order_ID);
+            ctx.attribute("current_price", discountedPrice);
+            OrderController.getSpecificOrder(ctx, connectionPool);
+            //ctx.render("se-nærmere-på-ordre.html");
+
+        } catch (NumberFormatException e) {
+            ctx.attribute("message",e.getMessage());
+        }
+
+    }
 
 }

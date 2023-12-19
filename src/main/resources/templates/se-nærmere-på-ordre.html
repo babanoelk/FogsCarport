@@ -63,7 +63,7 @@
     <div id="main-price-mid">
         <form id="send-regning" method="post" action="/gem-nye-pris">
             <input type="hidden" name="orderID" th:value="${orderID}">
-            <h4>Pris for kunden: <span th:text="${session.totalPrice}"></span>,- DKK
+            <h4>Pris for kunden: <span name="current_price" th:text="${session.totalPrice}"></span>,- DKK
             <input type="hidden" name="total_price" th:value="${session.totalPrice}">
             </h4>
             <label>Sæt prisen til:</label>
@@ -73,7 +73,9 @@
         </form>
     </div>
     <div id="main-price-right">
-        <form id="rabat" method="post" action="/se-nærmere-på-ordre.html">
+        <form id="rabat" method="post" action="/tilfoej-rabat">
+            <input type="hidden" name="orderID" th:value="${orderID}">
+            <input type="hidden" name="total_price" th:value="${session.totalPrice}">
             <h4>Rabat:</h4>
             <div>
                 <label>Rabat i kroner:</label>
@@ -83,7 +85,7 @@
                 <label>Rabat i procent:</label>
                 <input type="text" name="discountPercentage">
             </div>
-            <button id="gem-rabat" type="submit" name="gem-rabat" formaction="/se-nærmere-på-ordre.html">Gem rabat</button>
+            <button id="gem-rabat" type="submit" name="gem-rabat" formaction="/tilfoej-rabat">Gem rabat</button>
         </form>
     </div>
 

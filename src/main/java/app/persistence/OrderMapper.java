@@ -398,12 +398,12 @@ public class OrderMapper {
                 }
             }
         } catch (SQLException e){
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
 
     }
 
-    public static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool){
+    public static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool) throws DatabaseException{
 
         String sql ="UPDATE public.order SET price = ? WHERE id = ?";
 
@@ -415,13 +415,13 @@ public class OrderMapper {
                 int priceChanged = ps.executeUpdate();
 
                 if (priceChanged > 0){
-                    System.out.println("Status changed!");
+                    System.out.println("Price changed!");
                 } else {
-                    System.out.println("Status wasn't changed");
+                    System.out.println("Price wasn't changed");
                 }
             }
         } catch (SQLException e){
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 }

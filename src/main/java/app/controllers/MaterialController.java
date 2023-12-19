@@ -13,7 +13,7 @@ import io.javalin.http.Context;
 import java.util.List;
 
 public class MaterialController {
-    public static void loadMaterials(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void loadMaterials(Context ctx, ConnectionPool connectionPool) {
         try {
             List<Materials> materialsList = MaterialMapper.getAllMaterials(connectionPool);
             ctx.attribute("materialsList", materialsList);
@@ -25,12 +25,12 @@ public class MaterialController {
     }
 
 
-    public static void loadParts(Context ctx, ConnectionPool connectionPool) throws DatabaseException{
+    public static void loadParts(Context ctx, ConnectionPool connectionPool) {
 
-        int orderID = Integer.parseInt(ctx.formParam("order_id"));
-        Order order = OrderMapper.getOrderById(orderID, connectionPool);
+        int orderId = Integer.parseInt(ctx.formParam("order_id"));
 
         try{
+            Order order = OrderMapper.getOrderById(orderId, connectionPool);
             List<DTOPartsByMaterials> partsList = MaterialMapper.getPartsList(order, connectionPool);
 
             ctx.attribute("partsList", partsList);

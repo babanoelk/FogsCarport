@@ -17,11 +17,9 @@ import java.util.Map;
 
 public class FormController {
 
-    public static void formInput(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void createCustomerRequest(Context ctx, ConnectionPool connectionPool) {
 
         User user;
-        String name = null;
-
         boolean loggedIn = false;
 
         try {
@@ -35,21 +33,9 @@ public class FormController {
             String shedChoice = ctx.formParam("redskabsrum");
 
             if (ctx.sessionAttribute("currentUser") == null) {
-                //User data
-                name = ctx.formParam("name");
-                String address = ctx.formParam("address");
-                int zip = Integer.parseInt(ctx.formParam("zip"));
-                int mobile = Integer.parseInt(ctx.formParam("phone"));
-                String email = ctx.formParam("email");
-                String password = (ctx.formParam("pass"));
-                boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
-                int role = 1; //Standard role 'Kunde'
-
-                //Create User instance from input data
-                user = new User(name, email, password, address, mobile, zip, consent, role);
+                user = UserController.createUser(ctx);
             } else {
                 user = ctx.sessionAttribute("currentUser");
-                name = user.getName();
                 loggedIn = true;
             }
 
@@ -75,7 +61,7 @@ public class FormController {
             }
 
 
-            ctx.attribute("name", name);
+            ctx.attribute("name", user.getName());
             ctx.attribute("length", carportLength);
             ctx.attribute("width", carportWidth);
             ctx.attribute("height", carportHeight);
@@ -99,9 +85,7 @@ public class FormController {
     }
 
     public static void loadMeasurements(Context ctx, ConnectionPool connectionPool) {
-
         try {
-            //Carport data
             List<Integer> lengthList = MeasurementMapper.getAllLengths(connectionPool);
             List<Integer> widthList = MeasurementMapper.getAllWidths(connectionPool);
             List<Integer> heightList = MeasurementMapper.getAllHeights(connectionPool);
@@ -110,10 +94,7 @@ public class FormController {
             ctx.attribute("widthList", widthList);
             ctx.attribute("heightList", heightList);
 
-            //Shed data:
-
             ctx.render("bestilling.html");
-
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("fejlside.html");

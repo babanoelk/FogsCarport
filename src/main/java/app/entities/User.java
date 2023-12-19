@@ -18,7 +18,6 @@ public class User {
         this.address = address;
         this.mobile = mobile;
         this.zipcode = zipcode;
-        this.consent = consent;
     }
 
     public User(int id, String name, String email, String password, String address, int mobile, int role, int zipcode) {
@@ -51,6 +50,14 @@ public class User {
         this.zipcode = zipcode;
         this.consent = consent;
         this.role = role;
+    }
+    public User(int id, String name, String email, String address, int mobile, int zipcode) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.mobile = mobile;
+        this.zipcode = zipcode;
     }
 
     public void setId(int id) {

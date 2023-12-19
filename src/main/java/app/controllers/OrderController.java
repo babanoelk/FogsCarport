@@ -1,9 +1,7 @@
 package app.controllers;
 
 import app.dtos.*;
-import app.entities.Shed;
-import app.entities.Status;
-import app.entities.User;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.persistence.*;
 import app.utility.Calculator;
@@ -14,7 +12,7 @@ import java.util.List;
 public class OrderController {
 
 
-    public static void getSpecificOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void getChosenCustomerOrder(Context ctx, ConnectionPool connectionPool) {
 
         try {
             //Order ID
@@ -23,15 +21,15 @@ public class OrderController {
 
 
             //Brugeren
-            DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(result, connectionPool);
+            User oldUser = OrderMapper.getOrderDetails(result, connectionPool);
             ctx.sessionAttribute("user", oldUser);
 
             //Carporten
-            DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(result, connectionPool);
+            Carport oldCarport = OrderMapper.getCarportByOrderId(result, connectionPool);
             ctx.sessionAttribute("old_carport", oldCarport);
 
             //Shed
-            DTOShedIdLengthWidth oldShed = OrderMapper.getSpecificShedByOrderId(result, connectionPool);
+            Shed oldShed = OrderMapper.getShedByOrderId(result, connectionPool);
             ctx.sessionAttribute("old_shed", oldShed);
 
             float price1 = Calculator.carportPriceCalculator(oldCarport);
@@ -44,42 +42,44 @@ public class OrderController {
 
             ctx.render("se-nærmere-på-ordre.html");
         } catch (DatabaseException e) {
-            throw new DatabaseException(e.getMessage());
+            ctx.attribute("message", e.getMessage());
+            //ctx.render(""); //todo: render page with error message
         }
     }
 
-    public static boolean deleteOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static boolean deleteOrder(Context ctx, ConnectionPool connectionPool) {
 
         try {
             User user = ctx.sessionAttribute("currentUser");
             int result = Integer.parseInt(ctx.formParam("order_id"));
             OrderMapper.deleteOrderByOrderID(result, connectionPool);
 
-            ctx.render("ordre-slettet.html");
-            return true;
+            ctx.render("ordre-slettet.html"); //todo: should not render its own page, replace with message
         } catch (DatabaseException e) {
-            throw new DatabaseException("Fejl sletning af ordre " + e.getMessage());
+            ctx.attribute("message", "Fejl sletning af ordre " + e.getMessage());
+            //ctx.render(""); //todo: render page with error message
         }
+        return true; //todo: why return something?
     }
 
-    public static void getAllOrders(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void getAllOrders(Context ctx, ConnectionPool connectionPool) {
         try {
             User user = ctx.sessionAttribute("currentUser");
             if (user.getRole() == 1) {
-                List<DTOGetOrderWithIdDateCustomerNoteConsentStatus> orders = OrderMapper.getAllOrdersByUser(user, connectionPool);
+                List<Order> orders = OrderMapper.getAllOrdersByUser(user, connectionPool);
                 ctx.attribute("orderlist", orders);
                 ctx.render("ordre-side.html");
             } else {
                 List<Status> statusList = StatusMapper.getAllStatuses(connectionPool);
                 List<DTOOrderCustomer> allOrders = OrderMapper.getAllOrders(connectionPool);
-                //ctx.sessionAttribute("currentSession", "all");
 
                 ctx.attribute("statusList", statusList);
                 ctx.attribute("allOrders", allOrders);
                 ctx.render("ordre-side.html");
             }
         } catch (DatabaseException e) {
-            throw new DatabaseException("Fejl ved indlæsning af kundeordre " + e.getMessage());
+            ctx.attribute("message", "Fejl indlæsning af ordre " + e.getMessage());
+            //ctx.render(""); //todo: render page with error message
         }
     }
 
@@ -90,11 +90,12 @@ public class OrderController {
             OrderMapper.updateOrderStatus(orderId, statusId, connectionPool);
             getAllOrders(ctx, connectionPool);
         } catch (DatabaseException e) {
-            System.out.println(e.getMessage());
+            ctx.attribute("message", e.getMessage());
+            //ctx.render(""); //todo: render page with error message
         }
     }
 
-    public static void updateOrderUser(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void updateOrderUser(Context ctx, ConnectionPool connectionPool) {
 
         String updateName;
         String updateAddress;
@@ -102,14 +103,15 @@ public class OrderController {
         int updateMobile;
         String updateEmail;
 
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail dto = ctx.sessionAttribute("user");
+        //The chosen users editable information page
+        User user = ctx.sessionAttribute("user");
 
         //Old information
-        String oldUserName = dto.getName();
-        String oldUserAddress = dto.getAddress();
-        int oldUserZipcode = dto.getZipcode();
-        int oldUserMobile = dto.getMobile();
-        String oldUserEmail = dto.getEmail();
+        String oldUserName = user.getName();
+        String oldUserAddress = user.getAddress();
+        int oldUserZipcode = user.getZipcode();
+        int oldUserMobile = user.getMobile();
+        String oldUserEmail = user.getEmail();
 
         //New information
         String newInputName = ctx.formParam("newName");
@@ -178,40 +180,46 @@ public class OrderController {
             updateEmail = oldUserEmail;
         }
 
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = new DTOUserWithUserIdNameAddressZipcodeMobileEmail
-                (dto.getUserId(), updateName, updateAddress, updateZipcode, updateMobile, updateEmail);
+        User newUser = new User(user.getId(), updateName, updateEmail, updateAddress, updateMobile, updateZipcode);
 
         //Opdater brugere oplysningerne
-        UserMapper.updateUser(dtoUserWithUserIdNameAddressZipcodeMobileEmail, connectionPool);
+        try {
+            UserMapper.updateUser(newUser, connectionPool);
+        } catch (DatabaseException e) {
+            ctx.attribute("message", e.getMessage());
+            //ctx.render(""); //todo: render page with error message
+        }
 
-
-        //int result = Integer.parseInt(ctx.formParam("orderID"));
         int orderID = Integer.parseInt(ctx.formParam("orderID"));
-
 
         ctx.attribute("orderID", orderID);
 
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderID, connectionPool);
+        User oldUser = null;
+        try {
+            oldUser = OrderMapper.getOrderDetails(orderID, connectionPool);
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
         ctx.sessionAttribute("user", oldUser);
         FormController.loadMeasurements(ctx, connectionPool);
 
 
         //Load the page
-        ctx.render("se-nærmere-på-ordre.html");
+        ctx.render("se-nærmere-på-ordre.html"); //todo: rename html to something with admin
     }
 
-    public static void updateCarport(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void updateCarport(Context ctx, ConnectionPool connectionPool) {
 
         int updateLength;
         int updateWidth;
         int updateHeight;
 
-        DTOCarportWithIdLengthWidthHeight dto = ctx.sessionAttribute("old_carport");
+        Carport carport = ctx.sessionAttribute("old_carport");
 
         //Old information
-        int oldCarportLength = dto.getLength();
-        int oldCarportWidth = dto.getWidth();
-        int oldCarportHeight = dto.getHeight();
+        int oldCarportLength = carport.getLength();
+        int oldCarportWidth = carport.getWidth();
+        int oldCarportHeight = carport.getHeight();
 
 
         //New information
@@ -250,27 +258,28 @@ public class OrderController {
             updateHeight = oldCarportHeight;
         }
 
-        DTOCarportWithIdLengthWidthHeight carportWithIdLengthWidthHeight = new DTOCarportWithIdLengthWidthHeight
-                (dto.getId(), updateLength, updateWidth, updateHeight);
-
-        //Opdater brugere oplysningerne
-        CarportMapper.updateCarport(carportWithIdLengthWidthHeight, connectionPool);
-
-
-        //int result = Integer.parseInt(ctx.formParam("orderID"));
         int orderID = Integer.parseInt(ctx.formParam("orderID"));
 
+        Carport newCarport = new Carport(carport.getId(), updateWidth, updateLength, updateHeight);
+        User oldUser = null;
+        Carport oldCarport = null;
+
+        //Opdater brugere oplysningerne
+        try {
+            CarportMapper.updateCarport(newCarport, connectionPool);
+            oldUser = OrderMapper.getOrderDetails(orderID, connectionPool);
+            oldCarport = OrderMapper.getCarportByOrderId(orderID, connectionPool);
+
+        } catch (DatabaseException e) {
+            ctx.attribute("message", e.getMessage());
+            //ctx.render(""); //todo: render page with error message
+        }
 
         ctx.attribute("orderID", orderID);
-
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderID, connectionPool);
         ctx.sessionAttribute("user", oldUser);
-
-        DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(orderID, connectionPool);
         ctx.sessionAttribute("old_carport", oldCarport);
 
-        FormController.loadMeasurements(ctx, connectionPool);
-
+        FormController.loadMeasurements(ctx, connectionPool); //todo: problem with double rendering
 
         //Load the page
         ctx.render("se-nærmere-på-ordre.html");
@@ -281,11 +290,11 @@ public class OrderController {
         int updateLength;
         int updateWidth;
 
-        DTOShedIdLengthWidth dto = ctx.sessionAttribute("old_shed");
+        Shed shed = ctx.sessionAttribute("old_shed");
 
         //Old information
-        int oldShedLength = dto.getLength();
-        int oldShedWidth = dto.getWidth();
+        int oldShedLength = shed.getLength();
+        int oldShedWidth = shed.getWidth();
 
 
         //New information
@@ -313,25 +322,24 @@ public class OrderController {
             updateWidth = oldShedWidth;
         }
 
-        DTOShedIdLengthWidth shedIdLengthWidth = new DTOShedIdLengthWidth
-                (dto.getId(), updateLength, updateWidth);
+        Shed newShed = new Shed(shed.getId(), updateWidth, updateLength);
 
 
         //Opdater brugere oplysningerne
-        ShedMapper.updateShed(shedIdLengthWidth, connectionPool);
+        ShedMapper.updateShed(newShed, connectionPool);
 
         //int result = Integer.parseInt(ctx.formParam("orderID"));
         int orderID = Integer.parseInt(ctx.formParam("orderID"));
 
         ctx.attribute("orderID", orderID);
 
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderID, connectionPool);
+        User oldUser = OrderMapper.getOrderDetails(orderID, connectionPool);
         ctx.sessionAttribute("user", oldUser);
 
-        DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(orderID, connectionPool);
+        Carport oldCarport = OrderMapper.getCarportByOrderId(orderID, connectionPool);
         ctx.sessionAttribute("old_carport", oldCarport);
 
-        DTOShedIdLengthWidth oldShed = OrderMapper.getSpecificShedByOrderId(orderID, connectionPool);
+        Shed oldShed = OrderMapper.getShedByOrderId(orderID, connectionPool);
         ctx.sessionAttribute("old_shed", oldShed);
 
         FormController.loadMeasurements(ctx, connectionPool);
@@ -342,16 +350,14 @@ public class OrderController {
 
     public static void addShed(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
 
-
-        //ShedMapper.addShed()
         int updateLength;
         int updateWidth;
 
-        DTOShedIdLengthWidth dto = ctx.sessionAttribute("old_shed");
+        Shed shed = ctx.sessionAttribute("old_shed");
 
         //Old information
-        int oldShedLength = dto.getLength();
-        int oldShedWidth = dto.getWidth();
+        int oldShedLength = shed.getLength();
+        int oldShedWidth = shed.getWidth();
 
 
         //New information
@@ -391,23 +397,23 @@ public class OrderController {
 
         ctx.attribute("orderID", orderID);
 
-        DTOCarportWithIdLengthWidthHeight oldCarport = OrderMapper.getSpecificCarportByOrderId(orderID, connectionPool);
+        Carport oldCarport = OrderMapper.getCarportByOrderId(orderID, connectionPool);
         ctx.sessionAttribute("old_carport", oldCarport);
 
         //Update Order with new created Shed
         OrderMapper.addShedToSpecificOrderId(oldCarport.getId(), newShed.getId(), connectionPool);
 
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail oldUser = OrderMapper.getSpecificOrderByOrderIdWithUserAndCarportAndShed(orderID, connectionPool);
+        User oldUser = OrderMapper.getOrderDetails(orderID, connectionPool);
         ctx.sessionAttribute("user", oldUser);
 
-        DTOShedIdLengthWidth oldShed = OrderMapper.getSpecificShedByOrderId(orderID, connectionPool);
+        Shed oldShed = OrderMapper.getShedByOrderId(orderID, connectionPool);
         oldShed.setId(newShed.getId());
         oldShed.setLength(newShed.getLength());
         oldShed.setWidth(newShed.getWidth());
 
         ctx.sessionAttribute("old_shed", oldShed);
 
-        FormController.loadMeasurements(ctx, connectionPool);
+        FormController.loadMeasurements(ctx, connectionPool); //todo: problem with double rendering
 
         //Load the page
         ctx.render("se-nærmere-på-ordre.html");
@@ -420,7 +426,7 @@ public class OrderController {
         ctx.render("kontakt.html");
     }
 
-    public static void sendBill(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void sendBill(Context ctx, ConnectionPool connectionPool) {
         try {
             //OrderController.getAllOrders(ctx, connectionPool);
             String message = "Regningen er nu sendt afsted.";
@@ -460,7 +466,7 @@ public class OrderController {
             OrderController.getAllOrders(ctx, connectionPool);
         }
     }
-    public static void changePriceManually(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void changePriceManually(Context ctx, ConnectionPool connectionPool) {
         try {
             int order_ID = Integer.parseInt(ctx.formParam("orderID"));
             float firstPrice = Float.parseFloat(ctx.formParam("total_price"));
@@ -478,7 +484,7 @@ public class OrderController {
             }
 
             OrderMapper.updateOrderPrice(order_ID, changePrice, connectionPool);
-            OrderController.getSpecificOrder(ctx, connectionPool);
+            OrderController.getChosenCustomerOrder(ctx, connectionPool);
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
         }

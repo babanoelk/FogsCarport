@@ -6,9 +6,7 @@ import io.javalin.http.Context;
 import java.io.IOException;
 
 public class EmailController {
-
-
-    public static void sendOrderQuestion(Context ctx) throws Exception {
+    public static void sendOrderQuestion(Context ctx) {
 
         String name = ctx.formParam("name");
         String customerMail = ctx.formParam("email");
@@ -27,10 +25,10 @@ public class EmailController {
 
     }
 
-    public static void sendBill(Context ctx) throws Exception {
+    public static void sendBill(Context ctx) {
 
         String customerName = ctx.formParam("full_name");
-        String customerMail = ctx.formParam("email");
+        //String customerMail = ctx.formParam("email"); todo: skal de bruges?
         String price = ctx.formParam("total_price");
         String employeeName = ctx.formParam("employeeName");
         String orderId = ctx.formParam("orderID");
@@ -43,13 +41,12 @@ public class EmailController {
         }
     }
 
-    public static void sendOrderToSalesTeam(Context ctx) throws Exception {
+    public static void sendOrderToSalesTeam(Context ctx) {
 
         String customerName = ctx.formParam("name");
         String length = ctx.formParam("carport_length");
         String width = ctx.formParam("carport_width");
         String height = ctx.formParam("carport_height");
-        //String id = orderId;
         try {
             EmailFactory.sendOrderToSalesTeam(customerName, length, width, height);
         } catch (IOException e) {
@@ -58,15 +55,12 @@ public class EmailController {
         }
     }
 
-    public static void sendMessageToSalesTeam(Context ctx, String customerName, String customerPhone, String customerEmail, String message) throws Exception {
-
+    public static void sendMessageToSalesTeam(Context ctx, String customerName, String customerPhone, String customerEmail, String message) {
         try {
             EmailFactory.sendMessageToSalesTeam(customerName, customerPhone, customerEmail, message);
         } catch (IOException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("ordre-side.html");
         }
-
-
     }
 }

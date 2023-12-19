@@ -86,15 +86,15 @@ public class CarportMapper {
         return shed;
     }
 
-    public static void updateCarport(DTOCarportWithIdLengthWidthHeight dtoUser, ConnectionPool connectionPool) throws DatabaseException {
+    public static void updateCarport(Carport carport, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE public.carport SET width = ?, length = ?, height = ? WHERE id = ?";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setInt(1, dtoUser.getWidth());
-                ps.setInt(2, dtoUser.getLength());
-                ps.setInt(3, dtoUser.getHeight());
-                ps.setInt(4, dtoUser.getId());
+                ps.setInt(1, carport.getWidth());
+                ps.setInt(2, carport.getLength());
+                ps.setInt(3, carport.getHeight());
+                ps.setInt(4, carport.getId());
 
 
                 int rowsAffected = ps.executeUpdate();

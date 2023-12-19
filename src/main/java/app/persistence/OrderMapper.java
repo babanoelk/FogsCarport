@@ -3,6 +3,7 @@ package app.persistence;
 import app.dtos.*;
 import app.entities.Carport;
 import app.entities.Order;
+import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import java.sql.*;
@@ -73,8 +74,8 @@ public class OrderMapper {
         return allOrders;
     }
 
-    public static List<DTOGetOrderWithIdDateCustomerNoteConsentStatus> getAllOrdersByUser(User user, ConnectionPool connectionPool) throws DatabaseException {
-        List<DTOGetOrderWithIdDateCustomerNoteConsentStatus> orderList = new ArrayList<>();
+    public static List<Order> getAllOrdersByUser(User user, ConnectionPool connectionPool) throws DatabaseException {
+        List<Order> orderList = new ArrayList<>();
 
         String sql = "select id, date, customer_note, order_status from public.ORDER where user_id = ?";
         try (Connection connection = connectionPool.getConnection()) {
@@ -88,7 +89,7 @@ public class OrderMapper {
                     String customerNote = rs.getString("customer_note");
                     int orderID = rs.getInt("order_status");
                     String orderStatus = getStatusByID(orderID, connectionPool);
-                    orderList.add(new DTOGetOrderWithIdDateCustomerNoteConsentStatus(id, date, customerNote, orderStatus));
+                    orderList.add(new Order(id, date, customerNote, orderStatus));
                 }
             }
         } catch (SQLException e) {
@@ -155,12 +156,12 @@ public class OrderMapper {
         }
     }
 
-    public static DTOUserWithUserIdNameAddressZipcodeMobileEmail getSpecificOrderByOrderIdWithUserAndCarportAndShed(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static User getOrderDetails(int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
 
-        DTOSpecificOrderByOrderIdWithUserAndCarportAndShed specificOrderByOrderIdWithUserAndCarportAndShed;
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = null;
+        DTOOrderDetails orderDetails;
+        User user = null;
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -198,13 +199,12 @@ public class OrderMapper {
                         // No need to initialize shedId, shedWidth, and shedLength here
                     }
 
-                    dtoUserWithUserIdNameAddressZipcodeMobileEmail =
-                            new DTOUserWithUserIdNameAddressZipcodeMobileEmail(userId, name, address, zipcode, mobile, email);
+                    user = new User(userId, name, email, address, mobile, zipcode);
 
-                    specificOrderByOrderIdWithUserAndCarportAndShed = new DTOSpecificOrderByOrderIdWithUserAndCarportAndShed(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
+                    orderDetails = new DTOOrderDetails(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
                 } else {
                     // Handle the case where no rows are returned
-                    specificOrderByOrderIdWithUserAndCarportAndShed = null; // or handle it as needed
+                    orderDetails = null; // or handle it as needed
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -212,15 +212,14 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return dtoUserWithUserIdNameAddressZipcodeMobileEmail;
+        return user;
     }
 
-    public static DTOCarportWithIdLengthWidthHeight getSpecificCarportByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static Carport getCarportByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
 
-        DTOCarportWithIdLengthWidthHeight carportWithIdLengthWidthHeight;
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = null;
+        Carport carport;
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -258,13 +257,11 @@ public class OrderMapper {
                         // No need to initialize shedId, shedWidth, and shedLength here
                     }
 
-                    carportWithIdLengthWidthHeight =
-                            new DTOCarportWithIdLengthWidthHeight(carportId, carportLength, carportWidth, carportHeight);
+                    carport = new Carport(carportId, carportWidth, carportLength, carportHeight);
 
-                    //carportWithIdLengthWidthHeight = new DTOCarportWithIdLengthWidthHeight(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
                 } else {
                     // Handle the case where no rows are returned
-                    carportWithIdLengthWidthHeight = null; // or handle it as needed
+                    carport = null; // or handle it as needed
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -272,7 +269,7 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return carportWithIdLengthWidthHeight;
+        return carport;
     }
 
 
@@ -314,12 +311,11 @@ public class OrderMapper {
         return updatedName;
     }
 
-    public static DTOShedIdLengthWidth getSpecificShedByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
+    public static Shed getShedByOrderId(int orderId, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "SELECT public.order.user_id, public.user.name, public.user.address, public.user.zipcode, public.user.mobile, public.user.email, public.order.carport_id, public.carport.width, public.carport.length, public.carport.height, public.carport.shed_id, public.shed.width AS shed_width, public.shed.length AS shed_length, public.order.customer_note FROM public.order JOIN public.user ON public.order.user_id = public.user.id JOIN public.carport ON public.order.carport_id = public.carport.id LEFT JOIN public.shed ON public.carport.shed_id = public.shed.id WHERE public.order.id = ?";
 
-        DTOShedIdLengthWidth dtoShedIdLengthWidth;
-        DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUserWithUserIdNameAddressZipcodeMobileEmail = null;
+        Shed shed;
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -357,13 +353,11 @@ public class OrderMapper {
                         // No need to initialize shedId, shedWidth, and shedLength here
                     }
 
-                    dtoShedIdLengthWidth =
-                            new DTOShedIdLengthWidth(shedId, shedLength, shedWidth);
+                    shed = new Shed(shedId, shedWidth, shedLength);
 
-                    //carportWithIdLengthWidthHeight = new DTOCarportWithIdLengthWidthHeight(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
                 } else {
                     // Handle the case where no rows are returned
-                    dtoShedIdLengthWidth = null; // or handle it as needed
+                    shed = null; // or handle it as needed
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -371,7 +365,7 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return dtoShedIdLengthWidth;
+        return shed;
     }
 
 

@@ -12,7 +12,7 @@ public class Calculator {
 
     private static float shedPricePerSqMeter = 500;
 
-    public static float carportPriceCalculator(DTOCarportWithIdLengthWidthHeight carport){
+    public static float carportPriceCalculator(Carport carport){
         float price;
 
         float sqMeter = (carport.getLength()/100) * (carport.getWidth()/100);
@@ -21,7 +21,7 @@ public class Calculator {
         return price;
     }
 
-    public static float shedPriceCalculator(DTOShedIdLengthWidth shed){
+    public static float shedPriceCalculator(Shed shed){
         float price;
 
         float sqMeter = (shed.getLength()/100) * (shed.getWidth()/100);

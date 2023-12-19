@@ -5,20 +5,26 @@ import app.entities.Carport;
 import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
+import app.utility.Calculator;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper {
-    public static void addOrder(DTOUserCarportOrder dto, ConnectionPool connectionPool) throws DatabaseException {
+
+
+    public static void addOrder(DTOUserCarportOrder dto, float carportPrice, ConnectionPool connectionPool) throws DatabaseException {
         User userAdded = UserMapper.addUser(dto.getUser(), connectionPool);
         Carport carportAdded = CarportMapper.addCarport(dto.getCarport(), connectionPool);
-        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id) values (?,?,?)";
+
+        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id, price) values (?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, dto.getOrder().getCustomerNote());
                 ps.setInt(2, userAdded.getId());
                 ps.setInt(3, carportAdded.getId());
+                ps.setFloat(4, carportPrice);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Ordre ikke oprettet. Fejl i data sendt til databasen.");
@@ -29,15 +35,16 @@ public class OrderMapper {
         }
     }
 
-    public static void addOrderToExistingUser(DTOUserCarportOrder dto, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addOrderToExistingUser(DTOUserCarportOrder dto, float carportPrice, ConnectionPool connectionPool) throws DatabaseException {
         User user = UserMapper.getUserByEmail(dto.getUser().getEmail(), connectionPool);
         Carport carportAdded = CarportMapper.addCarport(dto.getCarport(), connectionPool);
-        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id) values (?,?,?)";
+        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id, price) values (?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, dto.getOrder().getCustomerNote());
                 ps.setInt(2, user.getId());
                 ps.setInt(3, carportAdded.getId());
+                ps.setFloat(4, carportPrice);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Ordre ikke oprettet. Fejl i data sendt til databasen.");

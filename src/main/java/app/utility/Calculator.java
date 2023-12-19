@@ -3,6 +3,7 @@ package app.utility;
 import app.dtos.DTOCarportWithIdLengthWidthHeight;
 import app.dtos.DTOParts;
 import app.dtos.DTOShedIdLengthWidth;
+import app.dtos.DTOUserCarportOrder;
 import app.entities.Carport;
 import app.entities.Part;
 
@@ -52,19 +53,21 @@ public class Calculator {
 
 
 
-    /*public static float carportPriceCalculator2(DTOCarportWithIdLengthWidthHeight carport){
+    public static float carportPriceCalculator2(DTOUserCarportOrder carport){
         float price;
 
-        float carportSqMeter = (carport.getLength()/100) * (carport.getWidth()/100);
+        float carportSqMeter = (carport.getCarport().getLength()/100) * (carport.getCarport().getWidth()/100);
         price = carportSqMeter * carportPricePerSqCM;
 
-        if(carport.getShed() != null){
-            float shedSqMeter = (carport.getShed().getLength()/100) * (carport.getShed().getWidth()/100);
+
+        if(carport.getCarport().getShed() != null){
+            float shedSqMeter = (carport.getCarport().getShed().getLength()/100) * (carport.getCarport().getShed().getWidth()/100);
             price += shedSqMeter* shedPricePerSqMeter;
         }
 
         return price;
-    }*/
+    }
+
 
     public static int amountOfPost(Carport carport){
 

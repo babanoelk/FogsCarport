@@ -1,6 +1,6 @@
 package app.persistence;
 
-import app.entities.Status;
+import app.dtos.DTOStatus;
 import app.exceptions.DatabaseException;
 
 import java.sql.Connection;
@@ -12,9 +12,9 @@ import java.util.List;
 
 public class StatusMapper {
 
-    public static List <Status> getAllStatuses(ConnectionPool connectionPool) throws DatabaseException {
+    public static List <DTOStatus> getAllStatuses(ConnectionPool connectionPool) throws DatabaseException {
 
-        List<Status> statusList = new ArrayList<>();
+        List<DTOStatus> statusList = new ArrayList<>();
 
         String sql = "select * from status order by id";
 
@@ -24,7 +24,7 @@ public class StatusMapper {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String status = rs.getString("status");
-                    statusList.add(new Status(id, status));
+                    statusList.add(new DTOStatus(id, status));
                 }
             }
         } catch (SQLException e)

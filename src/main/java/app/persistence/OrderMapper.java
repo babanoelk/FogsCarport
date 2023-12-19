@@ -146,7 +146,7 @@ public class OrderMapper {
             // Check if at least one record was deleted from public.order
             if (orderRowsAffected > 0) {
                 // Get the carport ID to delete the carport
-                CarportMapper.deleteCarportByCarportID(carportId, connectionPool);
+                CarportMapper.deleteCarportById(carportId, connectionPool);
             } else {
                 throw new DatabaseException("Ingen ordre slettet. Fejl i databasen.");
             }
@@ -369,15 +369,15 @@ public class OrderMapper {
     }
 
 
-    public static void addShedToSpecificOrderId(int carportId, int shedId, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addShedToOrder(Carport carport, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "UPDATE public.carport SET shed_id = ? WHERE shed_id IS NULL AND id = ?";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                ps.setInt(1, shedId);
-                ps.setInt(2, carportId);
+                ps.setInt(1, carport.getShed().getId());
+                ps.setInt(2, carport.getId());
 
                 int shedAdded = ps.executeUpdate();
 
@@ -392,7 +392,7 @@ public class OrderMapper {
             }
         } catch (SQLException e) {
             // Log the exception or handle it appropriately, but avoid throwing a new exception here
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 

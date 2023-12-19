@@ -1,6 +1,5 @@
 package app.persistence;
 
-import app.dtos.DTOUserWithUserIdNameAddressZipcodeMobileEmail;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 

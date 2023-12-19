@@ -1,6 +1,5 @@
 package app.persistence;
 
-import app.dtos.DTOShedIdLengthWidth;
 import app.dtos.DTOShedLengthWidth;
 import app.entities.Shed;
 import app.exceptions.DatabaseException;
@@ -32,7 +31,7 @@ public class ShedMapper {
         }
     }
 
-    public static Shed addShed(DTOShedLengthWidth shed, ConnectionPool connectionPool) throws DatabaseException {
+    public static Shed addShed(Shed shed, ConnectionPool connectionPool) throws DatabaseException {
         Shed newShed;
         String sql = "INSERT INTO shed (width, length) values (?,?)";
 

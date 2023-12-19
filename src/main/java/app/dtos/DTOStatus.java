@@ -1,16 +1,12 @@
-package app.entities;
+package app.dtos;
 
-import java.util.List;
-
-public class Status {
+public class DTOStatus {
     private int id;
     private String text;
-    public Status(int id, String text){
+    public DTOStatus(int id, String text){
         this.id = id;
         this.text = text;
     }
-
-
 
     public int getId() {
         return id;

@@ -21,24 +21,24 @@ public class OrderController {
 
 
             //Brugeren
-            User oldUser = OrderMapper.getOrderDetails(result, connectionPool);
-            ctx.sessionAttribute("user", oldUser);
+            User chosenUser = OrderMapper.getOrderDetails(result, connectionPool);
+            ctx.sessionAttribute("user", chosenUser);
 
             //Carporten
-            Carport oldCarport = OrderMapper.getCarportByOrderId(result, connectionPool);
-            ctx.sessionAttribute("old_carport", oldCarport);
+            Carport chosenUsersCarport = OrderMapper.getCarportByOrderId(result, connectionPool);
+            ctx.sessionAttribute("old_carport", chosenUsersCarport);
 
             //Shed
-            Shed oldShed = OrderMapper.getShedByOrderId(result, connectionPool);
-            ctx.sessionAttribute("old_shed", oldShed);
+            Shed chosenUsersShed = OrderMapper.getShedByOrderId(result, connectionPool);
+            ctx.sessionAttribute("old_shed", chosenUsersShed);
 
-            float price1 = Calculator.carportPriceCalculator(oldCarport);
-            float price2 = Calculator.shedPriceCalculator(oldShed);
+            float price1 = Calculator.carportPriceCalculator(chosenUsersCarport);
+            float price2 = Calculator.shedPriceCalculator(chosenUsersShed);
             float totalPrice = price1 + price2;
 
             //Load data
             ctx.sessionAttribute("totalPrice", totalPrice);
-            FormController.loadMeasurements(ctx, connectionPool);
+            FormController.loadMeasurements(ctx, connectionPool); //todo: double rendering conflict
 
             ctx.render("se-nærmere-på-ordre.html");
         } catch (DatabaseException e) {
@@ -48,9 +48,7 @@ public class OrderController {
     }
 
     public static boolean deleteOrder(Context ctx, ConnectionPool connectionPool) {
-
         try {
-            User user = ctx.sessionAttribute("currentUser");
             int result = Integer.parseInt(ctx.formParam("order_id"));
             OrderMapper.deleteOrderByOrderID(result, connectionPool);
 
@@ -70,7 +68,7 @@ public class OrderController {
                 ctx.attribute("orderlist", orders);
                 ctx.render("ordre-side.html");
             } else {
-                List<Status> statusList = StatusMapper.getAllStatuses(connectionPool);
+                List<DTOStatus> statusList = StatusMapper.getAllStatuses(connectionPool);
                 List<DTOOrderCustomer> allOrders = OrderMapper.getAllOrders(connectionPool);
 
                 ctx.attribute("statusList", statusList);
@@ -356,66 +354,58 @@ public class OrderController {
         Shed shed = ctx.sessionAttribute("old_shed");
 
         //Old information
-        int oldShedLength = shed.getLength();
-        int oldShedWidth = shed.getWidth();
+        int shedLength = shed.getLength();
+        int shedWidth = shed.getWidth();
 
 
         //New information
-        String newInputLengthStr = ctx.formParam("new_shed_length");
-        String newInputWidthStr = ctx.formParam("new_shed_width");
+        String newShedLengthAsStr = ctx.formParam("new_shed_length");
+        String newShedWidthAsStr = ctx.formParam("new_shed_width");
 
-        if (newInputLengthStr != null && !newInputLengthStr.isEmpty()) {
+        if (newShedLengthAsStr != null && !newShedLengthAsStr.isEmpty()) {
             try {
-                updateLength = Integer.parseInt(newInputLengthStr);
+                updateLength = Integer.parseInt(newShedLengthAsStr);
             } catch (NumberFormatException e) {
-                updateLength = oldShedLength;
+                updateLength = shedLength;
             }
         } else {
-            updateLength = oldShedLength;
+            updateLength = shedLength;
         }
 
         //Width
-        if (newInputWidthStr != null && !newInputWidthStr.isEmpty()) {
+        if (newShedWidthAsStr != null && !newShedWidthAsStr.isEmpty()) {
             try {
-                updateWidth = Integer.parseInt(newInputWidthStr);
+                updateWidth = Integer.parseInt(newShedWidthAsStr);
             } catch (NumberFormatException e) {
-                updateWidth = oldShedWidth;
+                updateWidth = shedWidth;
             }
         } else {
-            updateWidth = oldShedWidth;
+            updateWidth = shedWidth;
         }
 
-        DTOShedLengthWidth shedLengthWidth = new DTOShedLengthWidth
-                (updateLength, updateWidth);
-
+        Shed newShed = new Shed(updateWidth, updateLength);
 
         //Opdater brugere oplysningerne
-        Shed newShed = ShedMapper.addShed(shedLengthWidth, connectionPool);
+        Shed updatedShed = ShedMapper.addShed(newShed, connectionPool);
 
-        //int result = Integer.parseInt(ctx.formParam("orderID"));
-        int orderID = Integer.parseInt(ctx.formParam("orderID"));
+        int orderId = Integer.parseInt(ctx.formParam("orderID"));
 
-        ctx.attribute("orderID", orderID);
+        ctx.attribute("orderID", orderId);
 
-        Carport oldCarport = OrderMapper.getCarportByOrderId(orderID, connectionPool);
-        ctx.sessionAttribute("old_carport", oldCarport);
+        Carport carport = OrderMapper.getCarportByOrderId(orderId, connectionPool);
+        carport.setShed(updatedShed);
+        ctx.sessionAttribute("old_carport", carport);
 
         //Update Order with new created Shed
-        OrderMapper.addShedToSpecificOrderId(oldCarport.getId(), newShed.getId(), connectionPool);
+        OrderMapper.addShedToOrder(carport, connectionPool);
 
-        User oldUser = OrderMapper.getOrderDetails(orderID, connectionPool);
-        ctx.sessionAttribute("user", oldUser);
+        User user = OrderMapper.getOrderDetails(orderId, connectionPool);
+        ctx.sessionAttribute("user", user);
 
-        Shed oldShed = OrderMapper.getShedByOrderId(orderID, connectionPool);
-        oldShed.setId(newShed.getId());
-        oldShed.setLength(newShed.getLength());
-        oldShed.setWidth(newShed.getWidth());
-
-        ctx.sessionAttribute("old_shed", oldShed);
+        ctx.sessionAttribute("old_shed", updatedShed);
 
         FormController.loadMeasurements(ctx, connectionPool); //todo: problem with double rendering
 
-        //Load the page
         ctx.render("se-nærmere-på-ordre.html");
     }
 

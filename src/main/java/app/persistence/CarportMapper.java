@@ -1,6 +1,5 @@
 package app.persistence;
 
-import app.dtos.DTOCarportWithIdLengthWidthHeight;
 import app.entities.Carport;
 import app.entities.Shed;
 import app.exceptions.DatabaseException;
@@ -43,7 +42,7 @@ public class CarportMapper {
         return carport;
     }
 
-    public static void deleteCarportByCarportID(int carportId, ConnectionPool connectionPool) throws DatabaseException {
+    public static void deleteCarportById(int carportId, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "DELETE from public.carport where id = ?";
 

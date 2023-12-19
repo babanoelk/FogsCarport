@@ -80,18 +80,6 @@ public class User {
         this.address = address;
     }
 
-    public void setMobile(int mobile) {
-        this.mobile = mobile;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public void setZipcode(int zipcode) {
-        this.zipcode = zipcode;
-    }
-
     public int getId() {
         return id;
     }

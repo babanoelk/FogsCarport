@@ -7,6 +7,7 @@ import app.persistence.*;
 import app.utility.Calculator;
 import io.javalin.http.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderController {
@@ -424,7 +425,6 @@ public class OrderController {
             int order_ID = Integer.parseInt(ctx.formParam("orderID"));
             OrderMapper.updateStatusBillSent(order_ID, connectionPool);
 
-
             //Update price
             float updatePrice;
 
@@ -444,10 +444,18 @@ public class OrderController {
             } else {
                 updatePrice = oldPrice;
             }
-
-
-
             OrderMapper.updateOrderPrice(order_ID, updatePrice, connectionPool);
+
+            //Order order = OrderMapper.getOrderById(order_ID, connectionPool);
+            //int carportId = order.getCarportId();
+
+            int carportId = Integer.parseInt(ctx.formParam("carportId"));
+
+            Carport carport = CarportMapper.getCarportById(carportId, connectionPool);
+
+            List <Part> listOfParts = new ArrayList<>(Calculator.calculateParts(carport, order_ID));
+
+            MaterialMapper.addpartsList(listOfParts, connectionPool);
 
             EmailController.sendBill(ctx);
             OrderController.getAllOrders(ctx, connectionPool);
@@ -456,6 +464,7 @@ public class OrderController {
             OrderController.getAllOrders(ctx, connectionPool);
         }
     }
+
     public static void changePriceManually(Context ctx, ConnectionPool connectionPool) {
         try {
             int order_ID = Integer.parseInt(ctx.formParam("orderID"));

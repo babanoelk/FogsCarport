@@ -45,9 +45,7 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Mindst 100% af viewportens højde */
-    margin: 0;
-
-}
+    }
 
 #nav-fullwidth{
     width: 100%;
@@ -440,3 +438,5 @@ footer {
 #main-price-right{
     order: 3;
 }
+
+

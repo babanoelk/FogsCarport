@@ -3,9 +3,7 @@ package app.persistence;
 import app.entities.Carport;
 import app.entities.Shed;
 import app.exceptions.DatabaseException;
-
 import java.sql.*;
-
 import static java.sql.Types.NULL;
 
 public class CarportMapper {
@@ -111,5 +109,31 @@ public class CarportMapper {
             throw new RuntimeException(e);
         }
     }
+
+    public static Carport getCarportById(int carportId, ConnectionPool connectionPool) throws DatabaseException{
+        Carport carport = null;
+
+        String sql = "SELECT * FROM public.carport Where id = ?";
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                ps.setInt(1, carportId);
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    int width = rs.getInt(2);
+                    int length = rs.getInt(3);
+                    int height = rs.getInt(4);
+
+                    carport = new Carport(id, width, length, height);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Fejl ved indlæsning af carport " + e.getMessage());
+        }
+        return carport;
+    }
+
 
 }

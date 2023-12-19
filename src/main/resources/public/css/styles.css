@@ -31,18 +31,13 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
-    background-color: #134d8a;
-    border-radius: 5px;
-    color: white;
-
 }
 
 td, th {
+    border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #dddddd;
-    }
+}
 
 body{
     background-color: #f1f1f1;

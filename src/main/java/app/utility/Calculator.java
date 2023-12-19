@@ -1,12 +1,18 @@
 package app.utility;
 
-import app.Main;
 import app.dtos.DTOCarportWithIdLengthWidthHeight;
+import app.dtos.DTOParts;
 import app.dtos.DTOShedIdLengthWidth;
 import app.entities.Carport;
-import app.entities.Shed;
+import app.entities.Part;
+
+import java.util.*;
 
 public class Calculator {
+
+    private static int amountOfRem = 2;
+
+    private static List<Part> partsList = new ArrayList<>();
 
     private static float carportPricePerSqCM = 1200;
 
@@ -59,6 +65,57 @@ public class Calculator {
 
         return price;
     }*/
+
+    public static int amountOfPost(Carport carport){
+
+        int maxLengthBetweenPost = 240;
+        int minNumberOfPosts = 4;
+        //hvis bredden på shed er 100% skal der være 5 stolper og hvis bredden er 50% skal der være 4 stolper
+        int shedPosts = 5;
+        int totalPost = 0;
+
+        int carportLength = carport.getLength();
+
+        if(carportLength > maxLengthBetweenPost && carportLength < maxLengthBetweenPost * 2){
+            totalPost += minNumberOfPosts + 2;
+        } else if (carportLength > maxLengthBetweenPost * 2) {
+            totalPost += minNumberOfPosts + 4;
+        }
+
+        if (carport.getShed() != null){
+            if(carport.getShed().getWidth() == carport.getWidth()){
+                totalPost += shedPosts;
+            }else{
+                totalPost += shedPosts -1;
+            }
+        }
+        return totalPost;
+    }
+
+    public static int amountOfRafter(Carport carport){
+        int maxLengthBetweenRafts = 60;
+        int result = carport.getLength() / maxLengthBetweenRafts;
+        if(carport.getLength() % maxLengthBetweenRafts != 0) {
+            result++;
+        }
+        return result;
+    }
+
+
+    public static List<Part> calculateParts(Carport carport, int orderId){
+
+        // Calc Posts
+        partsList.add(new Part(DTOParts.POST_MATERIAL_ID, amountOfPost(carport), orderId ));
+
+        // Calc Rafters
+        partsList.add(new Part(DTOParts.RAFT_MATERIAL_ID, amountOfRafter(carport), orderId ));
+
+        // Calc Rems
+        partsList.add(new Part(DTOParts.REM_MATERIAL_ID, amountOfRem, orderId));
+
+
+        return partsList;
+    }
 
 
 }

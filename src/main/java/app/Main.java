@@ -46,7 +46,7 @@ public class Main {
         app.get("/log-ud", ctx -> UserController.logout(ctx));
         app.get("/main-menu", ctx -> UserController.dashboardMenu(ctx));
 
-        //app.post("/ordre-info", ctx -> MaterialController.loadParts(ctx, connectionPool));
+        app.post("/ordre-info", ctx -> MaterialController.loadParts(ctx, connectionPool));
 
         // Routing post
         app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));

@@ -76,7 +76,7 @@ public class FormController {
             } else {
                 DTOUserCarportOrder dto = new DTOUserCarportOrder(user, carport, order);
                 float carportPrice = Calculator.carportPriceCalculator2(dto);
-                OrderMapper.addOrderToExistingUser(dto, carportPrice, connectionPool);
+                OrderMapper.addOrder(dto, carportPrice, connectionPool);
             }
 
 

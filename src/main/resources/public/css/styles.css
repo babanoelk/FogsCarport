@@ -137,6 +137,13 @@ body {
     margin-top: 10px;
 }
 
+.carport-svg-topview{
+    width: 100%; /* Fuld bredde af den overordnede container */
+    display: flex; /* Flexbox layout for bedre kontrol */
+    justify-content: center; /* Centrerer SVG'en horisontalt */
+    align-items: center; /* Centrerer SVG'en vertikalt */
+}
+
 #button-order {
     position: absolute;
     top: 50%;

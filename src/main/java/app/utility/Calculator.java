@@ -1,26 +1,21 @@
 package app.utility;
 
-import app.dtos.DTOCarportWithIdLengthWidthHeight;
 import app.dtos.DTOParts;
-import app.dtos.DTOShedIdLengthWidth;
-import app.dtos.DTOUserCarportOrder;
 import app.entities.Carport;
 import app.entities.Part;
+import app.entities.Shed;
+import app.dtos.DTOUserCarportOrder;
 import app.services.CarportSvgTopView;
-
 import java.util.*;
 
 public class Calculator {
 
     private static int amountOfRem = 2;
-
     private static List<Part> partsList = new ArrayList<>();
-
     private static float carportPricePerSqCM = 1200;
     private static float shedPricePerSqMeter = 500;
 
-
-    public static float carportPriceCalculator(DTOCarportWithIdLengthWidthHeight carport){
+    public static float carportPriceCalculator(Carport carport){
         float price;
 
         float sqMeter = (carport.getLength()/100) * (carport.getWidth()/100);
@@ -29,7 +24,7 @@ public class Calculator {
         return price;
     }
 
-    public static float shedPriceCalculator(DTOShedIdLengthWidth shed){
+    public static float shedPriceCalculator(Shed shed){
         float price;
 
         float sqMeter = (shed.getLength()/100) * (shed.getWidth()/100);

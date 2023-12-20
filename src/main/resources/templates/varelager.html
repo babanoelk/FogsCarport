@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>AdminSide</title>
+    <title>Varelager</title>
     <!-- REPLACE ME WITH A FRAGMENT -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +12,8 @@
 
 <div id="main-content">
     <h1>Varelager oversigt</h1>
+    <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
     <p>Her kan du tilføje og slette vare på varelageret.</p>
-
     <div id="add-material">
         <h3>Tilføj vare</h3>
         <form method="POST" action="/add-material">

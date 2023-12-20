@@ -1,20 +1,18 @@
 package app.persistence;
 
-import app.dtos.DTOShedIdLengthWidth;
-import app.dtos.DTOShedLengthWidth;
 import app.entities.Shed;
 import app.exceptions.DatabaseException;
 import java.sql.*;
 
 public class ShedMapper {
-    public static void updateShed(DTOShedIdLengthWidth dtoUser, ConnectionPool connectionPool) throws DatabaseException {
+    public static void updateShed(Shed shed, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE public.shed SET width = ?, length = ? WHERE id = ?";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setInt(1, dtoUser.getWidth());
-                ps.setInt(2, dtoUser.getLength());
-                ps.setInt(3, dtoUser.getId());
+                ps.setInt(1, shed.getWidth());
+                ps.setInt(2, shed.getLength());
+                ps.setInt(3, shed.getId());
 
                 int rowsAffected = ps.executeUpdate();
 
@@ -32,8 +30,7 @@ public class ShedMapper {
         }
     }
 
-    public static Shed addShed(DTOShedLengthWidth shed, ConnectionPool connectionPool) throws DatabaseException {
-
+    public static Shed addShed(Shed shed, ConnectionPool connectionPool) throws DatabaseException {
         Shed newShed;
         String sql = "INSERT INTO shed (width, length) values (?,?)";
 

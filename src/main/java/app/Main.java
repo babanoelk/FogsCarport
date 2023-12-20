@@ -49,10 +49,10 @@ public class Main {
         app.post("/ordre-info", ctx -> MaterialController.loadParts(ctx, connectionPool));
 
         // Routing post
-        app.post("/ordre-indsendt", ctx -> FormController.formInput(ctx, connectionPool));
+        app.post("/ordre-indsendt", ctx -> FormController.createCustomerRequest(ctx, connectionPool));
         app.post("/dashboard", ctx -> UserController.login(ctx, connectionPool));
         app.post("/delete", ctx -> OrderController.deleteOrder(ctx, connectionPool));
-        app.post("/se-order", ctx -> OrderController.getSpecificOrder(ctx, connectionPool));
+        app.post("/se-order", ctx -> OrderController.getChosenCustomerOrder(ctx, connectionPool));
         app.post("/slet", ctx -> OrderController.deleteOrder(ctx,connectionPool));
         app.post("/opdater-ordre", ctx -> OrderController.updateOrderStatus(ctx, connectionPool));
         app.post("/kontakt", ctx -> OrderController.orderContact(ctx));

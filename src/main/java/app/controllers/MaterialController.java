@@ -1,18 +1,19 @@
 package app.controllers;
 
-import app.entities.Material;
+import app.dtos.DTOPartsByMaterials;
+import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
-import app.dtos.DTOPartsByMaterials;
-import app.entities.Order;
+import app.persistence.MaterialsMapper;
 import app.persistence.OrderMapper;
+import app.entities.Material;
 import app.services.CarportSvgTopView;
 import io.javalin.http.Context;
 import java.util.List;
 
 public class MaterialController {
-    public static void loadMaterials(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+    public static void loadMaterials(Context ctx, ConnectionPool connectionPool) {
         try {
             List<Material> materialsList = MaterialMapper.getAllMaterials(connectionPool);
 
@@ -45,6 +46,8 @@ public class MaterialController {
         }
     }
 
+
+
     public static void addMaterial(Context ctx, ConnectionPool connectionPool) {
         try {
             String name = ctx.formParam("name");
@@ -65,26 +68,26 @@ public class MaterialController {
     }
 
 
-        public static void deleteMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-            int materialId = Integer.parseInt(ctx.formParam("materialId"));
-            MaterialMapper.deleteMaterial(materialId, connectionPool);
-            loadMaterials(ctx, connectionPool);
-        }
-
-        public static void updateMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-            Material material = new Material(Integer.parseInt(ctx.formParam("id")),
-                    ctx.formParam("name"),
-                    Integer.parseInt(ctx.formParam("length")),
-                    ctx.formParam("description"),
-                    Long.parseLong(ctx.formParam("item_number")),
-                    Integer.parseInt(ctx.formParam("width_cm")),
-                    Integer.parseInt(ctx.formParam("height_cm")),
-                    Integer.parseInt(ctx.formParam("price"))
-
-            );
-            MaterialMapper.updateMaterial(material, connectionPool);
-            loadMaterials(ctx, connectionPool);
-        }
-        
+    public static void deleteMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        int materialId = Integer.parseInt(ctx.formParam("materialId"));
+        MaterialsMapper.deleteMaterial(materialId, connectionPool);
+        loadMaterials(ctx, connectionPool);
     }
+
+    public static void updateMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        Material material = new Material(Integer.parseInt(ctx.formParam("id")),
+                ctx.formParam("name"),
+                Integer.parseInt(ctx.formParam("length")),
+                ctx.formParam("description"),
+                Long.parseLong(ctx.formParam("item_number")),
+                Integer.parseInt(ctx.formParam("width_cm")),
+                Integer.parseInt(ctx.formParam("height_cm")),
+                Integer.parseInt(ctx.formParam("price"))
+            );
+        MaterialsMapper.updateMaterial(material, connectionPool);
+        loadMaterials(ctx, connectionPool);
+    }
+
+
+}
 

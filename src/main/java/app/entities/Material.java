@@ -58,16 +58,8 @@ public class Material {
             return description;
         }
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
         public long getItemNumber() {
             return itemNumber;
-        }
-
-        public void setItemNumber(int itemNumber) {
-            this.itemNumber = itemNumber;
         }
 
         public int getWidth() {

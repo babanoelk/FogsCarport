@@ -1,6 +1,6 @@
 package app.dtos;
 
-public class DTOSpecificOrderByOrderIdWithUserAndCarportAndShed {
+public class DTOOrderDetails {
 
     private int userId;
     private String name;
@@ -17,7 +17,7 @@ public class DTOSpecificOrderByOrderIdWithUserAndCarportAndShed {
     private int shedLength;
     private String customerNote;
 
-    public DTOSpecificOrderByOrderIdWithUserAndCarportAndShed(int userId, String name, String address, int zipcode, int mobile, String email, int carportId, int carportWidth, int carportLength, int carportHeight, int shedId, int shedWidth, int shedLength, String customerNote) {
+    public DTOOrderDetails(int userId, String name, String address, int zipcode, int mobile, String email, int carportId, int carportWidth, int carportLength, int carportHeight, int shedId, int shedWidth, int shedLength, String customerNote) {
         this.userId = userId;
         this.name = name;
         this.address = address;

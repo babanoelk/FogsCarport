@@ -6,17 +6,30 @@ import app.persistence.UserMapper;
 import io.javalin.http.Context;
 
 public class UserController {
+    public static User createUser(Context ctx) {
+        String name = ctx.formParam("name");
+        String address = ctx.formParam("address");
+        int zip = Integer.parseInt(ctx.formParam("zip"));
+        int mobile = Integer.parseInt(ctx.formParam("phone"));
+        String email = ctx.formParam("email");
+        String password = (ctx.formParam("pass"));
+        boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
+        int role = 1; //Standard role 'Kunde'
+
+        //Create User instance from input data
+        User user = new User(name, email, password, address, mobile, zip, consent, role);
+        return user;
+    }
 
     public static void login(Context ctx, ConnectionPool connectionPool){
         try {
             String email = ctx.formParam("email");
             String password = ctx.formParam("password");
+            //checking if email and password exists
             boolean isLoggedIn = UserMapper.loginValidator(email, password, connectionPool);
             if (isLoggedIn) {
                 User user = UserMapper.getUserByEmail(email, connectionPool);
                 ctx.sessionAttribute("currentUser", user);
-                //OrderController.getAllOrders(ctx,connectionPool);
-                //ctx.render("min-side.html");
                 ctx.render("dashboard.html");
             } else {
                 ctx.attribute("message", "Forkert email eller password");
@@ -52,7 +65,7 @@ public class UserController {
             int zip = Integer.parseInt(ctx.formParam("zip"));
             int phone = Integer.parseInt(ctx.formParam("phone"));
             String email = ctx.formParam("email");
-            String password = ctx.formParam("pass");
+            String password = ctx.formParam("password");
             boolean consent = Boolean.parseBoolean(ctx.formParam("consent"));
             int role = 2; //Sælger rolle
 

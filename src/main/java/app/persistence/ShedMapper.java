@@ -1,6 +1,5 @@
 package app.persistence;
 
-import app.dtos.DTOShedLengthWidth;
 import app.entities.Shed;
 import app.exceptions.DatabaseException;
 import java.sql.*;

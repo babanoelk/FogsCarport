@@ -34,12 +34,13 @@ public class OrderController {
             ctx.sessionAttribute("old_shed", chosenUsersShed);
 
             //Load data
-            FormController.loadMeasurements(ctx, connectionPool); //todo: double rendering conflict
+            FormController.loadMeasurements(ctx, connectionPool);
 
             ctx.render("admin-kd-ordre.html");
         } catch (DatabaseException e) {
+            e.printStackTrace();
             ctx.attribute("message", e.getMessage());
-            //ctx.render(""); //todo: render page with error message
+            ctx.render("ordre-side.html");
         }
     }
 
@@ -47,13 +48,13 @@ public class OrderController {
         try {
             int result = Integer.parseInt(ctx.formParam("order_id"));
             OrderMapper.deleteOrderById(result, connectionPool);
-
-            ctx.render("ordre-slettet.html"); //todo: should not render its own page, replace with message
+            ctx.attribute("message", "Ordre er nu slettet");
+            ctx.render("ordre-side.html");
         } catch (DatabaseException e) {
             ctx.attribute("message", "Fejl sletning af ordre " + e.getMessage());
-            //ctx.render(""); //todo: render page with error message
+            ctx.render("ordre-side.html");
         }
-        return true; //todo: why return something?
+        return true; //Udelukkende til test formål
     }
 
     public static void getAllOrders(Context ctx, ConnectionPool connectionPool) {
@@ -72,8 +73,8 @@ public class OrderController {
                 ctx.render("ordre-side.html");
             }
         } catch (DatabaseException e) {
-            ctx.attribute("message", "Fejl indlæsning af ordre " + e.getMessage());
-            //ctx.render(""); //todo: render page with error message
+            ctx.attribute("message", "Fejl indlæsning af alle ordrer " + e.getMessage());
+            ctx.render("dashboard.html");
         }
     }
 
@@ -85,7 +86,7 @@ public class OrderController {
             getAllOrders(ctx, connectionPool);
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
-            //ctx.render(""); //todo: render page with error message
+            ctx.render("ordre-side.html");
         }
     }
 
@@ -180,26 +181,25 @@ public class OrderController {
         try {
             UserMapper.updateUser(newUser, connectionPool);
         } catch (DatabaseException e) {
-            ctx.attribute("message", e.getMessage());
-            //ctx.render(""); //todo: render page with error message
+            ctx.attribute("message", "error updating user" + e.getMessage());
+            ctx.render("admin-kd-ordre.html");
         }
 
-        int orderID = Integer.parseInt(ctx.formParam("orderID"));
+        int orderId = Integer.parseInt(ctx.formParam("orderID"));
 
-        ctx.attribute("orderID", orderID);
+        ctx.attribute("orderID", orderId);
 
         User oldUser = null;
         try {
-            oldUser = OrderMapper.getOrderDetails(orderID, connectionPool);
+            oldUser = OrderMapper.getOrderDetails(orderId, connectionPool);
         } catch (DatabaseException e) {
-            throw new RuntimeException(e);
+            ctx.attribute("message", "error loading order" + e.getMessage());
+            ctx.render("admin-kd-ordre.html");
         }
         ctx.sessionAttribute("user", oldUser);
-        FormController.loadMeasurements(ctx, connectionPool); //todo: double rendering problem
-
+        FormController.loadMeasurements(ctx, connectionPool);
 
         //Load the page
-
         ctx.render("admin-kd-ordre.html");
     }
 
@@ -266,15 +266,15 @@ public class OrderController {
             oldCarport = OrderMapper.getCarportByOrderId(orderID, connectionPool);
 
         } catch (DatabaseException e) {
-            ctx.attribute("message", e.getMessage());
-            //ctx.render(""); //todo: render page with error message
+            ctx.attribute("message", "error updating carport info" + e.getMessage());
+            ctx.render("admin-kd-ordre.html");
         }
 
         ctx.attribute("orderID", orderID);
         ctx.sessionAttribute("user", oldUser);
         ctx.sessionAttribute("old_carport", oldCarport);
 
-        FormController.loadMeasurements(ctx, connectionPool); //todo: problem with double rendering
+        FormController.loadMeasurements(ctx, connectionPool);
 
         //Load the page
         ctx.render("admin-kd-ordre.html");
@@ -325,16 +325,9 @@ public class OrderController {
         int orderId = Integer.parseInt(ctx.formParam("orderID"));
         ctx.attribute("orderID", orderId);
 
-        //User user = OrderMapper.getOrderDetails(orderId, connectionPool);
-        //ctx.sessionAttribute("user", user);
-
-        //Carport oldCarport = OrderMapper.getCarportByOrderId(orderId, connectionPool);
-        //ctx.sessionAttribute("old_carport", oldCarport);
-
-        //Shed oldShed = OrderMapper.getShedByOrderId(orderId, connectionPool);
         ctx.sessionAttribute("old_shed", newShed);
 
-        FormController.loadMeasurements(ctx, connectionPool); //todo: double rendering problem
+        FormController.loadMeasurements(ctx, connectionPool);
 
         //Load the page
         ctx.render("admin-kd-ordre.html");
@@ -397,8 +390,6 @@ public class OrderController {
         ctx.sessionAttribute("user", user);
 
         ctx.sessionAttribute("old_shed", updatedShed);
-
-        FormController.loadMeasurements(ctx, connectionPool); //todo: problem with double rendering
 
         FormController.loadMeasurements(ctx, connectionPool);
 
@@ -491,7 +482,7 @@ public class OrderController {
             ctx.sessionAttribute("totalPrice", discountedPrice);
 
             FormController.loadMeasurements(ctx, connectionPool);
-            ctx.render("se-nærmere-på-ordre.html");
+            ctx.render("admin-kd-ordre.html");
 
         } catch (NumberFormatException e) {
             e.printStackTrace();

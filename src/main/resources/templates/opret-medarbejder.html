@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-<title>Frontpage</title>
+<head>
+<title>Opret medarbejder</title>
 <!-- REPLACE ME WITH A FRAGMENT -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
 
 <div id="main-content">
     <h1>Opret sælger</h1>
-
+    <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
     <form class="form" method="post" onsubmit="return validateForm()">
         <label for="name">Navn*</label>
         <input type="text" id="name" name="name" th:required="true"><br>
@@ -86,7 +86,7 @@
     }
 
     function togglePasswordVisibility() {
-        var passwordInput = document.getElementById("pass");
+        var passwordInput = document.getElementById("password");
         if (passwordInput.type === "password") {
             passwordInput.type = "text";
         } else {

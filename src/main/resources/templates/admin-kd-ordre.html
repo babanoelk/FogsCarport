@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-<title>ordre-siden</title>
+<head>
+<title>Admin specifik kunde ordre</title>
 <!-- REPLACE ME WITH A FRAGMENT -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-
 </head>
 <body>
 <header th:replace="~{fragments :: header}"></header>
-
-
-<!-- Start her  -->
-
-
-<!-- TODO: Lav til mobil-version/pc-version -->
-
-
     <div id="main-header">
         <form id="send-regning" method="post" action="/send-regning">
             <h1>Ordre ID: <span th:text="${orderID}"/>
                 <input type="hidden" name="orderID" th:value="${orderID}">
             </h1>
+            <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
             <div>
                 <input type="hidden" name="total_price" th:value="${session.totalPrice}">
                 <input type="hidden" name="employeeName" th:value="${session.currentUser.getName()}">
@@ -84,8 +76,8 @@
                     <input type="hidden" name="orderID" th:value="${orderID}">
                     <h1>Bruger Oplysninger</h1>
 
-                    <h4>Bruger ID: <span th:text="${session.user.getUserId()}"></span>
-                        <input type="hidden" name="userId" th:value="${session.user.getUserId()}">
+                    <h4>Bruger ID: <span th:text="${session.user.getId()}"></span>
+                        <input type="hidden" name="userId" th:value="${session.user.getId()}">
                     </h4>
 
                     <div class="form-section">

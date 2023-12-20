@@ -28,7 +28,6 @@ public class EmailController {
     public static void sendBill(Context ctx) {
 
         String customerName = ctx.formParam("full_name");
-        //String customerMail = ctx.formParam("email"); todo: skal de bruges?
         String price = ctx.formParam("total_price");
         String employeeName = ctx.formParam("employeeName");
         String orderId = ctx.formParam("orderID");

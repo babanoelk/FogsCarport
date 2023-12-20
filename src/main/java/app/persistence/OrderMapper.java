@@ -237,7 +237,7 @@ public class OrderMapper {
 
                 // Check if there are any rows in the result set
                 if (rs.next()) {
-                    int carportId = rs.getInt("carport_id");
+                    int carportId = rs.getInt("id");
                     int carportWidth = rs.getInt("width");
                     int carportLength = rs.getInt("length");
                     int carportHeight = rs.getInt("height");

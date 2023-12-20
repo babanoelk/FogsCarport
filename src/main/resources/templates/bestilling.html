@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Bestillings side</title>
+    <title>Bestillingsside</title>
     <!-- REPLACE ME WITH A FRAGMENT -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@
 <div id="main-content">
     <h2>Bestil Quick-Byg tilbud- carport med fladt tag</h2>
 
-    <p class="error_message" th:text="${#ctx.message}"></p>
+    <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
 
     <div>
         <form class="form" method="post" onsubmit="return validateForm()">

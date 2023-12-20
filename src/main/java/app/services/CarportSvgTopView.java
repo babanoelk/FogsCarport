@@ -114,7 +114,6 @@ public class CarportSvgTopView {
 
             carportSvg.addRectangle(0 + 27.5, length - 35 - 4.5, postWidth, postHeight, "stroke-width:1px; stroke:#000000; fill: #000");
             carportSvg.addRectangle(width - 27.5, length - 35 - 4.5, postWidth, postHeight, "stroke-width:1px; stroke:#000000; fill: #000");
-            //carportSvg.addRectangle(length, 35, postWidth, postHeight, "stroke-width:1px; stroke:#000000; fill: #000");
             amountOfPosts = 4;
 
         } else {

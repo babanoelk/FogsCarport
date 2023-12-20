@@ -12,36 +12,31 @@ import java.util.List;
 
 public class OrderController {
 
-
     public static void getChosenCustomerOrder(Context ctx, ConnectionPool connectionPool) {
 
+        float price = Float.parseFloat(ctx.formParam("price"));
+        ctx.sessionAttribute("totalPrice", price);
+
+        int orderId = Integer.parseInt(ctx.formParam("order_id"));
+        ctx.attribute("orderID", orderId);
+
         try {
-            //Order ID
-            int result = Integer.parseInt(ctx.formParam("order_id"));
-            ctx.attribute("orderID", result);
-
-
             //Brugeren
-            User chosenUser = OrderMapper.getOrderDetails(result, connectionPool);
+            User chosenUser = OrderMapper.getOrderDetails(orderId, connectionPool);
             ctx.sessionAttribute("user", chosenUser);
 
             //Carporten
-            Carport chosenUsersCarport = OrderMapper.getCarportByOrderId(result, connectionPool);
+            Carport chosenUsersCarport = OrderMapper.getCarportByOrderId(orderId, connectionPool);
             ctx.sessionAttribute("old_carport", chosenUsersCarport);
 
             //Shed
-            Shed chosenUsersShed = OrderMapper.getShedByOrderId(result, connectionPool);
+            Shed chosenUsersShed = OrderMapper.getShedByOrderId(orderId, connectionPool);
             ctx.sessionAttribute("old_shed", chosenUsersShed);
 
-            float price1 = Calculator.carportPriceCalculator(chosenUsersCarport);
-            float price2 = Calculator.shedPriceCalculator(chosenUsersShed);
-            float totalPrice = price1 + price2;
-
             //Load data
-            ctx.sessionAttribute("totalPrice", totalPrice);
             FormController.loadMeasurements(ctx, connectionPool); //todo: double rendering conflict
 
-            ctx.render("se-nærmere-på-ordre.html");
+            ctx.render("admin-kd-ordre.html");
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             //ctx.render(""); //todo: render page with error message
@@ -204,7 +199,8 @@ public class OrderController {
 
 
         //Load the page
-        ctx.render("se-nærmere-på-ordre.html"); //todo: rename html to something with admin
+
+        ctx.render("admin-kd-ordre.html");
     }
 
     public static void updateCarport(Context ctx, ConnectionPool connectionPool) {
@@ -281,7 +277,7 @@ public class OrderController {
         FormController.loadMeasurements(ctx, connectionPool); //todo: problem with double rendering
 
         //Load the page
-        ctx.render("se-nærmere-på-ordre.html");
+        ctx.render("admin-kd-ordre.html");
     }
 
     public static void updateShed(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -341,7 +337,7 @@ public class OrderController {
         FormController.loadMeasurements(ctx, connectionPool); //todo: double rendering problem
 
         //Load the page
-        ctx.render("se-nærmere-på-ordre.html");
+        ctx.render("admin-kd-ordre.html");
     }
 
     public static void addShed(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -404,7 +400,10 @@ public class OrderController {
 
         FormController.loadMeasurements(ctx, connectionPool); //todo: problem with double rendering
 
-        ctx.render("se-nærmere-på-ordre.html");
+        FormController.loadMeasurements(ctx, connectionPool);
+
+        //Load the page
+        ctx.render("admin-kd-ordre.html");
     }
 
     public static void orderContact(Context ctx) {
@@ -422,30 +421,6 @@ public class OrderController {
             int order_ID = Integer.parseInt(ctx.formParam("orderID"));
             OrderMapper.updateStatusBillSent(order_ID, connectionPool);
 
-            //Update price
-            float updatePrice;
-
-            //Old price
-            float oldPrice = Float.parseFloat((ctx.formParam("total_price")));
-
-            String newInputPrice = ctx.formParam("newPrice");
-
-
-            //New information
-            if (newInputPrice != null && !newInputPrice.isEmpty()) {
-                try {
-                    updatePrice = Integer.parseInt(newInputPrice);
-                } catch (NumberFormatException e) {
-                    updatePrice = oldPrice;
-                }
-            } else {
-                updatePrice = oldPrice;
-            }
-            OrderMapper.updateOrderPrice(order_ID, updatePrice, connectionPool);
-
-            //Order order = OrderMapper.getOrderById(order_ID, connectionPool);
-            //int carportId = order.getCarportId();
-
             int carportId = Integer.parseInt(ctx.formParam("carportId"));
 
             Carport carport = CarportMapper.getCarportById(carportId, connectionPool);
@@ -462,13 +437,14 @@ public class OrderController {
         }
     }
 
-    public static void changePriceManually(Context ctx, ConnectionPool connectionPool) {
+    public static void changePriceManually(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
             int order_ID = Integer.parseInt(ctx.formParam("orderID"));
             float firstPrice = Float.parseFloat(ctx.formParam("total_price"));
             String newInputPrice = ctx.formParam("changePrice");
 
             float changePrice;
+
             if (newInputPrice != null && !newInputPrice.isEmpty()) {
                 try {
                     changePrice = Float.parseFloat(newInputPrice);
@@ -480,11 +456,48 @@ public class OrderController {
             }
 
             OrderMapper.updateOrderPrice(order_ID, changePrice, connectionPool);
-            OrderController.getChosenCustomerOrder(ctx, connectionPool);
+
+            ctx.sessionAttribute("totalPrice", changePrice);
+            ctx.attribute("orderID",order_ID);
+
+            FormController.loadMeasurements(ctx, connectionPool);
+            ctx.render("admin-kd-ordre.html");
+
         } catch (NumberFormatException e) {
             ctx.attribute("message", e.getMessage());
         }
     }
 
+    public static void discountPercentageOrAmount(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
+        try {
+            int order_ID = Integer.parseInt(ctx.formParam("orderID"));
+            float firstPrice = Float.parseFloat(ctx.formParam("total_price"));
+            String discountPercentageInput = ctx.formParam("discountPercentage");
+            String discountAmountInput = ctx.formParam("discountAmount");
+
+            float discountedPrice;
+            if (discountPercentageInput != null && !discountPercentageInput.isEmpty()) {
+                float discountPercentage = Float.parseFloat(discountPercentageInput);
+                discountedPrice = Calculator.discountCalculatorPercentage(firstPrice, discountPercentage);
+            } else if (discountAmountInput != null && !discountAmountInput.isEmpty()) {
+                float discountAmount = Float.parseFloat(discountAmountInput);
+                discountedPrice = Calculator.discountCalculatorSubtraction(firstPrice, discountAmount);
+            } else {
+                discountedPrice = firstPrice;
+            }
+            OrderMapper.updateOrderPrice(order_ID,discountedPrice,connectionPool);
+
+            ctx.attribute("orderID", order_ID);
+            ctx.sessionAttribute("totalPrice", discountedPrice);
+
+            FormController.loadMeasurements(ctx, connectionPool);
+            ctx.render("se-nærmere-på-ordre.html");
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            ctx.attribute("message", e.getMessage());
+            ctx.render("fejlside.html");
+        }
+    }
 
 }

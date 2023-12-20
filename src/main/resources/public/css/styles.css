@@ -1,53 +1,80 @@
 /* Stylesheet for the application */
 
 /* Font: Inter */
-:root { font-family: 'Inter', sans-serif; }
-@supports (font-variation-settings: normal) {
-    :root { font-family: 'Inter var', sans-serif; }
+:root {
+    font-family: 'Inter', sans-serif;
 }
 
-.error_message, .error{
+@supports (font-variation-settings: normal) {
+    :root {
+        font-family: 'Inter var', sans-serif;
+    }
+}
+
+.error_message, .error {
     color: red;
     font-weight: bold;
     font-size: 18px;
 }
 
 hr {
-    height:5px;
-    border-width:0;
-    background-color:#134d8a;
+    height: 5px;
+    border-width: 0;
+    background-color: #134d8a;
 }
 
-input, textarea, select{
+input, textarea, select {
     padding: 10px
 }
 
-p{
+p {
     margin: 5px;
 }
 
 
 table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
     width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    font-size: 0.9em;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-td, th {
-    border: 1px solid #dddddd;
+th, td {
+    padding: 12px 15px;
     text-align: left;
-    padding: 8px;
+    border-bottom: 1px solid #dddddd;
 }
 
-body{
+th {
+    background-color: #f8f8f8;
+    color: #333333;
+    font-weight: bold;
+}
+
+tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+body {
     background-color: #f1f1f1;
     margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Mindst 100% af viewportens højde */
-    }
+}
 
-#nav-fullwidth{
+#nav-fullwidth {
     width: 100%;
     background-color: white;
     display: flex;
@@ -61,19 +88,28 @@ body{
     justify-content: space-between;
 }
 
-.main-menu{
+.main-menu {
     list-style: none;
     display: flex;
     flex-direction: row;
     gap: 20px;
 }
 
-#logo{
+#logo {
     display: flex;
     align-items: center;
 }
 
-#main-content{
+.wrapper{
+    display: flex;
+    flex-direction: row; /* Elementer placeres i en række */
+    flex-wrap: wrap; /* Tillader elementerne at flytte til en ny række */
+    justify-content: center; /* Centrerer elementerne i rækken */
+    gap: 10px; /* Afstand mellem elementerne */
+    padding: 20px;
+}
+
+#main-content {
     margin: 0 auto;
     margin-top: 10px;
     max-width: 1280px;
@@ -83,11 +119,11 @@ body{
     align-items: center;
 }
 
-#main-container{
+#main-container {
     display: flex;
 }
 
-.pictures-frontpage{
+.pictures-frontpage {
     margin: auto;
     margin-top: 10px;
     display: flex;
@@ -101,45 +137,51 @@ body{
     margin-top: 10px;
 }
 
-#button-order{
+.carport-svg-topview{
+    width: 100%; /* Fuld bredde af den overordnede container */
+    display: flex; /* Flexbox layout for bedre kontrol */
+    justify-content: center; /* Centrerer SVG'en horisontalt */
+    align-items: center; /* Centrerer SVG'en vertikalt */
+}
+
+#button-order {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
-    background-color: #3A3B3C;
-    color: white;
-    font-size: 16px;
-    padding: 12px 24px;
-    border: none;
     cursor: pointer;
-    border-radius: 5px;
     transition: background-color 0.3s; /* Tilføjer en overgangseffekt for farveskift */
 }
 
-.button, #contact-button{
-    background-color: #3A3B3C;
-    color: white;
-    padding: 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    border: none;
-    transition: background-color 0.3s; /* Tilføjer en overgangseffekt for farveskift */
-}
-
-
-.button:hover {
-    background-color: #134d8a;
-}
-
-#button-order:hover {
-    background-color: #134d8a;
-}
-
-a:link, a:visited{
+a:link, a:visited {
     text-decoration: none;
     color: white;
 }
+
+#searchBox {
+    padding: 10px;
+    margin-right: 5px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+/* Styling for søgeknappen */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #004485;
+    color: white;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4384c2;
+}
+
 
 #carport-img-container {
     position: relative;
@@ -161,7 +203,6 @@ a:link, a:visited{
     opacity: 1; /* Gør overlay synligt ved hover */
 }
 
-
 .form, .contact, #login_container {
     background-color: white;
     margin-top: 20px;
@@ -171,21 +212,28 @@ a:link, a:visited{
     gap: 10px;
 }
 
-#login_container{
+#login_container {
     width: 300px;
 
 }
 
-.dashboard_content{
+.dashboard_content {
     margin-top: 50px;
     display: flex;
     gap: 20px;
     justify-content: center;
-
-
 }
 
-.dash_button, .logout_button{
+.dashboard_content {
+    display: flex;
+    flex-direction: row; /* Elementer placeres i en række */
+    flex-wrap: wrap; /* Tillader elementerne at flytte til en ny række */
+    justify-content: center; /* Centrerer elementerne i rækken */
+    gap: 10px; /* Afstand mellem elementerne */
+    padding: 20px;
+}
+
+.dash_button, .logout_button {
     width: 150px;
     height: 150px;
     background-color: #134d8a;
@@ -194,7 +242,7 @@ a:link, a:visited{
     font-size: 1em;
 }
 
-.logout_button{
+.logout_button {
     background-color: red;
 }
 
@@ -203,13 +251,13 @@ a:link, a:visited{
     box-sizing: border-box;
 }
 
-.contact{
+.contact {
     min-height: 420px;
     display: flex;
     justify-content: space-between;
 }
 
-#contact{
+#contact {
     display: flex;
     gap: 20px;
 }
@@ -228,24 +276,19 @@ footer {
     justify-content: space-between;
 }
 
-@media screen and (max-width: 900px){
+@media screen and (max-width: 900px) {
 
-    #main-container{
+    #main-container {
         display: flex;
         flex-direction: column;
     }
 
-    #dashboard_content{
-        margin-top: 10px;
-        flex-direction: column;
-    }
 
 }
 
+@media screen and (max-width: 400px) {
 
-@media screen and (max-width: 400px){
-
-    #footer-container{
+    #footer-container {
         flex-direction: column;
         text-align: center;
     }
@@ -258,7 +301,7 @@ footer {
         background: #004485;
     }
 
-    .main-menu{
+    .main-menu {
         flex-direction: column;
         width: 100%;
         gap: 1px;
@@ -267,26 +310,28 @@ footer {
 
     }
 
-    .button{
+    .button {
         text-align: center;
     }
 
     #main-content, #contact {
         flex-direction: column;
     }
-    .pictures-frontpage{
+
+    .pictures-frontpage {
         flex-direction: column;
     }
 
 }
 
 
-/* START: Styling til se-nærmere-på-ordre.html*/
+/* START: Styling til admin-kd-ordre.html*/
 /* Flex container styling: Enables flexbox layout for the main container */
 /* Container for the main content */
-#main-content-order{
+#main-content-order {
     display: flex;
 }
+
 #main-container {
     display: flex;
 }
@@ -413,30 +458,28 @@ footer {
 }
 
 
-/* SLUT: Styling til se-nærmere-på-ordre.html*/
+/* SLUT: Styling til admin-kd-ordre.html*/
 
-#main-sub-header{
+#main-sub-header {
     display: flex;
 }
 
 #main-price-left,
 #main-price-mid,
-#main-price-right{
+#main-price-right {
     flex: 1;
     padding: 20px;
     border: 1px solid #ccc;
 }
 
-#main-price-left{
+#main-price-left {
     order: 1;
 }
 
-#main-price-mid{
+#main-price-mid {
     order: 2;
 }
 
-#main-price-right{
+#main-price-right {
     order: 3;
 }
-
-

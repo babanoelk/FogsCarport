@@ -10,6 +10,7 @@ import app.persistence.ConnectionPool;
 import app.persistence.MeasurementMapper;
 import app.persistence.OrderMapper;
 import app.services.CarportSvgTopView;
+import app.utility.Calculator;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -55,10 +56,13 @@ public class FormController {
 
             if (loggedIn) {
                 DTOUserCarportOrder dto = new DTOUserCarportOrder(user, carport, order);
-                OrderMapper.addOrderToExistingUser(dto, connectionPool);
+                float carportPrice = Calculator.carportPriceCalculator2(dto);
+
+                OrderMapper.addOrderToExistingUser(dto, carportPrice, connectionPool);
             } else {
                 DTOUserCarportOrder dto = new DTOUserCarportOrder(user, carport, order);
-                OrderMapper.addOrder(dto, connectionPool);
+                float carportPrice = Calculator.carportPriceCalculator2(dto);
+                OrderMapper.addOrder(dto, carportPrice, connectionPool);
             }
 
 
@@ -98,7 +102,6 @@ public class FormController {
             ctx.attribute("widthList", widthList);
             ctx.attribute("heightList", heightList);
 
-            ctx.render("bestilling.html");
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("fejlside.html");
@@ -106,4 +109,7 @@ public class FormController {
 
     }
 
+    public static void renderOrderPage(Context ctx) {
+        ctx.render("bestilling.html");
+    }
 }

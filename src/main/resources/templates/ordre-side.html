@@ -79,6 +79,7 @@
                     <th>Mail</th>
                     <th>Ordre dato</th>
                     <th>Kommentar</th>
+                    <th>Pris</th>
                     <th>
                         <select name="status_column" id="status_column" onchange="updateTable()">
                             <option value="alle">Filtrer efter status...</option>
@@ -97,7 +98,9 @@
                     <td th:text="${order.getEmail()}">email</td>
                     <td th:text="${order.getDate()}">Ordre dato</td>
                     <td th:text="${order.getCustomerNote()}">Kommentar</td>
+                    <td th:text="${order.getPrice()}">Pris</td>
                     <form method="post">
+                        <input type="hidden" name="price" th:value="${order.getPrice()}">
                         <td>
                             <select name="status_id">
                                 <option th:text="${order.getOrderStatus}" value="current_status" selected></option>

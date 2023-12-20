@@ -1,8 +1,6 @@
 package app.controllers;
 
-
 import app.dtos.DTOPartsByMaterials;
-import app.entities.Materials;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
@@ -10,12 +8,6 @@ import app.persistence.MaterialMapper;
 import app.persistence.MaterialsMapper;
 import app.persistence.OrderMapper;
 import app.entities.Material;
-import app.exceptions.DatabaseException;
-import app.persistence.ConnectionPool;
-import app.persistence.MaterialMapper;
-import app.dtos.DTOPartsByMaterials;
-import app.entities.Order;
-import app.persistence.OrderMapper;
 import app.services.CarportSvgTopView;
 import io.javalin.http.Context;
 import java.util.List;
@@ -54,21 +46,7 @@ public class MaterialController {
         }
     }
 
-    public static void loadParts(Context ctx, ConnectionPool connectionPool) {
 
-        int orderId = Integer.parseInt(ctx.formParam("order_id"));
-
-        try {
-            Order order = OrderMapper.getOrderById(orderId, connectionPool);
-            List<DTOPartsByMaterials> partsList = MaterialMapper.getPartsList(order, connectionPool);
-
-            ctx.attribute("partsList", partsList);
-            ctx.render("kunde-ordre.html");
-        } catch (DatabaseException e) {
-            ctx.attribute("message", e.getMessage());
-            ctx.render("fejlside.html");
-        }
-    }
 
     public static void addMaterial(Context ctx, ConnectionPool connectionPool) {
         try {
@@ -93,33 +71,11 @@ public class MaterialController {
     public static void deleteMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int materialId = Integer.parseInt(ctx.formParam("materialId"));
         MaterialsMapper.deleteMaterial(materialId, connectionPool);
-        ctx.redirect("/AdminSide");
-
-        public static void deleteMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-            int materialId = Integer.parseInt(ctx.formParam("materialId"));
-            MaterialMapper.deleteMaterial(materialId, connectionPool);
-            loadMaterials(ctx, connectionPool);
-        }
-
-        public static void updateMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-            Material material = new Material(Integer.parseInt(ctx.formParam("id")),
-                    ctx.formParam("name"),
-                    Integer.parseInt(ctx.formParam("length")),
-                    ctx.formParam("description"),
-                    Long.parseLong(ctx.formParam("item_number")),
-                    Integer.parseInt(ctx.formParam("width_cm")),
-                    Integer.parseInt(ctx.formParam("height_cm")),
-                    Integer.parseInt(ctx.formParam("price"))
-
-            );
-            MaterialMapper.updateMaterial(material, connectionPool);
-            loadMaterials(ctx, connectionPool);
-        }
-
+        loadMaterials(ctx, connectionPool);
     }
 
     public static void updateMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
-        Materials material = new Materials(Integer.parseInt(ctx.formParam("id")),
+        Material material = new Material(Integer.parseInt(ctx.formParam("id")),
                 ctx.formParam("name"),
                 Integer.parseInt(ctx.formParam("length")),
                 ctx.formParam("description"),
@@ -129,7 +85,7 @@ public class MaterialController {
                 Integer.parseInt(ctx.formParam("price"))
             );
         MaterialsMapper.updateMaterial(material, connectionPool);
-        ctx.redirect("/AdminSide");
+        loadMaterials(ctx, connectionPool);
     }
 
 

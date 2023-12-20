@@ -12,9 +12,10 @@ public class DTOOrderCustomer {
     private String email;
     private int mobile;
     private String orderStatus;
+    private float price;
 
 
-    public DTOOrderCustomer(int id, Date date, String customerNote, int statusId, String customerName, String email, int mobile, String orderStatus) {
+    public DTOOrderCustomer(int id, Date date, String customerNote, int statusId, String customerName, String email, int mobile, String orderStatus, float price) {
         this.id = id;
         this.date = date;
         this.customerNote = customerNote;
@@ -23,6 +24,7 @@ public class DTOOrderCustomer {
         this.email = email;
         this.mobile = mobile;
         this.orderStatus = orderStatus;
+        this.price = price;
     }
 
     public int getId() {
@@ -55,5 +57,9 @@ public class DTOOrderCustomer {
 
     public String getOrderStatus() {
         return orderStatus;
+    }
+
+    public float getPrice() {
+        return price;
     }
 }

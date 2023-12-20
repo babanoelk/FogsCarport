@@ -1,4 +1,4 @@
-/*package app.persistence;
+package app.persistence;
 
 import app.dtos.DTOParts;
 import app.dtos.DTOPartsByMaterials;
@@ -154,7 +154,7 @@ public class MaterialMapper {
         return partsList;
     }
 
-}*/
+}
 
 
 

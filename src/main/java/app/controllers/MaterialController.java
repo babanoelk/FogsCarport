@@ -1,9 +1,15 @@
 package app.controllers;
 
+import app.dtos.DTOPartsByMaterials;
+import app.entities.Carport;
 import app.entities.Materials;
+import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.MaterialsMapper;
+import app.persistence.OrderMapper;
+import app.services.CarportSvgTopView;
 import io.javalin.http.Context;
 
 import java.util.List;
@@ -12,17 +18,31 @@ public class MaterialController {
     public static void loadMaterials(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         try {
             List<Materials> materialsList = MaterialsMapper.getAllMaterials(connectionPool);
-
             ctx.attribute("materialsList", materialsList);
-
             ctx.render("ret-i-varer.html");
-
-
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("fejlside.html");
         }
+    }
 
+    public static void loadParts(Context ctx, ConnectionPool connectionPool) {
+
+        int orderId = Integer.parseInt(ctx.formParam("order_id"));
+
+        try {
+            Order order = OrderMapper.getOrderById(orderId, connectionPool);
+            List<DTOPartsByMaterials> partsList = MaterialMapper.getPartsList(order, connectionPool);
+
+            CarportSvgTopView svg = new CarportSvgTopView(300,200);
+
+            ctx.attribute("svg", svg);
+            ctx.attribute("partsList", partsList);
+            ctx.render("kunde-ordre.html");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("fejlside.html");
+        }
     }
 
     public static void addMaterial(Context ctx, ConnectionPool connectionPool) {

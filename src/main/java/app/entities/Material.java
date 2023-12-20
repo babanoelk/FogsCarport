@@ -1,6 +1,6 @@
 package app.entities;
 
-public class Materials {
+public class Material {
         private int id;
         private String name;
         private int length;
@@ -10,7 +10,17 @@ public class Materials {
         private int height;
         private int price;
 
-    public Materials(int id, String name, int length, String description, long itemNumber, int width, int height, int price) {
+    public Material(String name, int length, String description, long itemNumber, int width, int height, int price) {
+        this.name = name;
+        this.length = length;
+        this.description = description;
+        this.itemNumber = itemNumber;
+        this.width = width;
+        this.height = height;
+        this.price = price;
+    }
+
+    public Material(int id, String name, int length, String description, long itemNumber, int width, int height, int price) {
         this.id = id;
         this.name = name;
         this.length = length;

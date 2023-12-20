@@ -8,21 +8,7 @@
     <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
 </head>
 <body>
-<div id="nav-fullwidth">
-    <!-- REPLACE ME WITH A FRAGMENT -->
-    <div id="navbar">
-        <div id="logo">
-            <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
-        </div>
-        <ul class="main-menu">
-            <li class="button"><a href="/">Hjem</a></li>
-            <li class="button"><a href="/bestil-carport">Bestil unik carport</a></li>
-            <li class="button"><a href="/login">Login</a></li>
-            <li class="button"><a href="/log-ud">Log ud</a></li>
-            <li class="button"><a href="/admin-side">Admin Side</a></li>
-        </ul>
-    </div>
-</div>
+<header th:replace="~{fragments :: header}"></header>
 
 <div id="main-content">
     <h1>Varelager oversigt</h1>
@@ -81,11 +67,7 @@
         </table>
 </div>
 
-<footer>
-    <!-- REPLACE ME WITH A FRAGMENT -->
-    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
-</footer>
-
+<footer th:replace="~{fragments :: footer}"></footer>
 
 </body>
 </html>

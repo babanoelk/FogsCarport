@@ -28,6 +28,23 @@ public class UserController {
         }
     }
 
+
+    public static void home(Context ctx){
+        ctx.sessionAttribute("currentUser");
+        ctx.render("index.html");
+    }
+
+
+    public static void dashboardMenu(Context ctx){
+        ctx.sessionAttribute("currentUser");
+        ctx.render("dashboard.html");
+    }
+
+    public static void logout(Context ctx){
+        ctx.req().getSession().invalidate();
+        ctx.redirect("/");
+    }
+
     public static void addAdminUser(Context ctx, ConnectionPool connectionPool) {
         try {
             String name = ctx.formParam("name");

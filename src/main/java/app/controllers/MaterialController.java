@@ -4,8 +4,11 @@ import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
+import app.dtos.DTOPartsByMaterials;
+import app.entities.Order;
+import app.persistence.OrderMapper;
+import app.services.CarportSvgTopView;
 import io.javalin.http.Context;
-
 import java.util.List;
 
 public class MaterialController {
@@ -17,12 +20,29 @@ public class MaterialController {
 
             ctx.render("varelager.html");
 
-
         } catch (DatabaseException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("fejlside.html");
         }
+    }
 
+    public static void loadParts(Context ctx, ConnectionPool connectionPool) {
+
+        int orderId = Integer.parseInt(ctx.formParam("order_id"));
+
+        try {
+            Order order = OrderMapper.getOrderById(orderId, connectionPool);
+            List<DTOPartsByMaterials> partsList = MaterialMapper.getPartsList(order, connectionPool);
+
+            CarportSvgTopView svg = new CarportSvgTopView(300,200);
+
+            ctx.attribute("svg", svg);
+            ctx.attribute("partsList", partsList);
+            ctx.render("kunde-ordre.html");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("fejlside.html");
+        }
     }
 
     public static void addMaterial(Context ctx, ConnectionPool connectionPool) {

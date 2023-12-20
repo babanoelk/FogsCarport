@@ -5,20 +5,26 @@ import app.entities.Carport;
 import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
+import app.utility.Calculator;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper {
-    public static void addOrder(DTOUserCarportOrder dto, ConnectionPool connectionPool) throws DatabaseException {
+
+
+    public static void addOrder(DTOUserCarportOrder dto, float carportPrice, ConnectionPool connectionPool) throws DatabaseException {
         User userAdded = UserMapper.addUser(dto.getUser(), connectionPool);
         Carport carportAdded = CarportMapper.addCarport(dto.getCarport(), connectionPool);
-        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id) values (?,?,?)";
+
+        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id, price) values (?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, dto.getOrder().getCustomerNote());
                 ps.setInt(2, userAdded.getId());
                 ps.setInt(3, carportAdded.getId());
+                ps.setFloat(4, carportPrice);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Ordre ikke oprettet. Fejl i data sendt til databasen.");
@@ -29,15 +35,16 @@ public class OrderMapper {
         }
     }
 
-    public static void addOrderToExistingUser(DTOUserCarportOrder dto, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addOrderToExistingUser(DTOUserCarportOrder dto, float carportPrice, ConnectionPool connectionPool) throws DatabaseException {
         User user = UserMapper.getUserByEmail(dto.getUser().getEmail(), connectionPool);
         Carport carportAdded = CarportMapper.addCarport(dto.getCarport(), connectionPool);
-        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id) values (?,?,?)";
+        String sql = "INSERT INTO public.ORDER (customer_note, user_id, carport_id, price) values (?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, dto.getOrder().getCustomerNote());
                 ps.setInt(2, user.getId());
                 ps.setInt(3, carportAdded.getId());
+                ps.setFloat(4, carportPrice);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Ordre ikke oprettet. Fejl i data sendt til databasen.");
@@ -50,7 +57,7 @@ public class OrderMapper {
 
     public static List<DTOOrderCustomer> getAllOrders(ConnectionPool connectionPool) throws DatabaseException {
         List<DTOOrderCustomer> allOrders = new ArrayList<>();
-        String sql = "select public.order.id, date, customer_note, order_status, name, email, mobile FROM public.order JOIN public.user ON public.order.user_id = public.user.id";
+        String sql = "select public.order.id, date, customer_note, order_status, name, email, mobile, price FROM public.order JOIN public.user ON public.order.user_id = public.user.id";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
@@ -64,7 +71,8 @@ public class OrderMapper {
                     String email = rs.getString("email");
                     int mobile = rs.getInt("mobile");
                     String orderStatus = getStatusByID(statusId, connectionPool);
-                    allOrders.add(new DTOOrderCustomer(id, date, customerNote, statusId, name, email, mobile, orderStatus));
+                    float price = rs.getFloat("price");
+                    allOrders.add(new DTOOrderCustomer(id, date, customerNote, statusId, name, email, mobile, orderStatus, price));
                 }
             }
         } catch (SQLException e) {
@@ -418,12 +426,12 @@ public class OrderMapper {
                 }
             }
         } catch (SQLException e){
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
 
     }
 
-    public static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool){
+    public static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool) throws DatabaseException{
 
         String sql ="UPDATE public.order SET price = ? WHERE id = ?";
 
@@ -435,13 +443,13 @@ public class OrderMapper {
                 int priceChanged = ps.executeUpdate();
 
                 if (priceChanged > 0){
-                    System.out.println("Status changed!");
+                    System.out.println("Price changed!");
                 } else {
-                    System.out.println("Status wasn't changed");
+                    System.out.println("Price wasn't changed");
                 }
             }
         } catch (SQLException e){
-            throw new RuntimeException(e);
+            throw new DatabaseException(e.getMessage());
         }
     }
 

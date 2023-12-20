@@ -3,8 +3,10 @@ package app.utility;
 import app.dtos.DTOCarportWithIdLengthWidthHeight;
 import app.dtos.DTOParts;
 import app.dtos.DTOShedIdLengthWidth;
+import app.dtos.DTOUserCarportOrder;
 import app.entities.Carport;
 import app.entities.Part;
+import app.services.CarportSvgTopView;
 
 import java.util.*;
 
@@ -15,8 +17,8 @@ public class Calculator {
     private static List<Part> partsList = new ArrayList<>();
 
     private static float carportPricePerSqCM = 1200;
-
     private static float shedPricePerSqMeter = 500;
+
 
     public static float carportPriceCalculator(DTOCarportWithIdLengthWidthHeight carport){
         float price;
@@ -35,30 +37,49 @@ public class Calculator {
         return price;
     }
 
-    public static float discountCalculator(float totalPrice, float discountPercentage){
+    public static float discountCalculatorPercentage(float totalPrice, float discountPercentage){
         discountPercentage = Math.max(0,Math.min(discountPercentage, 100));
         float discountedPrice = totalPrice - (totalPrice * discountPercentage/100);
 
         return discountedPrice;
     }
 
+    public static float discountCalculatorSubtraction(float totalPrice, float discountAmount){
+        discountAmount = Math.max(0, discountAmount);
 
-    /*public static float carportPriceCalculator2(DTOCarportWithIdLengthWidthHeight carport){
+        float discountedPrice = totalPrice - discountAmount;
+
+        return discountedPrice;
+    }
+
+
+
+    public static float carportPriceCalculator2(DTOUserCarportOrder carport){
         float price;
 
-        float carportSqMeter = (carport.getLength()/100) * (carport.getWidth()/100);
+        float carportSqMeter = (carport.getCarport().getLength()/100) * (carport.getCarport().getWidth()/100);
         price = carportSqMeter * carportPricePerSqCM;
 
-        if(carport.getShed() != null){
-            float shedSqMeter = (carport.getShed().getLength()/100) * (carport.getShed().getWidth()/100);
+
+        if(carport.getCarport().getShed() != null){
+            float shedSqMeter = (carport.getCarport().getShed().getLength()/100) * (carport.getCarport().getShed().getWidth()/100);
             price += shedSqMeter* shedPricePerSqMeter;
         }
 
         return price;
-    }*/
+    }
+
 
     public static int amountOfPost(Carport carport){
 
+
+        CarportSvgTopView svg = new CarportSvgTopView(carport.getLength(),carport.getWidth());
+        return svg.getPosts();
+
+
+        //Vores tidligere måde at regne på hvor mange stolper, der skal bruges. Nu beregnes den ud fra tegningen.
+
+        /*
         int maxLengthBetweenPost = 240;
         int minNumberOfPosts = 4;
         //hvis bredden på shed er 100% skal der være 5 stolper og hvis bredden er 50% skal der være 4 stolper
@@ -81,15 +102,26 @@ public class Calculator {
             }
         }
         return totalPost;
+
+         */
     }
 
     public static int amountOfRafter(Carport carport){
+
+        CarportSvgTopView svg = new CarportSvgTopView(carport.getLength(),carport.getWidth());
+
+        return svg.getRafters();
+
+        //Vores tidligere måde at regne på hvor mange spær, der skal bruges. Nu beregnes den ud fra tegningen.
+
+        /*
         int maxLengthBetweenRafts = 60;
         int result = carport.getLength() / maxLengthBetweenRafts;
         if(carport.getLength() % maxLengthBetweenRafts != 0) {
             result++;
         }
         return result;
+        */
     }
 
 

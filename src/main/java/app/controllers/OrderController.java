@@ -41,7 +41,7 @@ public class OrderController {
             ctx.sessionAttribute("totalPrice", totalPrice);
             FormController.loadMeasurements(ctx, connectionPool);
 
-            ctx.render("se-nærmere-på-ordre.html");
+            ctx.render("admin-kd-ordre.html");
         } catch (DatabaseException e) {
             throw new DatabaseException(e.getMessage());
         }
@@ -196,7 +196,7 @@ public class OrderController {
 
 
         //Load the page
-        ctx.render("se-nærmere-på-ordre.html");
+        ctx.render("admin-kd-ordre.html");
     }
 
     public static void updateCarport(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -272,7 +272,7 @@ public class OrderController {
 
 
         //Load the page
-        ctx.render("se-nærmere-på-ordre.html");
+        ctx.render("admin-kd-ordre.html");
     }
 
     public static void updateShed(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -336,7 +336,7 @@ public class OrderController {
         FormController.loadMeasurements(ctx, connectionPool);
 
         //Load the page
-        ctx.render("se-nærmere-på-ordre.html");
+        ctx.render("admin-kd-ordre.html");
     }
 
     public static void addShed(Context ctx, ConnectionPool connectionPool) throws DatabaseException {
@@ -409,7 +409,7 @@ public class OrderController {
         FormController.loadMeasurements(ctx, connectionPool);
 
         //Load the page
-        ctx.render("se-nærmere-på-ordre.html");
+        ctx.render("admin-kd-ordre.html");
     }
 
     public static void orderContact(Context ctx) {

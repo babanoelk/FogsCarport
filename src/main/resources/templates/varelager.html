@@ -25,7 +25,8 @@
 </div>
 
 <div id="main-content">
-    <h2>Ret i varer</h2>
+    <h1>Varelager oversigt</h1>
+    <p>Her kan du tilføje og slette vare på varelageret.</p>
 
     <div id="add-material">
         <h3>Tilføj vare</h3>
@@ -34,8 +35,8 @@
             <input type="number" name="length_cm" placeholder="Længde(cm)" required>
             <input type="text" name="description" placeholder="Beskrivelse" required>
             <input type="number" name="item_number" placeholder="Varer nummer" required>
-            <input type="number" name="width" placeholder="Bredde(cm)" required>
-            <input type="number" name="height" placeholder="Højde(cm)" required>
+            <input type="number" name="width_cm" placeholder="Bredde(cm)" required>
+            <input type="number" name="height_cm" placeholder="Højde(cm)" required>
             <input type="number" name="price" placeholder="Pris(dkk)" required>
 
             <button type="submit">tilføj</button>
@@ -58,19 +59,19 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="materials : ${materialsList}">
-                <td th:text="${materials.Id}">Property 1</td>
-                <td th:text="${materials.Name}">Property 2</td>
-                <td th:text="${materials.Length}">Property 2</td>
-                <td th:text="${materials.Description}">Property 2</td>
-                <td th:text="${materials.ItemNumber}">Property 2</td>
-                <td th:text="${materials.Width}">Property 2</td>
-                <td th:text="${materials.Height}">Property 2</td>
-                <td th:text="${materials.Price}">Property 2</td>
+            <tr th:each="material : ${materialsList}">
+                <td th:text="${material.Id}">Property 1</td>
+                <td th:text="${material.Name}">Property 2</td>
+                <td th:text="${material.Length}">Property 2</td>
+                <td th:text="${material.Description}">Property 2</td>
+                <td th:text="${material.ItemNumber}">Property 2</td>
+                <td th:text="${material.Width}">Property 2</td>
+                <td th:text="${material.Height}">Property 2</td>
+                <td th:text="${material.Price}">Property 2</td>
 
                 <td>
                     <form method="POST" action="/delete-material" style="display: inline;">
-                        <input type="hidden" name="materialId" th:value="${materials.Id}">
+                        <input type="hidden" name="materialId" th:value="${material.Id}">
                         <button type="submit">Delete</button>
                     </form>
                     <!-- Add a button or link to trigger update form/modal -->

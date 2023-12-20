@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS public.length
     CONSTRAINT length_pkey PRIMARY KEY (length)
 );
 
-CREATE TABLE IF NOT EXISTS public.materials
+CREATE TABLE IF NOT EXISTS public.material
 (
     id integer NOT NULL,
     name text COLLATE pg_catalog."default" NOT NULL,

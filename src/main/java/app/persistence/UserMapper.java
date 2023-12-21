@@ -1,6 +1,5 @@
 package app.persistence;
 
-import app.dtos.DTOUserWithUserIdNameAddressZipcodeMobileEmail;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 
@@ -95,17 +94,17 @@ public class UserMapper {
         return isLoggedIn;
     }
 
-    public static void updateUser(DTOUserWithUserIdNameAddressZipcodeMobileEmail dtoUser, ConnectionPool connectionPool) throws DatabaseException {
+    public static void updateUser(User user, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "UPDATE public.user SET name = ?, email = ?, address = ?, mobile = ?, zipcode = ? WHERE id = ?";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
-                ps.setString(1, dtoUser.getName());
-                ps.setString(2, dtoUser.getEmail());
-                ps.setString(3, dtoUser.getAddress());
-                ps.setInt(4, dtoUser.getMobile());
-                ps.setInt(5, dtoUser.getZipcode());
-                ps.setInt(6, dtoUser.getUserId());
+                ps.setString(1, user.getName());
+                ps.setString(2, user.getEmail());
+                ps.setString(3, user.getAddress());
+                ps.setInt(4, user.getMobile());
+                ps.setInt(5, user.getZipcode());
+                ps.setInt(6, user.getId());
 
                 int rowsAffected = ps.executeUpdate();
 

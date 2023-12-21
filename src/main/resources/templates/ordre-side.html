@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
-<title>Ordre oversigt</title>
+<head>
+<title>Oversigt over alle ordrer</title>
 <!-- REPLACE ME WITH A FRAGMENT -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
-
 </head>
 <body>
 <header th:replace="~{fragments :: header}"></header>
 
 
 <div id="main-content">
-
-    <p class="error_message" th:text="${#ctx.message}"></p>
-
+    <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
     <div id="order_list">
         <div th:if="${session.currentUser.getRole() == 1}">
 
@@ -31,14 +28,14 @@
                     <th>Handling</th>
                 </tr>
                 <tr th:each="order : ${orderlist}">
-                    <td th:text="${order.getOrderId()}">Ordre ID</td>
+                    <td th:text="${order.getId()}">Ordre ID</td>
                     <td th:text="${order.getDate()}">Dato</td>
                     <td th:text="${order.getCustomerNote}">Kommentar</td>
                     <td th:text="${order.getOrderStatus}">Status</td>
                     <td>
                         <div th:if="${order.getOrderStatus == 'Under behandling'}">
                             <form class="taskform" method="post">
-                                <button type="submit" name="order_id" th:value="${order.getOrderId()}"
+                                <button type="submit" name="order_id" th:value="${order.getId()}"
                                         formaction="/slet">
                                     Slet
                                 </button>
@@ -46,7 +43,7 @@
                         </div>
                         <div th:if="${order.getOrderStatus == 'Betalt'}">
                             <form class="taskform" method="post">
-                                <button type="submit" name="order_id" th:value="${order.getOrderId()}"
+                                <button type="submit" name="order_id" th:value="${order.getId()}"
                                         formaction="/ordre-info">
                                     Se ordre
                                 </button>
@@ -54,7 +51,7 @@
                         </div>
                         <div>
                             <form class="taskform" method="post">
-                                <button type="submit" name="order_id" th:value="${order.getOrderId()}"
+                                <button type="submit" name="order_id" th:value="${order.getId()}"
                                         formaction="/kontakt">Kontakt os
                                 </button>
                             </form>
@@ -79,6 +76,7 @@
                     <th>Mail</th>
                     <th>Ordre dato</th>
                     <th>Kommentar</th>
+                    <th>Pris</th>
                     <th>
                         <select name="status_column" id="status_column" onchange="updateTable()">
                             <option value="alle">Filtrer efter status...</option>
@@ -97,7 +95,9 @@
                     <td th:text="${order.getEmail()}">email</td>
                     <td th:text="${order.getDate()}">Ordre dato</td>
                     <td th:text="${order.getCustomerNote()}">Kommentar</td>
+                    <td th:text="${order.getPrice()}">Pris</td>
                     <form method="post">
+                        <input type="hidden" name="price" th:value="${order.getPrice()}">
                         <td>
                             <select name="status_id">
                                 <option th:text="${order.getOrderStatus}" value="current_status" selected></option>

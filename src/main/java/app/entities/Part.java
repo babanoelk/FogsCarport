@@ -1,7 +1,6 @@
 package app.entities;
 
 public class Part {
-
     private int id;
     private int materialId;
     private int amount;

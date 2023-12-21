@@ -23,7 +23,7 @@ class CalculatorTest {
     @Test
     void carportPriceCalculator() {
         float expectedPrice = 20000;
-        //assertEquals(expectedPrice, Calculator.carportPriceCalculator(carport));
+        assertEquals(expectedPrice, Calculator.carportPriceCalculator(carport));
     }
 
     @Test

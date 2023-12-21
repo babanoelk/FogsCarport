@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin specifik kunde ordre</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+    <div id="main-header">
+        <form id="send-regning" method="post" action="/send-regning">
+            <h1>Ordre ID: <span th:text="${orderID}"/>
+                <input type="hidden" name="orderID" th:value="${orderID}">
+            </h1>
+            <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
+            <div>
+                <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+                <input type="hidden" name="employeeName" th:value="${session.currentUser.getName()}">
+                <input type="hidden" name="full_name" th:value="${session.user.getName()}">
+                <input type="hidden" name="email" th:value="${session.user.getEmail()}">
+            </div>
+            <input type="hidden" name="carportId" th:value="${session.old_carport.getId()}">
+            <button id="send-regning-knap" type="submit" name="send-regning-knap" formaction="/send-regning">Send
+                regning
+            </button>
+        </form>
+    </div>
+<div class="wrapper">
+    <!-- Price information -->
+    <div class="wrapper">
+        <div id="main-price-left">
+            <h4>Samlet materialepris: <span th:text="${session.totalPrice}"></span>,- DKK
+                <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+            </h4>
+        </div>
+
+        <div id="main-price-mid">
+            <form class="form" method="post" action="/gem-nye-pris">
+                <input type="hidden" name="orderID" th:value="${orderID}">
+                <h4>Pris for kunden: <span name="current_price" th:text="${session.totalPrice}"></span>,- DKK
+                    <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+                </h4>
+                <label>Sæt prisen til:</label>
+                <input type="text" name="changePrice">
+                <button id="send-regning-kna" type="submit" name="send-regning-knap" formaction="/gem-nye-pris">Gem nye
+                    pris
+                </button>
+            </form>
+        </div>
+
+        <div id="main-price-right">
+            <form class="form" method="post" action="/tilfoej-rabat">
+                <input type="hidden" name="orderID" th:value="${orderID}">
+                <input type="hidden" name="total_price" th:value="${session.totalPrice}">
+                <h4>Rabat:</h4>
+                <div>
+                    <label>Rabat i kroner:</label>
+                    <input type="text" name="discountAmount">
+                </div>
+                <div>
+                    <label>Rabat i procent:</label>
+                    <input type="text" name="discountPercentage">
+                </div>
+                <button id="gem-rabat" type="submit" name="gem-rabat" formaction="/tilfoej-rabat">Gem rabat</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="main-content-ordrer">
+        <!-- User information-->
+        <div class="wrapper">
+            <div id="main-container-left">
+                <form method="post" action="/gem-bruger-oplysninger">
+                    <input type="hidden" name="orderID" th:value="${orderID}">
+                    <h1>Bruger Oplysninger</h1>
+
+                    <h4>Bruger ID: <span th:text="${session.user.getId()}"></span>
+                        <input type="hidden" name="userId" th:value="${session.user.getId()}">
+                    </h4>
+
+                    <div class="form-section">
+                        <h4>Fulde navn: <span th:text="${session.user.getName()}"></span>
+                            <input type="hidden" name="full_name" th:value="${session.user.getName()}">
+                        </h4>
+                        <label>Ændre fulde navn til:</label>
+                        <input type="text" name="newName">
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Adresse: <span th:text="${session.user.getAddress()}"></span></h4>
+                        <label>Ændre adresse til:</label>
+                        <input type="text" name="newAddress">
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Postnummer: <span th:text="${session.user.getZipcode()}"></span></h4>
+                        <label>Ændre postnummer til:</label>
+                        <input type="text" name="newZipcode">
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Mobilnummer: <span th:text="${session.user.getMobile()}"></span></h4>
+                        <label>Ændre mobilnummer til:</label>
+                        <input type="text" name="newMobile">
+                    </div>
+
+                    <div class="form-section">
+                        <h4>E-mail: <span th:text="${session.user.getEmail()}"></span>
+                            <input type="hidden" name="email" th:value="${session.user.getEmail()}">
+                        </h4>
+                        <label>Ændre e-mail til</label>
+                        <input type="text" name="newEmail">
+                    </div>
+
+                    <button id="gem-knap-user" type="submit" formaction="/gem-bruger-oplysninger">Gem nye ændringer
+                    </button>
+                </form>
+            </div>
+
+            <!-- Carport informationer -->
+            <div id="main-container-mid">
+                <form id="carport-form" method="post" action="/gem-carport-oplysninger">
+                    <input type="hidden" name="orderID" th:value="${orderID}">
+                    <h1>Carport Oplysninger</h1>
+
+                    <h4>Carport ID: <span th:text="${session.old_carport.getId()}"></span></h4>
+                    <input type="hidden" name="carportId">
+                    <h4>Længde: <span th:text="${session.old_carport.getLength()}"></span></h4>
+                    <input type="hidden" id="old_carport_length" name="orderID"
+                           th:value="${session.old_carport.getLength()}">
+                    <label>Ny længde:</label>
+                    <select name="newLength">
+                        <option value="" disabled selected>Vælg en ny længde</option>
+                        <option th:each="length : ${lengthList}" th:value="${length}" th:text="${length + 'cm'}">Vælg en
+                            ny
+                            længde
+                        </option>
+                    </select>
+
+                    <h4>Bredde: <span th:text="${session.old_carport.getWidth()}"></span></h4>
+                    <input type="hidden" id="old_carport_width" name="orderID"
+                           th:value="${session.old_carport.getWidth()}">
+                    <label>Ny bredde:</label>
+                    <select name="newWidth">
+                        <option value="" disabled selected>Vælg en ny bredde</option>
+                        <option th:each="width : ${widthList}" th:value="${width}" th:text="${width + 'cm'}">Vælg en ny
+                            bredde
+                        </option>
+                    </select>
+
+                    <h4>Højde: <span th:text="${session.old_carport.getHeight()}"></span></h4>
+                    <label>Ny højde:</label>
+                    <select name="newHeight">
+                        <option value="" disabled selected>Vælg en ny højde</option>
+                        <option th:each="height : ${heightList}" th:value="${height}" th:text="${height + 'cm'}">Vælg en
+                            ny
+                            højde
+                        </option>
+                    </select>
+
+                    <button id="gem-knap-carport" type="submit" formaction="/gem-carport-oplysninger">Gem nye ændringer
+                    </button>
+                </form>
+            </div>
+
+            <!-- Shed informationer -->
+            <div id="main-container-right" th:if="${session.old_shed.getId() != 0}">
+                <form id="shed-form" method="post" action="/gem-skur-oplysninger">
+                    <input type="hidden" name="orderID" th:value="${orderID}">
+                    <h1>Skur Oplysninger</h1>
+
+                    <div>
+                        <h4>Skur ID: <span th:text="${session.old_shed.getId()}"></span></h4>
+
+                        <h4>Længde: <span th:text="${session.old_shed.getLength()}"></span>
+                            <input type="hidden" id="old_shed_length" name="old_shed_length"
+                                   th:value="${session.old_shed.getLength()}">
+                            <label>Ny længde:</label>
+                            <select id="old_shed_length_select" name="shed_length">
+                                <option value="" disabled selected>Vælg en ny længde</option>
+                            </select>
+                        </h4>
+
+                        <h4>Bredde: <span th:text="${session.old_shed.getWidth()}"></span>
+                            <input type="hidden" id="old_shed_width" name="old_shed_width"
+                                   th:value="${session.old_shed.getWidth()}">
+                            <label>Ny bredde:</label>
+                            <select id="old_shed_width_select" name="shed_width">
+                                <option value="" disabled selected>Vælg en ny bredde</option>
+                            </select>
+                        </h4>
+                    </div>
+
+                    <button id="gem-knap-skur" type="submit" formaction="/gem-skur-oplysninger">Gem nye ændringer
+                    </button>
+                </form>
+            </div>
+
+            <!-- Valg af skur, hvis kunden ikke har et skur -->
+            <div id="main-container-right" th:if="${session.old_shed.getId() <= 0}">
+                <h1>Ønsker kunden et skur?</h1>
+
+                <input type="radio" onclick="show()" name="redskabsrum" value="ja" th:required>
+                <label>ja</label><br>
+
+                <input type="radio" onclick="hide()" name="redskabsrum" value="nej" th:required>
+                <label>nej</label><br>
+
+                <div id="hidden_menu" hidden="true">
+                    <div id="shed-dimensions">
+                        <form method="post" action="/tilfoej-skur">
+                            <input type="hidden" name="orderID" th:value="${orderID}">
+                            <input type="hidden" name="order_id" th:value="${orderID}">
+
+                            <label>Skur længde</label><br>
+                            <select id="old_shed_length_select" name="new_shed_length">
+                            </select>
+
+                            <label>Skur bredde</label><br>
+                            <select id="old_shed_width_select" name="new_shed_width">
+                            </select>
+
+                            <br>
+                            <button id="gem-knap-nyt-skur" type="submit" formaction="/tilfoej-skur">Gem nye ændringer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{fragments :: footer}"></footer>
+
+<script>
+    function hide() {
+        document.getElementById('hidden_menu').hidden = true
+    }
+
+    function show() {
+        document.getElementById('hidden_menu').hidden = false;
+        updateShedDimensions();
+    }
+
+    function updateShedDimensions() {
+        var carportWidth = parseInt(document.getElementById('old_carport_width').value);
+        var carportLength = parseInt(document.getElementById('old_carport_length').value);
+
+        var shedWidthSelect = document.getElementById('old_shed_width_select');
+        var shedLengthSelect = document.getElementById('old_shed_length_select');
+
+        // Calculate shed width and length based on carport dimensions
+        var shedWidthOptions = [Math.floor(carportWidth * 0.5), carportWidth];  // 50% or 100% of carport width
+        var shedLengthOptions = [Math.floor(carportLength * 0.5)]; // 50% of carport length
+
+        // Clear previous options
+        shedWidthSelect.innerHTML = "";
+        shedLengthSelect.innerHTML = "";
+
+        // Add a default option
+        var defaultOption = document.createElement('option');
+        defaultOption.value = ""; // You can set this to an empty string or another value that makes sense for your application
+        defaultOption.text = "Vælg en ny bredde";
+        shedWidthSelect.add(defaultOption);
+
+        // Add width options
+        shedWidthOptions.forEach(function (width) {
+            var option = document.createElement('option');
+            option.value = width;
+            option.text = width + 'cm';
+            shedWidthSelect.add(option);
+        });
+
+        // Add a default option for shed length
+        var defaultLengthOption = document.createElement('option');
+        defaultLengthOption.value = ""; // You can set this to an empty string or another value that makes sense for your application
+        defaultLengthOption.text = "Vælg en ny længde";
+        shedLengthSelect.add(defaultLengthOption);
+
+        // Add length options
+        shedLengthOptions.forEach(function (length) {
+            var option = document.createElement('option');
+            option.value = length;
+            option.text = length + 'cm';
+            shedLengthSelect.add(option);
+        });
+    }
+
+    // Call the function when the page loads
+    window.onload = updateShedDimensions;
+</script>
+
+
+<!-- INDTIL HER -->
+
+</body>
+</html>

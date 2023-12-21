@@ -59,7 +59,6 @@ class Part{
 antal
 }
 
-
 Carport "1 " -- "0..1 " Skur
 Chef "1 " -- " * " Ordre
 Sælger "1 " -- " * " Ordre
@@ -67,8 +66,6 @@ Kunde "1 " -- "*" Ordre
 Carport "1 " -- "   1" Ordre
 Carport "1" -- " *" Part
 Part " * " -- "1" Materials
-
-
 
 
 @enduml

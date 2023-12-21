@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-
+<head>
 <title>Dashboard</title>
 <!-- REPLACE ME WITH A FRAGMENT -->
 <meta charset="UTF-8">
@@ -22,25 +22,20 @@
                 </form>
             </div>
             <div>
-                <form method="get">
-                    <button class="dash_button" type="submit">EKSTRA MULIGHED? Kontakt?</button>
-                </form>
-            </div>
-            <div>
                 <form method="get" form>
-                    <button class="dash_button" type="submit" formaction="/logud">Logud</button>
+                    <button class="dash_button" type="submit" formaction="/log-ud">Logud</button>
                 </form>
             </div>
         </div>
         <div class="dashboard_content" th:if="${session.currentUser.getRole() == 2 || session.currentUser.getRole() == 3}">
             <div>
                 <form method="get">
-                    <button class="dash_button" type="submit" formaction="/ordre-side">Se ordre</button>
+                    <button class="dash_button" type="submit" formaction="/ordre-side">Se alle ordre</button>
                 </form>
             </div>
             <div>
                 <form method="get">
-                    <button class="dash_button" type="submit" formaction="/lagervare">Lagervare</button>
+                    <button class="dash_button" type="submit" formaction="/lagervare">Varelager</button>
                 </form>
             </div>
             <div>
@@ -50,7 +45,7 @@
             </div>
             <div>
                 <form method="get">
-                    <button class="dash_button" type="submit" formaction="/logud">Logud</button>
+                    <button class="dash_button" type="submit" formaction="/log-ud">Logud</button>
                 </form>
             </div>
         </div>

@@ -39,19 +39,12 @@ class CarportSvgTopView{
     + CarportSvgTopView(int length, int width)
 
     - void addLines()
-
     + int getBeams()
-
     + int getRafters()
-
     + int getPosts()
-
     - int addBeams()
-
     - int addRafters()
-
     - int addPost()
-
     + String toString()
 }
 
@@ -131,6 +124,21 @@ class UserController{
     + static void login(Context ctx, ConnectionPool connectionPool)
     + static void addAdminUser(Context ctx, ConnectionPool connectionPool)
 }
+class ContactController {
+    + static void contact(Context ctx)
+}
+class EmailController {
+    + static void sendBill(Context ctx)
+    + static void sendMessageToSalesTeam(Context ctx, String customerName, String customerPhone, String customerEmail, String customerMessage)
+    + static void sendOrderQuestion(Context ctx)
+    + static void sendOrderToSalesTeam(Context ctx)
+}
+class MaterialController {
+    + static void addMaterial(Context ctx, ConnectionPool connectionPool)
+    + static void deleteMaterial(Context ctx, ConnectionPool connectionPool)
+    + static void loadMaterial(Context ctx, ConnectionPool connectionPool)
+    + static void updateMaterial(Context ctx, ConnectionPool connectionPool)
+}
 }
 
 package dtos {
@@ -163,6 +171,18 @@ class DTOOrderCustomer {
     + int getMobile()
     + String getOrderStatus()
 }
+class DTOParts {
+    + final static int POST_MATERIAL_ID = 19
+    + final static int RAFT_MATERIAL_ID = 10
+    + final static int REM_MATERIAL_ID = 25
+    - int post
+    - int raft
+    - int rem
+    + DTOParts(int post, int raft, int rem)
+    + getPost()
+    + getRaft()
+    + getRem()
+}
 class DTOPartsByMaterials {
     - String name;
     - int length;
@@ -186,6 +206,59 @@ class DTOSpecificOrderByOrderIdWithUserAndCarportAndShed {
     + Order getOrder()
     + Carport getCarport()
     + Shed getShed()
+}
+class DTOCarportWithIdLengthWidthHeight {
+    - int id
+    - int width
+    - int length
+    - int height
+    + DTOCarportWithIdLengthWidthHeight(int id, int width, int length, int height)
+    + int getId()
+    + int getWidth()
+    + int getLength()
+    + int getHeight()
+}
+class DTOGetOrderWithIdDateCustomerNoteConsentStatus {
+    - int orderId
+    - Date date
+    - String orderStatus
+    - String customerNote
+    + DTOGetOrderWithIdDateCustomerNoteConsentStatus(int orderId, Date date, String orderStatus, String customerNote)
+    + int getOrderId()
+    + Date getDate()
+    + String getOrderStatus()
+    + String getCustomerNote()
+}
+class DTOShedIdLengthWidth {
+    - int id
+    - int width
+    - int length
+    + DTOShedIdLengthWidth(int id, int width, int length)
+    + int getId()
+    + int getWidth()
+    + int getLength()
+}
+class DTOShedLengthWidth {
+    - int width
+    - int length
+    + DTOShedIdLengthWidth(int width, int length)
+    + int getWidth()
+    + int getLength()
+}
+class DTOUserWithUserIdNameAddressZipcodeMobileEmail {
+    - int userId
+    - String name
+    - String email
+    - int mobile
+    - int zipcode
+    - String address
+    + DTOUserWithUserIdNameAddressZipcodeMobileEmail(int userId, String name, String email, int mobile, int zipcode, String address)
+    + int getUserId()
+    + String getName()
+    + String getEmail
+    + int getMobile
+    + int getZipcode
+    + String getAddress
 }
 }
 
@@ -290,8 +363,18 @@ class Order{
     + void setOrderStatus(String orderStatus)
     + int getCarportId()
     + void setCarportId(int carportId)
-
-
+}
+class Part {
+    - int id
+    - int amount
+    - int materialId
+    - int orderId
+    + Part(int amount, int materialId, int orderId)
+    + Part(int id, int amount, int materialId, int orderId)
+    - int getId()
+    - int getAmount()
+    - int getMaterialId
+    - int getOrderId()
 }
 
 'Connections
@@ -314,14 +397,22 @@ class CarportMapper{
     + static Carport addCarport(Carport carport, ConnectionPool connectionPool) throws DatabaseException
     + static deleteCarportByCarportID(int carportId, ConnectionPool connectionPool) throws DatabaseException
     + static Shed addShed(Shed shed, ConnectionPool connectionPool) throws DatabaseException
+    + static Carport getCarportById(int id, ConnectionPool connectionPool)
     + static void updateCarport(DTOCarportWithIdLengthWidthHeight dtoUser, ConnectionPool connectionPool)
+}
+class ShedMapper {
+    + static Shed addShed(DTOShedLengthWidth dto, ConnectionPool connectionPool)
+    + static void updateShed(DTOShedIdLengthWidth dto, ConnectionPool connectionPool)
+}
+class StatusMapper {
+    + static List<Status> getAllStatuses(ConnectionPool connectionPool)
 }
 
 class ConnectionPool{
-    - static final String DEFAULT_USER = "postgres"
-    - static final String DEFAULT_PASSWORD = "postgres"
-    - static final String DEFAULT_URL =
-    - static final String DEFAULT_DB = "startcode"
+    - static final String DEFAULT_USER
+    - static final String DEFAULT_PASSWORD
+    - static final String DEFAULT_URL
+    - static final String DEFAULT_DB
     + static ConnectionPool instance = null
     + static HikariDataSource ds = null
     - ConnectionPool()
@@ -339,7 +430,7 @@ class MeasurementMapper{
 }
 
 class OrderMapper{
-    + static void addOrder(UserCarportOrderDTO dto, ConnectionPool connectionPool) throws DatabaseException
+    + static void addOrder(DTOUserCarportOrder dto, ConnectionPool connectionPool) throws DatabaseException
     + static List<Order> getAllOrders(ConnectionPool connectionPool) throws DatabaseException
     + static List<GetOrderWithIdDateCustomerNoteConsentStatus> getAllOrdersByUser(User user, (ConnectionPool connectionPool) throws DatabaseException
     + static String getStatusByID(int statusID, (ConnectionPool connectionPool) throws DatabaseException
@@ -353,13 +444,22 @@ class OrderMapper{
     + static void updateStatusBillSent(int orderID, ConnectionPool connectionPool)
     + static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool)
     + static Order getOrderById(int id, ConnectionPool connectionPool)
+    + static boolean updateName(String name, int userId, ConnectionPool connectionPool)
 }
 
 class UserMapper{
     + static User addUser(User newUser, ConnectionPool ConnectionPool) throws DatabaseException
     + static User getUserByEmail(String email, ConnectionPool connectionPool) throws DatabaseException
     + static boolean loginValidator(String email, String password, ConnectionPool connectionPool) throws DatabaseException, SQLException
-    + static void updateUser(User user, ConnectionPool connectionPool)
+    + static void updateUser(DTOUserWithUserIdNameAddressZipcodeMobileEmail user, ConnectionPool connectionPool)
+}
+class MaterialMapper {
+    + static Material addMaterial(Material material, ConnectionPool connectionPool)
+    + static void addPartsList(List<Part> partsList, ConnectionPool connectionPool)
+    + static void deleteMaterial(int materialId, ConnectionPool connectionPool)
+    + static List<Material> getAllMaterials(ConnectionPool connectionPool)
+    + static List<DTOPartsByMaterials> getPartsList(Order order, ConnectionPool connectionPool)
+    + static void updateMaterial(Material material, ConnectionPool connectionPool)
 }
 }
 
@@ -375,12 +475,17 @@ services ---* controllers
 
 package utility {
 class Calculator {
-    - static float carportPricePerSqCM
-    - static float shedPricePerSqMeter
+    - static float carportPricePerSqCM = 1200
+    - static float shedPricePerSqMeter = 500
+    - static int amountOfRem = 2;
+    - static List<Part> partsList = new ArrayList<>();
 
     + static float carportPriceCalculator(DTOCarportWithIdLengthWidthHeight carport)
     + static float shedPriceCalculator(DTOShedIdLengthWidth shed)
     + static float discountCalculator(float totalPrice, float discountPercentage)
+    + static List<Part> calculateParts(Carport carport, int orderId)
+    + static int amountOfPost(Carport carport)
+    + static int amountOfRafter(Carport carport)
 }
 class EmailFactory {
     - static String companyMail
@@ -389,11 +494,6 @@ class EmailFactory {
     + static void sendBill(String customerName, String orderId, String price, String employeeName)
     + static void sendOrderToSalesTeam(String customerName, String length, String width, String height)
     + static void sendMessageToSalesTeam(String customerName, String customerPhone, String customerEmail, String message)
-}
-class SvgGenerator {
-    + static String generateSvg(double length, double width)
-    + static void drawStolpe(SVGGraphics2D svgGraphics2D, double length, double width)
-    + static void drawSpaer(SVGGraphics2D svgGraphics2D, double length, double width)
 }
 }
 

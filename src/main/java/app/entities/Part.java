@@ -5,19 +5,19 @@ public class Part {
     private int id;
     private int materialId;
     private int amount;
-    private int order_id;
+    private int orderId;
 
-    public Part(int id, int materialId, int amount, int order_id) {
+    public Part(int id, int materialId, int amount, int orderId) {
         this.id = id;
         this.materialId = materialId;
         this.amount = amount;
-        this.order_id = order_id;
+        this.orderId = orderId;
     }
 
-    public Part(int materialId, int amount, int order_id) {
+    public Part(int materialId, int amount, int orderId) {
         this.materialId = materialId;
         this.amount = amount;
-        this.order_id = order_id;
+        this.orderId = orderId;
     }
 
 
@@ -33,7 +33,7 @@ public class Part {
         return amount;
     }
 
-    public int getOrder_id() {
-        return order_id;
+    public int getOrderId() {
+        return orderId;
     }
 }

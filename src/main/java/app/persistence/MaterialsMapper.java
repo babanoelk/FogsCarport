@@ -111,7 +111,7 @@ public class MaterialsMapper {
 
                 ps.setInt(1, part.getMaterialId());
                 ps.setInt(2, part.getAmount());
-                ps.setInt(3, part.getOrder_id());
+                ps.setInt(3, part.getOrderId());
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {

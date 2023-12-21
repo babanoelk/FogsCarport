@@ -1,4 +1,4 @@
-/*package app.persistence;
+package app.persistence;
 
 import app.dtos.DTOParts;
 import app.dtos.DTOPartsByMaterials;
@@ -118,7 +118,7 @@ public class MaterialMapper {
                 for (Part part : partList) {
                     ps.setInt(1, part.getMaterialId());
                     ps.setInt(2, part.getAmount());
-                    ps.setInt(3, part.getOrder_id());
+                    ps.setInt(3, part.getOrderId());
                     int rowsAffected = ps.executeUpdate();
                     if (rowsAffected != 1) {
                         throw new DatabaseException("Partslist wasn't added to the Database");
@@ -154,7 +154,7 @@ public class MaterialMapper {
         return partsList;
     }
 
-}*/
+}
 
 
 

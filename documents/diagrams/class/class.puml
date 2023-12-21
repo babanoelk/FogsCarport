@@ -105,7 +105,7 @@ class FormController{
 class OrderController{
     + static boolean deleteOrder(Context ctx, ConnectionPool connectionPool) throws DatabaseException
     + static void getAllOrders(Context ctx, (ConnectionPool ConnectionPool) throws DatabaseException
-    + static void getSpecificOrder(Context ctx, ConnectionPool connectionPool)
+    + static void getChosenCustomerOrder(Context ctx, ConnectionPool connectionPool)
     + static void updateOrderStatus(Context ctx, ConnectionPool connectionPool)
     + static void updateOrderUser(Context ctx, ConnectionPool connectionPool)
     + static void updateCarport(Context ctx, ConnectionPool connectionPool)
@@ -114,6 +114,7 @@ class OrderController{
     + static void orderContact(Context ctx)
     + static void sendBill(Context ctx, ConnectionPool connectionPool)
     + static void changePriceManually(Context ctx, ConnectionPool connectionPool)
+    + static void discountPercentageOrAmount(Context ctx, ConnectionPool connectionPool)
 }
 
 class SystemController{
@@ -195,70 +196,17 @@ class DTOPartsByMaterials {
     + int getAmount()
     + String getDescription()
 }
-class DTOSpecificOrderByOrderIdWithUserAndCarportAndShed {
+class DTOOrderDetails {
     - User user
     - Order order
     - Carport carport
     - Shed shed
 
-    + DTOSpecificOrderByOrderIdWithUserAndCarportAndShed()
+    + DTOOrderDetails()
     + User getUser()
     + Order getOrder()
     + Carport getCarport()
     + Shed getShed()
-}
-class DTOCarportWithIdLengthWidthHeight {
-    - int id
-    - int width
-    - int length
-    - int height
-    + DTOCarportWithIdLengthWidthHeight(int id, int width, int length, int height)
-    + int getId()
-    + int getWidth()
-    + int getLength()
-    + int getHeight()
-}
-class DTOGetOrderWithIdDateCustomerNoteConsentStatus {
-    - int orderId
-    - Date date
-    - String orderStatus
-    - String customerNote
-    + DTOGetOrderWithIdDateCustomerNoteConsentStatus(int orderId, Date date, String orderStatus, String customerNote)
-    + int getOrderId()
-    + Date getDate()
-    + String getOrderStatus()
-    + String getCustomerNote()
-}
-class DTOShedIdLengthWidth {
-    - int id
-    - int width
-    - int length
-    + DTOShedIdLengthWidth(int id, int width, int length)
-    + int getId()
-    + int getWidth()
-    + int getLength()
-}
-class DTOShedLengthWidth {
-    - int width
-    - int length
-    + DTOShedIdLengthWidth(int width, int length)
-    + int getWidth()
-    + int getLength()
-}
-class DTOUserWithUserIdNameAddressZipcodeMobileEmail {
-    - int userId
-    - String name
-    - String email
-    - int mobile
-    - int zipcode
-    - String address
-    + DTOUserWithUserIdNameAddressZipcodeMobileEmail(int userId, String name, String email, int mobile, int zipcode, String address)
-    + int getUserId()
-    + String getName()
-    + String getEmail
-    + int getMobile
-    + int getZipcode
-    + String getAddress
 }
 }
 
@@ -293,8 +241,6 @@ class User {
     + String getRole()
     + boolean getConsent()
 }
-
-interface Construction {}
 
 class Shed {
     - int id
@@ -381,8 +327,6 @@ class Part {
 Shed ----* Carport
 Carport ----* Order
 User ----* Order
-Shed ---|> Construction
-Carport ---|> Construction
 }
 
 package exceptions {
@@ -398,11 +342,11 @@ class CarportMapper{
     + static deleteCarportByCarportID(int carportId, ConnectionPool connectionPool) throws DatabaseException
     + static Shed addShed(Shed shed, ConnectionPool connectionPool) throws DatabaseException
     + static Carport getCarportById(int id, ConnectionPool connectionPool)
-    + static void updateCarport(DTOCarportWithIdLengthWidthHeight dtoUser, ConnectionPool connectionPool)
+    + static void updateCarport(Carport carport, ConnectionPool connectionPool)
 }
 class ShedMapper {
-    + static Shed addShed(DTOShedLengthWidth dto, ConnectionPool connectionPool)
-    + static void updateShed(DTOShedIdLengthWidth dto, ConnectionPool connectionPool)
+    + static Shed addShed(Shed shed, ConnectionPool connectionPool)
+    + static void updateShed(Shed shed, ConnectionPool connectionPool)
 }
 class StatusMapper {
     + static List<Status> getAllStatuses(ConnectionPool connectionPool)
@@ -436,7 +380,7 @@ class OrderMapper{
     + static String getStatusByID(int statusID, (ConnectionPool connectionPool) throws DatabaseException
     + static void addOrderToExistingUser(DTOUserCarportOrder dto, ConnectionPool connectionPool)
     + static void deleteOrderByOrderID(int orderId, ConnectionPool connectionPool)
-    + static DTOOrderUserCarport getOrderById(int orderId, ConnectionPool connectionPool)
+    + static DTOUserCarportOrder getOrderById(int orderId, ConnectionPool connectionPool)
     + static Carport getCarportByOrderId(int orderId, ConnectionPool connectionPool)
     + static void updateOrderStatus(int orderId, int statusId, ConnectionPool connectionPool)
     + static Shed getShedByOrderId(int orderId, ConnectionPool connectionPool)
@@ -444,14 +388,13 @@ class OrderMapper{
     + static void updateStatusBillSent(int orderID, ConnectionPool connectionPool)
     + static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool)
     + static Order getOrderById(int id, ConnectionPool connectionPool)
-    + static boolean updateName(String name, int userId, ConnectionPool connectionPool)
 }
 
 class UserMapper{
     + static User addUser(User newUser, ConnectionPool ConnectionPool) throws DatabaseException
     + static User getUserByEmail(String email, ConnectionPool connectionPool) throws DatabaseException
     + static boolean loginValidator(String email, String password, ConnectionPool connectionPool) throws DatabaseException, SQLException
-    + static void updateUser(DTOUserWithUserIdNameAddressZipcodeMobileEmail user, ConnectionPool connectionPool)
+    + static void updateUser(User user, ConnectionPool connectionPool)
 }
 class MaterialMapper {
     + static Material addMaterial(Material material, ConnectionPool connectionPool)
@@ -480,9 +423,11 @@ class Calculator {
     - static int amountOfRem = 2;
     - static List<Part> partsList = new ArrayList<>();
 
-    + static float carportPriceCalculator(DTOCarportWithIdLengthWidthHeight carport)
-    + static float shedPriceCalculator(DTOShedIdLengthWidth shed)
-    + static float discountCalculator(float totalPrice, float discountPercentage)
+    + static float carportPriceCalculator2(DTOUserCarportOrder dto)
+    + static float carportPriceCalculator(Carport carport)
+    + static float shedPriceCalculator(Shed shed)
+    + static float discountCalculatorPercentage(float totalPrice, float discountPercentage)
+    + static float discountCalculatorSubtraction(float totalPrice, float discountPercentage)
     + static List<Part> calculateParts(Carport carport, int orderId)
     + static int amountOfPost(Carport carport)
     + static int amountOfRafter(Carport carport)

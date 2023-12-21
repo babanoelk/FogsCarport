@@ -77,18 +77,18 @@ public class MaterialMapper {
                 }
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error deleting material: " + e.getMessage());
+            throw new DatabaseException("Error when deleting material: " + e.getMessage());
         }
     }
 
     public static void updateMaterial(Material material, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "UPDATE materials SET name = ?, length_cm = ?, description = ?, item_number = ?, width_cm = ?, height_cm = ?, price = ? WHERE id = ?";
+        String sql = "UPDATE public.materials SET name = ?, length_cm = ?, description = ?, item_number = ?, width_cm = ?, height_cm = ?, price = ? WHERE id = ?";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, material.getName());
                 ps.setInt(2, material.getLength());
                 ps.setString(3, material.getDescription());
-                ps.setLong(4, material.getItemNumber());
+                ps.setLong(4, material.getLength());
                 ps.setInt(5, material.getWidth());
                 ps.setInt(6, material.getHeight());
                 ps.setInt(7, material.getPrice());
@@ -100,13 +100,13 @@ public class MaterialMapper {
                 }
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error updating material: " + e.getMessage());
+            throw new DatabaseException("Der opstod en fejl ved oprettelse af vare: " + e.getMessage());
         }
     }
 
 
 
-    public static void addpartsList(List<Part> partList, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addPartsList(List<Part> partList, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "INSERT INTO parts_list (material_id, amount, order_id) values(?,?,?)";
 

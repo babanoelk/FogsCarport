@@ -100,14 +100,6 @@ body {
     align-items: center;
 }
 
-.wrapper{
-    display: flex;
-    flex-direction: row; /* Elementer placeres i en række */
-    flex-wrap: wrap; /* Tillader elementerne at flytte til en ny række */
-    justify-content: center; /* Centrerer elementerne i rækken */
-    gap: 10px; /* Afstand mellem elementerne */
-    padding: 20px;
-}
 
 #main-content {
     margin: 0 auto;
@@ -115,8 +107,9 @@ body {
     max-width: 1280px;
     display: flex;
     flex-direction: column;
-    justify-items: center;
     align-items: center;
+    background-color: #004485;
+
 }
 
 #main-container {
@@ -137,7 +130,7 @@ body {
     margin-top: 10px;
 }
 
-.carport-svg-topview{
+.carport-svg-topview {
     width: 100%; /* Fuld bredde af den overordnede container */
     display: flex; /* Flexbox layout for bedre kontrol */
     justify-content: center; /* Centrerer SVG'en horisontalt */
@@ -203,13 +196,45 @@ button:hover {
     opacity: 1; /* Gør overlay synligt ved hover */
 }
 
-.form, .contact, #login_container {
+.form, .contact, #login_container{
     background-color: white;
     margin-top: 20px;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row; /* Elementer placeres i en række */
+    flex-wrap: wrap;  /*Tillader elementerne at flytte til en ny række */
+    justify-content: center; /* Centrerer elementerne i rækken */
+    gap: 10px; /* Afstand mellem elementerne */
+}
+
+.box {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 20px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.spacing-text-button{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.gap{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 #login_container {
@@ -276,6 +301,7 @@ footer {
     justify-content: space-between;
 }
 
+
 @media screen and (max-width: 900px) {
 
     #main-container {
@@ -283,6 +309,10 @@ footer {
         flex-direction: column;
     }
 
+    .spacing-text-button{
+        height: auto;
+        gap: 20px;
+    }
 
 }
 
@@ -306,7 +336,7 @@ footer {
         width: 100%;
         gap: 1px;
         padding: 0;
-        margin: 0px;
+        margin: 0;
 
     }
 
@@ -321,165 +351,5 @@ footer {
     .pictures-frontpage {
         flex-direction: column;
     }
-
 }
 
-
-/* START: Styling til admin-kd-ordre.html*/
-/* Flex container styling: Enables flexbox layout for the main container */
-/* Container for the main content */
-#main-content-order {
-    display: flex;
-}
-
-#main-container {
-    display: flex;
-}
-
-/* Styling for the left, middle, and right content divs within the main container */
-#main-container-left,
-#main-container-mid,
-#main-container-right {
-    flex: 1;
-    padding: 20px;
-    border: 1px solid #ccc;
-
-}
-
-/* Adjusting the order of the left content div: Changes the visual order on the screen */
-#main-container-left {
-    order: 1;
-}
-
-/* Adjusting the order of the middle content div: Changes the visual order on the screen */
-#main-container-mid {
-    order: 2;
-
-}
-
-/* Adjusting the order of the right content div: Changes the visual order on the screen */
-#main-container-right {
-    order: 3;
-}
-
-/* Styling for the header: Centers the text within the header */
-#main-header {
-    text-align: center;
-}
-
-/* Container for the form sections */
-#form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center the items horizontally */
-}
-
-/* Styling for labels */
-#form-container label {
-    margin-right: 10px;
-}
-
-/* Styling for form inputs and selects */
-#form-container select,
-#form-container input {
-    flex: 1;
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-
-/* Styling for the submit button */
-#gem-knap-user {
-    display: block;
-    margin: 0 auto; /* Centrer knappen vandret */
-    margin-top: 10px; /* Tilføj lidt plads over knappen */
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#gem-knap-carport {
-    display: block;
-    margin: 0 auto; /* Centrer knappen vandret */
-    margin-top: 212px; /* Tilføj lidt plads over knappen */
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#gem-knap-skur {
-    display: block;
-    margin: 0 auto; /* Centrer knappen vandret */
-    margin-top: 392px; /* Tilføj lidt plads over knappen */
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#gem-knap-nyt-skur {
-    display: block;
-    margin: 0 auto; /* Centrer knappen vandret */
-    margin-top: 376px; /* Tilføj lidt plads over knappen */
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* Hover effect for the submit button */
-#gem-knap:hover {
-    background-color: #45a049;
-}
-
-#send-regning-knap {
-    display: block;
-    margin: 0 auto; /* Centrer knappen vandret */
-    /* Tilføj lidt plads over knappen */
-    margin-bottom: 5px;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-
-/* SLUT: Styling til admin-kd-ordre.html*/
-
-#main-sub-header {
-    display: flex;
-}
-
-#main-price-left,
-#main-price-mid,
-#main-price-right {
-    flex: 1;
-    padding: 20px;
-    border: 1px solid #ccc;
-}
-
-#main-price-left {
-    order: 1;
-}
-
-#main-price-mid {
-    order: 2;
-}
-
-#main-price-right {
-    order: 3;
-}

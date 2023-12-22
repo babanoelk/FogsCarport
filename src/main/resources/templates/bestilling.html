@@ -15,8 +15,8 @@
 
     <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
 
-    <div>
-        <form class="form" method="post" onsubmit="return validateForm()">
+    <div class="box">
+        <form  class="form" method="post" onsubmit="return validateForm()">
 
             <!--Drop down Carport bredde-->
             <label for="carport_width">Carport bredde*</label>

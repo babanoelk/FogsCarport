@@ -22,7 +22,8 @@ public class CarportSvgTopView {
 
         this.length = length;
         this.width = width;
-        carportSvg = new Svg(0, 0, "0 0 855 690", "100%", "auto");
+        String viewBox = String.format("0 0 %d %d", length + 10, width + 10);
+        carportSvg = new Svg(0, 0, viewBox, "100%", "auto");
 
         //Tegningen af billedets størrelse
         carportSvg.addRectangle(0, 0, length, width, "stroke-width:1px; stroke:#000000; fill: #ffffff");

@@ -418,7 +418,7 @@ public class OrderController {
 
             List <Part> listOfParts = new ArrayList<>(Calculator.calculateParts(carport, order_ID));
 
-            MaterialMapper.addpartsList(listOfParts, connectionPool);
+            MaterialMapper.addPartsList(listOfParts, connectionPool);
 
             EmailController.sendBill(ctx);
             OrderController.getAllOrders(ctx, connectionPool);

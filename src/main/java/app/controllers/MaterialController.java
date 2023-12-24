@@ -5,7 +5,6 @@ import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
-import app.persistence.MaterialsMapper;
 import app.persistence.OrderMapper;
 import app.entities.Material;
 import app.services.CarportSvgTopView;
@@ -70,7 +69,7 @@ public class MaterialController {
 
     public static void deleteMaterial (Context ctx, ConnectionPool connectionPool) throws DatabaseException {
         int materialId = Integer.parseInt(ctx.formParam("materialId"));
-        MaterialsMapper.deleteMaterial(materialId, connectionPool);
+        MaterialMapper.deleteMaterial(materialId, connectionPool);
         loadMaterials(ctx, connectionPool);
     }
 
@@ -84,7 +83,7 @@ public class MaterialController {
                 Integer.parseInt(ctx.formParam("height_cm")),
                 Integer.parseInt(ctx.formParam("price"))
             );
-        MaterialsMapper.updateMaterial(material, connectionPool);
+        MaterialMapper.updateMaterial(material, connectionPool);
         loadMaterials(ctx, connectionPool);
     }
 

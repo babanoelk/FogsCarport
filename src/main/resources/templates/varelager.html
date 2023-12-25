@@ -33,27 +33,27 @@
     <table id="materials_table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Vare navn</th>
-                <th>længde(cm)</th>
-                <th>Beskrivelse</th>
-                <th>Varer nummer</th>
-                <th>Bredde(cm)</th>
-                <th>Højde(cm)</th>
-                <th>Pris(dkk)</th>
+                <th scope="col">Id</th>
+                <th scope="col">Vare navn</th>
+                <th scope="col">Beskrivelse</th>
+                <th scope="col">længde(cm)</th>
+                <th scope="col">Bredde(cm)</th>
+                <th scope="col">Højde(cm)</th>
+                <th scope="col">Varer nummer</th>
+                <th scope="col">Pris(dkk)</th>
 
             </tr>
             </thead>
             <tbody>
             <tr th:each="material : ${materialsList}">
-                <td th:text="${material.Id}">Property 1</td>
-                <td th:text="${material.Name}">Property 2</td>
-                <td th:text="${material.Length}">Property 2</td>
-                <td th:text="${material.Description}">Property 2</td>
-                <td th:text="${material.ItemNumber}">Property 2</td>
-                <td th:text="${material.Width}">Property 2</td>
-                <td th:text="${material.Height}">Property 2</td>
-                <td th:text="${material.Price}">Property 2</td>
+                <td data-label="ID:" th:text="${material.Id}">Property 1</td>
+                <td data-label="Vare navn:" th:text="${material.Name}">Property 2</td>
+                <td data-label="Beskrivelse:" th:text="${material.Description}">Property 2</td>
+                <td data-label="Længde (cm):" th:text="${material.Length}">Property 2</td>
+                <td data-label="Bredde (cm):" th:text="${material.Width}">Property 2</td>
+                <td data-label="Højde (cm):" th:text="${material.Height}">Property 2</td>
+                <td data-label="Vare nr.:" th:text="${material.ItemNumber}">Property 2</td>
+                <td data-label="Pris:" th:text="${material.Price}">Property 2</td>
 
                 <td>
                     <form method="POST" action="/delete-material" style="display: inline;">

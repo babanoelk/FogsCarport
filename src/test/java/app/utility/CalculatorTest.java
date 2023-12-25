@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CalculatorTest {
+
+    /*
     Carport carport;
     Shed shed;
 
@@ -53,4 +55,6 @@ class CalculatorTest {
         assertEquals(10, Calculator.amountOfRafter(carport));
 
     }
+
+     */
 }

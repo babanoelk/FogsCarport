@@ -40,14 +40,15 @@ public class EmailController {
         }
     }
 
-    public static void sendOrderToSalesTeam(Context ctx) {
+    public static void sendOrderToSalesTeam(Context ctx, String name, int id) {
 
-        String customerName = ctx.formParam("name");
+        String customerName = name;
+        int ID = id;
         String length = ctx.formParam("carport_length");
         String width = ctx.formParam("carport_width");
         String height = ctx.formParam("carport_height");
         try {
-            EmailFactory.sendOrderToSalesTeam(customerName, length, width, height);
+            EmailFactory.sendOrderToSalesTeam(customerName, length, width, height, ID);
         } catch (IOException e) {
             ctx.attribute("message", e.getMessage());
             ctx.render("ordre-side.html");

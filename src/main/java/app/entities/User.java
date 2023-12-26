@@ -31,15 +31,16 @@ public class User {
         this.zipcode = zipcode;
     }
 
-    public User(String name, String email, String password, String address, int mobile, int zipcode, boolean consent) {
+    /*
+    public User(String name, String email, String password, String address, int mobile, int zipcode) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.address = address;
         this.mobile = mobile;
         this.zipcode = zipcode;
-        this.consent = consent;
-    }
+        //this.consent = consent;
+    }*/
 
     public User(String name, String email, String password, String address, int mobile, int zipcode, boolean consent, int role) {
         this.name = name;
@@ -48,7 +49,6 @@ public class User {
         this.address = address;
         this.mobile = mobile;
         this.zipcode = zipcode;
-        this.consent = consent;
         this.role = role;
     }
     public User(int id, String name, String email, String address, int mobile, int zipcode) {

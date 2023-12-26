@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kundes ordre side</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<div id="main-content">
+    <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
+    <div>
+        <h3>Stykliste</h3>
+        <table>
+            <tr>
+                <th>Vare</th>
+                <th>Længde</th>
+                <th>Antal</th>
+                <th>Enhed</th>
+                <th>Beskrivelse</th>
+            </tr>
+            <tr th:each="part : ${partsList}">
+                <td th:text="${part.getName()}">Ordre ID</td>
+                <td th:text="${part.getLength()}">Dato</td>
+                <td th:text="${part.getAmount()}">Kommentar</td>
+                <td th:text="'STK.'">Enhed</td>
+                <td th:text="${part.getDescription()}">Status</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <h3>Forhåndsvisning af carport i 2D</h3>
+        <div class="carport-svg-topview">
+            <div th:utext="${svg}"></div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

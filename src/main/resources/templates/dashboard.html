@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Dashboard</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<div id="main-content">
+    <h1>Dashboard</h1>
+    <p class="message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
+    <div>
+        <div class="dashboard_content" th:if="${session.currentUser.getRole() == 1}">
+            <div>
+                <form method="get">
+                    <button class="dash_button" type="submit" formaction="/ordre-side">Mine ordre</button>
+                </form>
+            </div>
+            <div>
+                <form method="get" form>
+                    <button class="dash_button" type="submit" formaction="/log-ud">Logud</button>
+                </form>
+            </div>
+        </div>
+        <div class="dashboard_content" th:if="${session.currentUser.getRole() == 2 || session.currentUser.getRole() == 3}">
+            <div>
+                <form method="get">
+                    <button class="dash_button" type="submit" formaction="/ordre-side">Se alle ordre</button>
+                </form>
+            </div>
+            <div>
+                <form method="get">
+                    <button class="dash_button" type="submit" formaction="/lagervare">Varelager</button>
+                </form>
+            </div>
+            <div>
+                <form method="get">
+                    <button class="dash_button" type="submit" formaction="/opret-medarbejder">Opret medarbejder</button>
+                </form>
+            </div>
+            <div>
+                <form method="get">
+                    <button class="dash_button" type="submit" formaction="/log-ud">Logud</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

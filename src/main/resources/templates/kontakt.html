@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Kontakt</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<div id="main-content">
+
+    <h1>Kontakt os her</h1>
+
+    <p class="error_message" th:text="${#ctx.message}"></p>
+    <p th:text="${#ctx.confirmation}"></p>
+
+    <div id="contact">
+        <div class="contact">
+            <div>
+                <p style="font-weight: bold">Johannes Fog A/S</p>
+                <p>Firskovvej 20</p>
+                <p>2800 Lyngby</p>
+                <p>Tlf nr: +45 45 87 10 01</p>
+                <p>CVR-nr. 16314439</p>
+            </div>
+            <div>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.3554409938447!2d12.514481876761883!3d55.76969837309044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46524e7254390395%3A0x429bf93fc150421a!2sFog%20Tr%C3%A6last%20%26%20Byggecenter%20Lyngby!5e0!3m2!1sda!2sdk!4v1702025975538!5m2!1sda!2sdk"
+                        height="250px" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+        <div class="contact" th:if="${session.currentUser == null}">
+            <form class="contact" method="post" action="/send-besked">
+
+                <input type="text" th:name="name" id="name" placeholder="Indtast dit navn...">
+                <input type="text" th:name="phone" id="phone" placeholder="Indtast dit tlf nr...">
+                <input type="email" th:name="email" id="email" placeholder="Indtast din mail..."><br>
+
+                <label for="message">Besked</label>
+                <textarea id="message" th:name="message" th:value="message" placeholder="Skriv din besked her..."
+                          style="height:200px"></textarea>
+                <input type="submit" value="Send">
+            </form>
+        </div>
+        <div class="contact" th:if="${session.currentUser != null}">
+            <div id="hidden_menu">
+                <p th:text="${#ctx.confirmation}"></p>
+            </div>
+            <div>
+                <form class="contact" method="post" action="/besked-indsendt">
+
+                    <input type="hidden" th:name="name" th:value="${session.currentUser.getName()}"/>
+                    <input type="hidden" th:name="email" th:value="${session.currentUser.getEmail()}"/>
+                    <input type="hidden" th:name="order_id" th:value="${order_id}"/>
+                    <p>Navn: <span th:text="${session.currentUser.getName()}"/></p>
+                    <p>Email: <span th:text="${session.currentUser.getEmail()}"/></p>
+                    <p th:if="${order_id != null}">Ordre nr: <span th:text="${order_id}"/></p><br>
+
+                    <label for="message">Besked</label>
+                    <textarea id="message" th:name="message" th:value="message" placeholder="Skriv din besked her..."
+                              style="height:200px"></textarea>
+                    <input type="submit" value="Send">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

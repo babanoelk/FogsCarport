@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Opret medarbejder</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<div id="main-content">
+    <h1>Opret sælger</h1>
+    <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
+    <form class="form" method="post" onsubmit="return validateForm()">
+        <label for="name">Navn*</label>
+        <input type="text" id="name" name="name" th:required="true"><br>
+
+        <label for="address">Adresse*</label>
+        <input type="text" id="address" name="address" th:required="true"><br>
+
+        <label for="zip">Postnummer*</label>
+        <input type="text" id="zip" name="zip" th:required="true"><br>
+
+        <label for="phone">Telefon nr*</label>
+        <input type="text" id="phone" name="phone" th:required="true">
+        <div class="error" id="phoneError"></div><br>
+
+        <label for="email">Email*</label>
+        <input type="text" id="email" name="email" th:required="true">
+        <div class="error" id="emailError"></div><br>
+
+        <label for="password">Password*</label>
+        <input type="password" id="password" name="password" th:required="true">
+        <button type="button" onclick="togglePasswordVisibility()">Vis/Skjul kode</button><br>
+        <div class="error" id="passwordError"></div>
+
+        <input type="checkbox" id="consent" name="consent" value="true" checked th:required="true">
+        <label for="consent">Medarbejder har samtykket til brugeroprettelse*</label><br>
+
+        <button type="submit" formaction="/medarbejder-oprettet">Opret sælger</button>
+    </form>
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+<script>
+    function validateForm() {
+        var password = document.getElementById("pass").value;
+        var email = document.getElementById("email").value;
+        var phone = document.getElementById("phone").value;
+
+        var isValid = true;
+
+        // Ryd tidligere fejlmeddelelser
+        document.getElementById("emailError").textContent = '';
+        document.getElementById("passwordError").textContent = '';
+        document.getElementById("phoneError").textContent = '';
+
+
+        // Validere mobil nr
+        var phonePattern = /^\d+$/;  // Regex for kun tal
+        if (!phonePattern.test(phone)) {
+            document.getElementById("phoneError").textContent = "Telefonnummer må kun indeholde tal.";
+            isValid = false;
+        }
+
+
+        // Valider adgangskode
+        var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordPattern.test(password)) {
+            document.getElementById("passwordError").textContent = "Adgangskoden skal indeholde store og små bogstaver, tal og mindst ét specialtegn.";
+            isValid = false;
+        }
+
+        // Valider email
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailPattern.test(email)) {
+            document.getElementById("emailError").textContent = "Indtast venligst en gyldig e-mail-adresse.";
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+</script>
+</body>
+</html>

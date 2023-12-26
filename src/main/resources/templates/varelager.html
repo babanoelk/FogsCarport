@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Varelager</title>
+    <!-- REPLACE ME WITH A FRAGMENT -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<div id="main-content">
+    <h1>Varelager oversigt</h1>
+    <p class="error-message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
+    <p>Her kan du tilføje og slette vare på varelageret.</p>
+    <div id="add-material">
+        <h3>Tilføj vare</h3>
+        <form method="POST" action="/add-material">
+            <input type="text" name="name" placeholder="Vare navn" required>
+            <input type="number" name="length_cm" placeholder="Længde(cm)" required>
+            <input type="text" name="description" placeholder="Beskrivelse" required>
+            <input type="number" name="item_number" placeholder="Varer nummer" required>
+            <input type="number" name="width_cm" placeholder="Bredde(cm)" required>
+            <input type="number" name="height_cm" placeholder="Højde(cm)" required>
+            <input type="number" name="price" placeholder="Pris(dkk)" required>
+
+            <button type="submit">tilføj</button>
+        </form>
+    </div>
+
+    <p class="error_message" th:text="${#ctx.message}"></p>
+    <div id="materials_table">
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Vare navn</th>
+                <th scope="col">Beskrivelse</th>
+                <th scope="col">længde(cm)</th>
+                <th scope="col">Bredde(cm)</th>
+                <th scope="col">Højde(cm)</th>
+                <th scope="col">Varer nummer</th>
+                <th scope="col">Pris(dkk)</th>
+                <th scope="col">Handling</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="material : ${materialsList}">
+                <td data-label="ID:" th:text="${material.Id}">Property 1</td>
+                <td data-label="Vare navn:" th:text="${material.Name}">Property 2</td>
+                <td data-label="Beskrivelse:" th:text="${material.Description}">Property 2</td>
+                <td data-label="Længde (cm):" th:text="${material.Length}">Property 2</td>
+                <td data-label="Bredde (cm):" th:text="${material.Width}">Property 2</td>
+                <td data-label="Højde (cm):" th:text="${material.Height}">Property 2</td>
+                <td data-label="Vare nr.:" th:text="${material.ItemNumber}">Property 2</td>
+                <td data-label="Pris:" th:text="${material.Price}">Property 2</td>
+                <td data-label="Handling">
+                    <form method="POST" action="/delete-material" style="display: inline;">
+                        <input type="hidden" name="materialId" th:value="${material.Id}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

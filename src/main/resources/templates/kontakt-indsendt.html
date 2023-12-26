@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Besked indsendt</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<div id="main-content">
+
+    <h1>Kontak os her</h1>
+
+    <p class="error_message" th:text="${#ctx.message}"></p>
+
+    <div id="contact">
+        <div class="contact">
+            <div>
+                <p style="font-weight: bold">Johannes Fog A/S</p>
+                <p>Firskovvej 20</p>
+                <p>2800 Lyngby</p>
+                <p>Tlf nr: +45 45 87 10 01</p>
+                <p>CVR-nr. 16314439</p>
+            </div>
+            <div>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.3554409938447!2d12.514481876761883!3d55.76969837309044!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46524e7254390395%3A0x429bf93fc150421a!2sFog%20Tr%C3%A6last%20%26%20Byggecenter%20Lyngby!5e0!3m2!1sda!2sdk!4v1702025975538!5m2!1sda!2sdk"
+                        height="250px" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+        <div class="contact">
+            <div>
+                <p th:text="${#ctx.confirmation}"></p>
+            </div>
+            <div>
+                <form method="get">
+                    <button class="button" type="submit" formaction="/">Tilbage til forsiden</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>

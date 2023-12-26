@@ -31,6 +31,35 @@ public class User {
         this.zipcode = zipcode;
     }
 
+    public User(String name, String email, String password, String address, int mobile, int zipcode, boolean consent) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.mobile = mobile;
+        this.zipcode = zipcode;
+        this.consent = consent;
+    }
+
+    public User(String name, String email, String password, String address, int mobile, int zipcode, boolean consent, int role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.mobile = mobile;
+        this.zipcode = zipcode;
+        this.consent = consent;
+        this.role = role;
+    }
+    public User(int id, String name, String email, String address, int mobile, int zipcode) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.mobile = mobile;
+        this.zipcode = zipcode;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -49,18 +78,6 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public void setMobile(int mobile) {
-        this.mobile = mobile;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public void setZipcode(int zipcode) {
-        this.zipcode = zipcode;
     }
 
     public int getId() {

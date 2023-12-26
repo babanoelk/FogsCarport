@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Log ind</title>
+<!-- REPLACE ME WITH A FRAGMENT -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<div id="main-content">
+    <h3>Login</h3>
+    <p class="error_message" th:if="${not #strings.isEmpty(#ctx.message)}" th:text="${#ctx.message}"></p>
+    <div id="login_container">
+        <form class="form" method="post">
+            <input type="text" id="email" name="email" th:required="true" placeholder="Email">
+            <input type="password" id="password" name="password" th:required="true" placeholder="password">
+            <button type="button" onclick="togglePasswordVisibility()">Vis/Skjul kode</button>
+            <button class="button" type="submit" formaction="/dashboard">Log på</button>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+</script>
+
+</body>
+</html>

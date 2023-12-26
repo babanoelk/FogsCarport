@@ -12,25 +12,32 @@
 <!-- HEAD FRAGMENT END -->
 <body>
 <!-- HEADER FRAGMENT START -->
-<header th:fragment="header">
-    <div id="nav-fullwidth">
-        <div id="navbar">
-            <div id="logo">
-                <img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/>
-            </div>
-            <ul class="main-menu">
-                <li class="button"><a href="/">Hjem</a></li>
-                <li class="button"><a href="/">Bestil unik carport</a></li>
-                <li class="button"><a href="/">Login</a></li>
-            </ul>
+<header id="nav-fullwidth" th:fragment="header">
+    <nav id="navbar">
+        <div id="logo">
+                <a href="/"><img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/></a>
         </div>
-    </div>
+            <ul class="main-menu">
+                <li><button><a href="/hjem">Hjem</a></button></li>
+                <li ><button><a href="/bestil-carport">Bestil unik carport</a></button></li>
+                <div th:switch="${session.currentUser}!=null" th:remove="tag">
+                    <div th:case="true" th:remove="tag">
+                        <li><button><a href="/main-menu" th:text="${session.currentUser.getEmail()}"></a></button></li>
+                        <li><button><a href="/log-ud">Log ud</a></button></li>
+                    </div>
+                    <li th:case="false"><button><a href="/login">Login</a></button></li>
+                </div>
+            </ul>
+    </nav>
 </header>
 <!-- HEADER FRAGMENT END -->
 
 <!-- FOOTER FRAGMENT START -->
 <footer th:fragment="footer">
-    <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+    <div id="footer-container">
+        <p id="footer-text">Created by Team LAHY - All rights reserved</p>
+        <button class="button"><a href="/kontakt">Kontakt os</a></button>
+    </div>
 </footer>
 <!-- FOOTER FRAGMENT END -->
 </body>

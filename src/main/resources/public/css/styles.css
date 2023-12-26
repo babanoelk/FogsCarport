@@ -335,6 +335,7 @@ footer {
         border-bottom: 3px solid #ddd;
         display: block;
         margin-bottom: .625em;
+
     }
 
     table td {
@@ -359,6 +360,10 @@ footer {
         border-bottom: 0;
     }
 
+    .table-row-margin{
+        margin-top: 1rem; /* Add any desired margin value here */
+    }
+
 }
 
 @media screen and (max-width: 400px) {
@@ -367,7 +372,6 @@ footer {
         flex-direction: column;
         text-align: center;
     }
-
 
     #navbar {
         flex-direction: column;
@@ -381,8 +385,7 @@ footer {
         width: 100%;
         gap: 1px;
         padding: 0;
-        margin: 0;
-
+        margin: auto;
     }
 
     .button {
@@ -393,8 +396,17 @@ footer {
         flex-direction: column;
     }
 
+    #main-content{
+        max-width: 300px;
+    }
+
+    .box{
+        max-width: 300px;
+    }
+
     .pictures-frontpage {
         flex-direction: column;
     }
+
 }
 

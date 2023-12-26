@@ -30,8 +30,9 @@
     </div>
 
     <p class="error_message" th:text="${#ctx.message}"></p>
-    <table id="materials_table">
-        <thead>
+    <div id="materials_table">
+        <table>
+            <thead>
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Vare navn</th>
@@ -41,6 +42,7 @@
                 <th scope="col">Højde(cm)</th>
                 <th scope="col">Varer nummer</th>
                 <th scope="col">Pris(dkk)</th>
+                <th scope="col">Handling</th>
 
             </tr>
             </thead>
@@ -54,17 +56,16 @@
                 <td data-label="Højde (cm):" th:text="${material.Height}">Property 2</td>
                 <td data-label="Vare nr.:" th:text="${material.ItemNumber}">Property 2</td>
                 <td data-label="Pris:" th:text="${material.Price}">Property 2</td>
-
-                <td>
+                <td data-label="Handling">
                     <form method="POST" action="/delete-material" style="display: inline;">
                         <input type="hidden" name="materialId" th:value="${material.Id}">
                         <button type="submit">Delete</button>
                     </form>
-                    <!-- Add a button or link to trigger update form/modal -->
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
 </div>
 
 <footer th:replace="~{fragments :: footer}"></footer>

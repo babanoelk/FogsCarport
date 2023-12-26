@@ -105,7 +105,7 @@ public class EmailFactory {
         }
     }
 
-    public static void sendOrderToSalesTeam(String customerName, String length, String width, String height) throws IOException {
+    public static void sendOrderToSalesTeam(String customerName, String length, String width, String height, int id) throws IOException {
 
         // Erstat xyx@gmail.com med din egen email, som er afsenderen
 
@@ -124,6 +124,7 @@ public class EmailFactory {
 
         personalization.addTo(new Email("badranyoussef@gmail.com"));
         personalization.addDynamicTemplateData("customerName", customerName);
+        personalization.addDynamicTemplateData("orderId", id);
         personalization.addDynamicTemplateData("length", length);
         personalization.addDynamicTemplateData("width", width);
         personalization.addDynamicTemplateData("height", height);

@@ -24,7 +24,7 @@ Github: @Badranyoussef<br>
 
 ## Hjemmesiden
 
-[Se hjemmesiden her]()
+[Se hjemmesiden](http://159.223.19.33:7071/)
 
 ## Rapporten
 
@@ -36,4 +36,4 @@ Github: @Badranyoussef<br>
 
 ## Videopræsentationen
 
-[Se videopræsentation af projektet på YouTube]()
+[Se videopræsentationen af projektet på YouTube]()

@@ -9,7 +9,6 @@ public class User {
     private int mobile;
     private int role;
     private int zipcode;
-    private boolean consent;
 
     public User(String name, String email, String password, String address, int mobile, int zipcode) {
         this.name = name;
@@ -17,6 +16,7 @@ public class User {
         this.password = password;
         this.address = address;
         this.mobile = mobile;
+        this.role = role;
         this.zipcode = zipcode;
     }
 
@@ -110,9 +110,5 @@ public class User {
 
     public int getZipcode() {
         return zipcode;
-    }
-
-    public boolean getConsent() {
-        return consent;
     }
 }

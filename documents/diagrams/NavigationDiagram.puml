@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/state-diagram
+!pragma layout smetana
+
+scale 800 width
+
+[*] --> index
+index --> bestilling : vis bestillingsformular
+index --> login : log ind
+bestilling --> tilbudindsendt : vis SVG af carport
+tilbudindsendt --> login : log ind
+
+state loggedin {
+login --> kunde : log på
+kunde --> dashboard
+dashboard --> ordreside : [KUNDE] vis alle kundens ordre
+ordreside --> kundeordre : [KUNDE] vis info om specifik ordre
+
+login --> admin : log på
+admin --> dashboard
+dashboard --> ordreside : [ADMIN] vis alle ordre i systemet
+dashboard --> opretmedarbejder : [ADMIN] vis formular
+ordreside --> adminkdordre : [ADMIN] vis info om specifik kundeordre
+opretmedarbejder --> opretmedarbejder : medarbejder oprettet
+}
+loggedin --> [*] : log ud
+@enduml

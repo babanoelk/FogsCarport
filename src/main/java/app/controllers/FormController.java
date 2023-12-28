@@ -71,6 +71,9 @@ public class FormController {
             ctx.attribute("width", carportWidth);
             ctx.attribute("height", carportHeight);
 
+            int id = user.getId();
+            String name = user.getName();
+
 
             //START: Ahmads SVG
 
@@ -80,7 +83,7 @@ public class FormController {
 
             //SLUT: Ahmads SVG
 
-            EmailController.sendOrderToSalesTeam(ctx);
+            EmailController.sendOrderToSalesTeam(ctx, name, id);
 
             ctx.render("tilbud-indsendt.html");
         } catch (Exception e) {

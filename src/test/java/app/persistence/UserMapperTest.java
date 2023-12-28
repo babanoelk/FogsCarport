@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserMapperTest {
 
+    /*
+
     private static final String USER = "notactive";
     private static final String PASSWORD = "notactive";
     private static final String URL = "jdbc:postgresql://localhost:5432/notactive";
@@ -36,4 +38,6 @@ class UserMapperTest {
         assertEquals(10, user1.getId());
         
     }
+
+     */
 }

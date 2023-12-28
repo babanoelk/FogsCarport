@@ -24,7 +24,7 @@ public class Main {
             config.staticFiles.add("/public");
 
             JavalinThymeleaf.init(ThymeleafConfig.templateEngine());
-        }).start(7070);
+        }).start(7071);
 
         // Routing get
         app.get("/", ctx -> SystemController.load(ctx));

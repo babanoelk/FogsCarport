@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class UserMapper {
     public static User addUser(User newUser, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO public.USER (name, email, password, address, mobile, zipcode, consent, role) values (?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO public.USER (name, email, password, address, mobile, zipcode, role) values (?,?,?,?,?,?,?)";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, newUser.getName());
@@ -16,8 +16,8 @@ public class UserMapper {
                 ps.setString(4, newUser.getAddress());
                 ps.setInt(5, newUser.getMobile());
                 ps.setInt(6, newUser.getZipcode());
-                ps.setBoolean(7, newUser.getConsent());
-                ps.setInt(8, newUser.getRole());
+                //ps.setBoolean(7, newUser.getConsent());
+                ps.setInt(7, newUser.getRole());
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected != 1) {

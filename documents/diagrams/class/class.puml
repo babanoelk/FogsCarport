@@ -17,7 +17,7 @@ package config {
 class ThymeleafConfig{
     + static TemplateEngine templateEngine()
 }
-}
+
 
 package services {
 class CarportSvgTopView{
@@ -140,6 +140,11 @@ class MaterialController {
     + static void loadMaterial(Context ctx, ConnectionPool connectionPool)
     + static void updateMaterial(Context ctx, ConnectionPool connectionPool)
 }
+EmailController ---* OrderController
+EmailController ---* ContactController
+EmailController ---* FormController
+FormController ---* OrderController
+UserController ---* FormController
 }
 
 package dtos {
@@ -406,15 +411,6 @@ class MaterialMapper {
 }
 }
 
-'Connections
-exceptions ----* persistence
-dtos ----* persistence
-entities ----* persistence
-persistence ----* controllers
-config ----* Main
-controllers ----* Main
-Svg --* CarportSvgTopView
-services ---* controllers
 
 package utility {
 class Calculator {
@@ -440,6 +436,17 @@ class EmailFactory {
     + static void sendOrderToSalesTeam(String customerName, String length, String width, String height)
     + static void sendMessageToSalesTeam(String customerName, String customerPhone, String customerEmail, String message)
 }
+'Connections
+exceptions ----* persistence
+dtos ----* persistence
+entities ----* persistence
+persistence ----* controllers
+config ----* Main
+controllers ----* Main
+Svg --* CarportSvgTopView
+services ---* controllers
+utility ---* controllers
+dtos - controllers
 }
 
 }

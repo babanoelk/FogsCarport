@@ -31,6 +31,7 @@ public class Calculator {
         price = sqMeter * shedPricePerSqMeter;
 
         return price;
+        
     }
 
     public static float discountCalculatorPercentage(float totalPrice, float discountPercentage){

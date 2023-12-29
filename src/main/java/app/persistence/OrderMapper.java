@@ -6,7 +6,6 @@ import app.entities.Order;
 import app.entities.Shed;
 import app.entities.User;
 import app.exceptions.DatabaseException;
-import app.utility.Calculator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -158,7 +157,6 @@ public class OrderMapper {
             } else {
                 throw new DatabaseException("Ingen ordre slettet. Fejl i databasen.");
             }
-
         } catch (SQLException e) {
             throw new DatabaseException("Fejl ved sletning af ordre. " + e.getMessage());
         }
@@ -206,9 +204,7 @@ public class OrderMapper {
                         // Handle the case where there is no shed
                         // No need to initialize shedId, shedWidth, and shedLength here
                     }
-
                     user = new User(userId, name, email, address, mobile, zipcode);
-
                     orderDetails = new DTOOrderDetails(userId, name, address, zipcode, mobile, email, carportId, carportWidth, carportLength, carportHeight, shedId, shedWidth, shedLength, customerNote);
                 } else {
                     // Handle the case where no rows are returned
@@ -342,7 +338,6 @@ public class OrderMapper {
         } catch (SQLException e){
             throw new DatabaseException(e.getMessage());
         }
-
     }
 
     public static void updateOrderPrice(int orderID, float price, ConnectionPool connectionPool) throws DatabaseException{
@@ -390,7 +385,6 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
-
         return order;
     }
 }

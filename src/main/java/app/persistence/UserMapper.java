@@ -23,12 +23,10 @@ public class UserMapper {
                 if (rowsAffected != 1) {
                     throw new DatabaseException("Fejl i data leveret ved oprettelse af bruger i databasen");
                 }
-
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 int id = rs.getInt(1);
                 newUser.setId(id);
-
             }
         } catch (SQLException e) {
             if (e.getMessage().contains("violates foreign key constraint \"fk_user_zipcode\"")) {
@@ -121,6 +119,5 @@ public class UserMapper {
             throw new RuntimeException(e);
         }
     }
-
 }
 

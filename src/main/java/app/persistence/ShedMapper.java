@@ -52,7 +52,6 @@ public class ShedMapper {
             } catch (SQLException e) {
                 throw new DatabaseException("Fejl ved oprettelse af chef:" + e.getMessage());
             }
-
             return newShed;
         }
     }

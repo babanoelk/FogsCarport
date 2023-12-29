@@ -93,7 +93,6 @@ public class CarportMapper {
                 ps.setInt(3, carport.getHeight());
                 ps.setInt(4, carport.getId());
 
-
                 int rowsAffected = ps.executeUpdate();
 
                 // Check the number of rows affected
@@ -134,6 +133,4 @@ public class CarportMapper {
         }
         return carport;
     }
-
-
 }

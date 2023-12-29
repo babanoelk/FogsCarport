@@ -146,6 +146,21 @@ body {
     transition: background-color 0.3s; /* Tilføjer en overgangseffekt for farveskift */
 }
 
+li{
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #004485;
+    color: white;
+    font-size: 0.9em;
+    cursor: pointer;
+    text-align: center;
+}
+
+li:hover {
+    background-color: #4384c2;
+}
+
 a:link, a:visited {
     text-decoration: none;
     color: white;

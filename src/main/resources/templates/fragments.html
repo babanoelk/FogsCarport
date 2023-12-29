@@ -18,14 +18,14 @@
                 <a href="/"><img src="../public/images/fog-logo.jpeg" th:src="@{/images/fog-logo.jpeg}" width="60px" height="60px"/></a>
         </div>
             <ul class="main-menu">
-                <li><button><a href="/hjem">Hjem</a></button></li>
-                <li ><button><a href="/bestil-carport">Bestil unik carport</a></button></li>
+                <li><a href="/hjem">Hjem</a></li>
+                <li ><a href="/bestil-carport">Bestil unik carport</a></li>
                 <div th:switch="${session.currentUser}!=null" th:remove="tag">
                     <div th:case="true" th:remove="tag">
-                        <li><button><a href="/main-menu" th:text="${session.currentUser.getEmail()}"></a></button></li>
-                        <li><button><a href="/log-ud">Log ud</a></button></li>
+                        <li><a href="/main-menu" th:text="${session.currentUser.getEmail()}"></a></li>
+                        <li><a href="/log-ud">Log ud</a></li>
                     </div>
-                    <li th:case="false"><button><a href="/login">Login</a></button></li>
+                    <li th:case="false"><a href="/login">Login</a></li>
                 </div>
             </ul>
     </nav>

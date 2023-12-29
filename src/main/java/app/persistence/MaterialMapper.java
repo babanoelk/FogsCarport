@@ -66,6 +66,7 @@ public class MaterialMapper {
         }
         return newMaterial;
     }
+
     public static void deleteMaterial(int materialId, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "DELETE FROM materials WHERE id = ?";
         try (Connection connection = connectionPool.getConnection()) {
@@ -103,8 +104,6 @@ public class MaterialMapper {
             throw new DatabaseException("Der opstod en fejl ved oprettelse af vare: " + e.getMessage());
         }
     }
-
-
 
     public static void addPartsList(List<Part> partList, ConnectionPool connectionPool) throws DatabaseException {
 
@@ -144,14 +143,12 @@ public class MaterialMapper {
                     DTOPartsByMaterials partListLine = new DTOPartsByMaterials(name, length, amount, description);
                     partsList.add(partListLine);
                 }
-
             }
         } catch (SQLException e) {
             throw new DatabaseException(e.getMessage());
         }
         return partsList;
     }
-
 }
 
 

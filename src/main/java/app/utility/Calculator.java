@@ -29,6 +29,7 @@ public class Calculator {
 
         float sqMeter = (shed.getLength()/100) * (shed.getWidth()/100);
         price = sqMeter * shedPricePerSqMeter;
+
         return price;
     }
 
@@ -41,13 +42,10 @@ public class Calculator {
 
     public static float discountCalculatorSubtraction(float totalPrice, float discountAmount){
         discountAmount = Math.max(0, discountAmount);
-
         float discountedPrice = totalPrice - discountAmount;
 
         return discountedPrice;
     }
-
-
 
     public static float carportPriceCalculator2(DTOUserCarportOrder carport){
         float price;
@@ -55,15 +53,12 @@ public class Calculator {
         float carportSqMeter = (carport.getCarport().getLength()/100) * (carport.getCarport().getWidth()/100);
         price = carportSqMeter * carportPricePerSqCM;
 
-
         if(carport.getCarport().getShed() != null){
             float shedSqMeter = (carport.getCarport().getShed().getLength()/100) * (carport.getCarport().getShed().getWidth()/100);
             price += shedSqMeter* shedPricePerSqMeter;
         }
-
         return price;
     }
-
 
     public static int amountOfPost(Carport carport){
 
@@ -73,7 +68,6 @@ public class Calculator {
 
 
         //Vores tidligere måde at regne på hvor mange stolper, der skal bruges. Nu beregnes den ud fra tegningen.
-
         /*
         int maxLengthBetweenPost = 240;
         int minNumberOfPosts = 4;
@@ -108,7 +102,6 @@ public class Calculator {
         return svg.getRafters();
 
         //Vores tidligere måde at regne på hvor mange spær, der skal bruges. Nu beregnes den ud fra tegningen.
-
         /*
         int maxLengthBetweenRafts = 60;
         int result = carport.getLength() / maxLengthBetweenRafts;
@@ -119,21 +112,15 @@ public class Calculator {
         */
     }
 
-
     public static List<Part> calculateParts(Carport carport, int orderId){
 
         // Calc Posts
         partsList.add(new Part(DTOParts.POST_MATERIAL_ID, amountOfPost(carport), orderId ));
-
         // Calc Rafters
         partsList.add(new Part(DTOParts.RAFT_MATERIAL_ID, amountOfRafter(carport), orderId ));
-
         // Calc Rems
         partsList.add(new Part(DTOParts.REM_MATERIAL_ID, amountOfRem, orderId));
 
-
         return partsList;
     }
-
-
 }

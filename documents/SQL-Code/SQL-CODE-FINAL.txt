@@ -1,0 +1,190 @@
+CREATE TABLE IF NOT EXISTS public.carport
+(
+    id integer NOT NULL DEFAULT nextval('carport_id_seq'::regclass),
+    width integer NOT NULL,
+    length integer NOT NULL,
+    height integer NOT NULL,
+    shed_id integer,
+    CONSTRAINT carport_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.height
+(
+    height integer NOT NULL,
+    CONSTRAINT height_pkey PRIMARY KEY (height)
+);
+
+CREATE TABLE IF NOT EXISTS public.length
+(
+    length integer NOT NULL,
+    CONSTRAINT length_pkey PRIMARY KEY (length)
+);
+
+CREATE TABLE IF NOT EXISTS public.material
+(
+    id integer NOT NULL,
+    name text COLLATE pg_catalog."default" NOT NULL,
+    length integer NOT NULL,
+    height integer NOT NULL,
+    width integer NOT NULL,
+    description text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Materialer_pkey" PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public."order"
+(
+    id integer NOT NULL DEFAULT nextval('order_id_seq'::regclass),
+    date date NOT NULL DEFAULT CURRENT_DATE,
+    customer_note text COLLATE pg_catalog."default",
+    user_id integer NOT NULL,
+    order_status integer NOT NULL DEFAULT 1,
+    carport_id integer NOT NULL,
+    CONSTRAINT order_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.parts_list
+(
+    id integer NOT NULL DEFAULT nextval('parts_list_id_seq'::regclass),
+    name text COLLATE pg_catalog."default" NOT NULL,
+    length integer NOT NULL,
+    width integer NOT NULL,
+    height integer NOT NULL,
+    unit text COLLATE pg_catalog."default" NOT NULL DEFAULT 'Stk.'::text,
+    description text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT parts_list_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.shed
+(
+    id integer NOT NULL DEFAULT nextval('shed_id_seq'::regclass),
+    width integer NOT NULL,
+    length integer NOT NULL,
+    CONSTRAINT shed_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.status
+(
+    id integer NOT NULL DEFAULT nextval('status_id_seq'::regclass),
+    status text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT status_pkey PRIMARY KEY (id),
+    CONSTRAINT status_status_key UNIQUE (status)
+);
+
+CREATE TABLE IF NOT EXISTS public."user"
+(
+    id integer NOT NULL DEFAULT nextval('user_id_seq'::regclass),
+    name text COLLATE pg_catalog."default" NOT NULL,
+    email text COLLATE pg_catalog."default" NOT NULL,
+    password text COLLATE pg_catalog."default" NOT NULL,
+    address text COLLATE pg_catalog."default" NOT NULL,
+    mobile integer NOT NULL,
+    role integer NOT NULL DEFAULT 1,
+    zipcode integer NOT NULL,
+    consent boolean NOT NULL DEFAULT false,
+    date_created date NOT NULL DEFAULT CURRENT_DATE,
+    CONSTRAINT user_pkey PRIMARY KEY (id),
+    CONSTRAINT unique_mail UNIQUE (email)
+);
+
+CREATE TABLE IF NOT EXISTS public.user_role
+(
+    id integer NOT NULL DEFAULT nextval('user_role_id_seq'::regclass),
+    role text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT user_role_pkey PRIMARY KEY (id),
+    CONSTRAINT user_role_role_key UNIQUE (role)
+);
+
+CREATE TABLE IF NOT EXISTS public.width
+(
+    width integer NOT NULL,
+    CONSTRAINT width_pkey PRIMARY KEY (width)
+);
+
+CREATE TABLE IF NOT EXISTS public.zipcode
+(
+    postal_code integer NOT NULL,
+    city_name text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT zipcode_pkey PRIMARY KEY (postal_code)
+);
+
+ALTER TABLE IF EXISTS public.carport
+    ADD CONSTRAINT fk_carport_height FOREIGN KEY (height)
+    REFERENCES public.height (height) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.carport
+    ADD CONSTRAINT fk_carport_length FOREIGN KEY (length)
+    REFERENCES public.length (length) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.carport
+    ADD CONSTRAINT fk_carport_width FOREIGN KEY (width)
+    REFERENCES public.width (width) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.carport
+    ADD CONSTRAINT fk_shed_id FOREIGN KEY (shed_id)
+    REFERENCES public.shed (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."order"
+    ADD CONSTRAINT fk_order_carport FOREIGN KEY (carport_id)
+    REFERENCES public.carport (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."order"
+    ADD CONSTRAINT fk_order_status FOREIGN KEY (order_status)
+    REFERENCES public.status (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."order"
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id)
+    REFERENCES public."user" (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."user"
+    ADD CONSTRAINT fk_user_role FOREIGN KEY (role)
+    REFERENCES public.user_role (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."user"
+    ADD CONSTRAINT fk_user_zipcode FOREIGN KEY (zipcode)
+    REFERENCES public.zipcode (postal_code) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+INSERT INTO status(status) VALUES ('Behandles'), ('Afventer betaling'), ('Betalt'), ('Ude for levering'), ('Leveret'), ('Annulleret');
+INSERT INTO width(width) VALUES (240),(270),(300),(330),(360),(390),(420),(450),(480),(510),(540),(570),(600);
+INSERT INTO length(length) VALUES (240),(270),(300),(330),(360),(390),(420),(450),(480),(510),(540),(570),(600);
+INSERT INTO length(length) VALUES (240),(270),(300),(330),(360),(390),(420),(450),(480),(510),(540),(570),(600);
+INSERT INTO user_role(role) VALUES ('Standard'),('Sælger'),('Admin');
+INSERT INTO zipcode(postal_code, city_name) VALUES (1000, 'København'), (8000, 'Aarhus'), (8200, 'Aarhus N'), (5000, 'Odense'), (9000, 'Aalborg'), (7100, 'Vejle'), (6000, 'Kolding'), (4000, 'Roskilde'), (8700, 'Horsens'), (2730, 'Herlev');
+INSERT INTO "user" (name, email, password, address, mobile, role, zipcode) VALUES
+    ('Anna Jensen', 'anna.jensen@email.com', 'password1', 'Hovedgaden 1', 12345678, 1, 1000),
+    ('Morten Pedersen', 'morten.pedersen@email.com', 'password2', 'Bakkevej 2', 23456789, 2, 8000),
+    ('Lise Hansen', 'lise.hansen@email.com', 'password3', 'Skovvej 3', 34567890, 3, 8200),
+    ('Anders Nielsen', 'anders.nielsen@email.com', 'password4', 'Søgade 4', 45678901, 1, 5000),
+    ('Maria Olsen', 'maria.olsen@email.com', 'password5', 'Havnegade 5', 56789012, 2, 9000),
+    ('Søren Madsen', 'soren.madsen@email.com', 'password6', 'Banevej 6', 67890123, 3, 7100),
+    ('Helle Christensen', 'helle.christensen@email.com', 'password7', 'Parkvej 7', 78901234, 1, 6000),
+    ('Peter Larsen', 'peter.larsen@email.com', 'password8', 'Gadekær 8', 89012345, 2, 4000),
+    ('Thomas Rasmussen', 'thomas.rasmussen@email.com', 'password9', 'Torvet 9', 90123456, 3, 8700),
+    ('Karen Andersen', 'karen.andersen@email.com', 'password10', 'Strandvej 10', 12345678, 1, 2730);

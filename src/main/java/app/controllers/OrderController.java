@@ -140,14 +140,11 @@ public class OrderController {
             try {
                 updateZipcode = Integer.parseInt(newInputZipcodeStr);
             } catch (NumberFormatException e) {
-                // Handle the case where the string is not a valid integer
-                // You might want to log an error or set a default value
                 updateZipcode = oldUserZipcode; // Set a default value or use oldUserZipcode
             }
         } else {
             // The newInputZipcodeStr is either null or empty
-            // Set a default value or use the oldUserZipcode
-            updateZipcode = oldUserZipcode; // Set a default value or use oldUserZipcode
+            updateZipcode = oldUserZipcode;
         }
 
 // Checking if mobile is null or empty
@@ -156,13 +153,9 @@ public class OrderController {
             try {
                 updateMobile = Integer.parseInt(newInputMobileStr);
             } catch (NumberFormatException e) {
-                // Handle the case where the string is not a valid integer
-                // You might want to log an error or set a default value
                 updateMobile = oldUserMobile; // Set a default value or use oldUserMobile
             }
         } else {
-            // The newInputMobileStr is either null or empty
-            // Set a default value or use the oldUserMobile
             updateMobile = oldUserMobile; // Set a default value or use oldUserMobile
         }
 

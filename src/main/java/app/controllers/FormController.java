@@ -74,14 +74,9 @@ public class FormController {
             int id = user.getId();
             String name = user.getName();
 
-
-            //START: Ahmads SVG
-
             Locale.setDefault(new Locale("US"));
             CarportSvgTopView svg = new CarportSvgTopView(carportLength, carportWidth);
             ctx.attribute("svg", svg.toString());
-
-            //SLUT: Ahmads SVG
 
             EmailController.sendOrderToSalesTeam(ctx, name, id);
 

@@ -14,7 +14,7 @@ public class MeasurementMapper {
     {
         List<Integer> lengths = new ArrayList<>();
 
-        String sql = "select * from length order by length";
+        String sql = "select * from length where length >= 220 order by length";
 
         try (Connection connection = connectionPool.getConnection())
         {
@@ -39,7 +39,7 @@ public class MeasurementMapper {
     {
         List<Integer> widths = new ArrayList<>();
 
-        String sql = "select * from width order by width";
+        String sql = "select * from width where width >= 220 order by width";
 
         try (Connection connection = connectionPool.getConnection())
         {
